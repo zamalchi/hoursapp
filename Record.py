@@ -69,8 +69,8 @@ class Record:
 	def getRecordFromHTML(request):
 		name = request.forms.get('name').strip().lower()
 
-		start = Record.parseTime(request.forms.get('start').strip())
-		end = Record.parseTime(request.forms.get('end').strip())
+		start = Record.parseTime(request.forms.get('start'))
+		end = Record.parseTime(request.forms.get('end'))
 		###
 		duration = request.forms.get('duration').strip()
 		billable = request.forms.get('billable')
@@ -81,12 +81,17 @@ class Record:
 
 		#######################################################
 		durationLocked = False
-		# if not supplied, calculate duration
-		if not duration:
-			duration = Record.getDuration(start, end)
-		# if supplied, lock the duration to prevent adjustments
-		else:
+		# if a duration is entered, lock it to prevent changing
+		# otherwise the duration is empty
+		if duration:
 			durationLocked = True
+
+		# if there is no duration and the times are present
+		elif start and end:
+			# calculate the duration
+			duration = Record.getDuration(start, end)
+
+		#######################################################
 
 		### restore colon in times
 		start = Record.formatTime(start)
@@ -126,7 +131,7 @@ class Record:
 	# time: accept [*] return [str]
 	@staticmethod
 	def parseTime(time):
-		return str(time).translate(None, ':').zfill(4)
+		return str(time.strip()).translate(None, ':').zfill(4)
 
 	# adds a colon between hours and minutes
 	# ensures time is parsed correctly
@@ -166,39 +171,33 @@ class Record:
 
 	#############################################################
 	@staticmethod
+	def getPrevRecord(records, index):
+		try:
+			if (index-1 >= 0):
+				return records[index-1]
+		except IndexError:
+			pass
+		return None
+
+	@staticmethod
+	def getNextRecord(records, index):
+		try:
+			if (index+1 < len(records)):
+				return records[index+1]
+		except IndexError:
+			pass
+		return None
+
+	#############################################################
+	@staticmethod
 	def adjustAdjacentRecords(records, index):
 		if not records:
 			raise Exception("Record.spliceInRecords(): records var is null")
 
-		prev_record = None
-		next_record = None
-
-		#nextIndex = index-1
-		#if (nextIndex < len(records)):
-			#next_record = records[nextIndex]
-
-
 		new_record = records[index]
 
-		
-		try:
-			if (index-1 >= 0):
-				prev_record = records[index-1]
-		except IndexError:
-			prev_record = None
-			pass
-		try:
-			if (index+1 < len(records)):
-				next_record = records[index+1]
-		except IndexError:
-			next_record = None
-			pass
-
-		# prevent list wrap-around issues with negative indices by comparing the objects
-		if (new_record == prev_record):
-			prev_record = None
-		if (new_record == next_record):
-			new_record = None
+		prev_record = Record.getPrevRecord(records, index)
+		next_record = Record.getPrevRecord(records, index)
 
 		# if the previous record exists
 		if prev_record:

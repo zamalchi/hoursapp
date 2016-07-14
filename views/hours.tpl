@@ -34,7 +34,7 @@
 				<div class="col-md-10">
 					<!-- PANEL -->
 					<div class="panel panel-default">
-						% include('hours_panel_body.tpl', i=0, name=name, is_new_record=False)
+						% include('hours_panel_body.tpl', prev_start="", i=0, name=name, is_new_record=False, is_initial_record=True)
 					</div>
 				</div>
 			</div> 
@@ -66,6 +66,8 @@
 							<!-- PROVIDES IDS FOR HTML ELEMS -->
 							% ider = Labeler(0)
 
+							% prev_start = ""
+
 							% for r in records:
 
 								<!-- ######################################################################################################### -->
@@ -77,7 +79,7 @@
 									<!-- ######################################################################################################### -->
 				    			<!-- PANEL COLLAPSE/BODY START -->
 			    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse">
-			    					% include('hours_panel_body.tpl', i=ider.i, name=name, is_new_record=False)
+			    					% include('hours_panel_body.tpl', prev_start=prev_start, i=ider.i, name=name, is_new_record=False, is_initial_record=False)
 				    			</div>					    			
 				    			<!-- PANEL BODY/COLLAPSE END -->
 									<!-- ######################################################################################################### -->
@@ -92,6 +94,8 @@
 								<hr />
 								<!-- Increment counter after -->
 								% ider.inc()
+								<!-- set the current end time to prev_start for possible use in the next_record -->
+								% prev_start = r.fend
 
 							% end # end for each record
 							<!-- FOR EACH RECORD END -->
@@ -110,7 +114,7 @@
 			    			<!-- PANEL COLLAPSE/BODY START -->
 			    			<!-- differentiated because this form stays open: class="in" -->
 		    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse in">
-			    				% include('hours_panel_body.tpl', i=ider.i, name=name, is_new_record=True)
+			    				% include('hours_panel_body.tpl', prev_start=prev_start, i=ider.i, name=name, is_new_record=True, is_initial_record=False)
 			    			</div>
 			    			<!-- PANEL BODY/COLLAPSE END -->
 			    			<!-- ######################################################################################################### -->

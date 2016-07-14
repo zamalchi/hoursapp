@@ -36,9 +36,21 @@
 				% end
 				<!-- START TIME -->
 				% if is_new_record:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus/>
+					% print("IS NEW RECORD")
+					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} autofocus/>
+				
+				% elif is_initial_record:
+					% print("IS INITIAL RECORD")
+						<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required/>
+				
+				% elif prev_start:
+					% print("IS OTHER PREV_START RECORD")
+						<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}}/>
+				
 				% else:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required/>
+					% print("IS OTHER RECORD")
+						<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}}/>
+
 				% end
 				<!-- END TIME -->
 				<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required/>
