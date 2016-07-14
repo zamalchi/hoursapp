@@ -35,6 +35,8 @@ SimpleTemplate.defaults["url"] = url
 
 # directory for saving hours information
 hoursDir = "hours"
+if not os.path.exists(hoursDir):
+	os.makedirs(hoursDir)
 
 
 ### SMTP ###############################################################################################
