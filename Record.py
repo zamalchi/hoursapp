@@ -170,9 +170,16 @@ class Record:
 		if not records:
 			raise Exception("Record.spliceInRecords(): records var is null")
 
-		new_record = records[index]
 		prev_record = None
 		next_record = None
+
+		#nextIndex = index-1
+		#if (nextIndex < len(records)):
+			#next_record = records[nextIndex]
+
+
+		new_record = records[index]
+
 		
 		try:
 			if (index-1 >= 0):
@@ -181,7 +188,7 @@ class Record:
 			prev_record = None
 			pass
 		try:
-			if (index+1 < len(records)-1):
+			if (index+1 < len(records)):
 				next_record = records[index+1]
 		except IndexError:
 			next_record = None
