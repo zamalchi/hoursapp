@@ -55,6 +55,14 @@ def setDevMode(dmode):
 	devMode = dmode
 	print("DEV MODE: " + str(devMode))
 
+# dev print : prints when in dev mode
+def devp(msg):
+	global devMode
+	if devMode:
+		print(msg)
+
+########################################################################################################
+
 
 # for css reading in templates
 @route('/static/<filename>', name='static')
@@ -236,7 +244,7 @@ def delete_single_record():
 
 	# get w/o last char, since it comes in with a trailing '/'
 	index = int(request.forms.get('recordIndex')[:-1])
-	print("unedited index in deleteOne:", request.forms.get('recordIndex'))
+	# print("unedited index in deleteOne:", request.forms.get('recordIndex'))
 
 	# get name cookie
 	name = request.get_cookie("name")
@@ -293,7 +301,7 @@ def email_records():
 			mail = smtplib.SMTP("localhost")
 			mail.sendmail(sender, receivers, message)
 			mail.quit()
-			print("Sender:", sender, "\nReceivers:", receivers)
+			# print("Sender:", sender, "\nReceivers:", receivers)
 			return("<h2>Message sent???</h2>")
 
 		except smtplib.SMTPException:

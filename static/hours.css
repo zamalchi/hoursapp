@@ -155,6 +155,7 @@ td#up-arrow, td#down-arrow {
 .records h4 {
     display: inline;
     padding-left: 20px;
+    padding-top: 10px;
 }
 
 

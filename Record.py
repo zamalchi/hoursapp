@@ -226,9 +226,9 @@ class Record:
 			if (overlap < 0):
 				# modify the prev_end time by subtracting the overlap duration
 				prev_record.modifyEnd(overlap)
-				print("Modifying prev_record by:", overlap)
-				print("prev_record:", str(prev_record))
-				print("new_record:", str(new_record))
+				# print("Modifying prev_record by:", overlap)
+				# print("prev_record:", str(prev_record))
+				# print("new_record:", str(new_record))
 
 		# if the next record exists
 		if next_record:
@@ -238,9 +238,9 @@ class Record:
 			if (overlap < 0):
 				# modify next_start time by subtracting overlap duration
 				next_record.modifyStart(overlap)
-				print("Modifying next_record by:", overlap)
-				print("new_record:", str(new_record))
-				print("next_record:", str(next_record))
+				# print("Modifying next_record by:", overlap)
+				# print("new_record:", str(new_record))
+				# print("next_record:", str(next_record))
 
 	#############################################################
 
