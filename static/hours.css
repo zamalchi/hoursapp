@@ -1,0 +1,206 @@
+
+
+body {
+    font-family: Droid Sans, Arial;
+    background: #aadfeb;
+}
+
+h1 {
+    text-align: center;
+}
+
+h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.navbar {
+    background-color: #dddddd;
+    border-color: #000000;
+}
+
+.navbar ul {
+    text-align: center;
+}
+
+.navbar li {
+    display: inline-block;
+    font-size: 20px;
+    position: relative;
+}
+
+.footer {
+    margin: 30px;
+}
+
+div.threeColumn {
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+}
+
+
+/********************************************************/
+/********************************************************/
+
+div.records {
+    margin-top: 20px;
+}
+
+div.labels label {
+    padding-right: 120px;
+}
+
+div.panel-body {
+    padding-bottom: 0px;
+}
+
+.panel {
+    margin-top: 20px !important;
+    border: 2px solid black;
+
+}
+
+fieldset.inputs, div.records, div.labels, div#buttons {
+    border: 2px solid black;
+    padding: 10px;
+    background-color: #cccccc;
+    margin-bottom: 25px !important;
+}
+
+.records {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+
+div.billable, div.emergency {
+    display: inline;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+div.form-inline div.pull-right {
+    margin-top: 5px;
+}
+
+input[type=checkbox] {
+  /* All browsers except webkit*/
+  transform: scale(1.5);
+
+  /* Webkit browsers*/
+  -webkit-transform: scale(1.5);
+
+  margin: 5px;
+
+  vertical-align: middle;
+}
+
+
+div#buttons {
+    margin-top: 50px;
+}
+
+div#buttons button {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.x-button {
+    background-color: #E54747;
+}
+
+.x-button:visited {
+    background-color: #E54747;    
+}
+
+.x-button:hover{
+    background-color: red;
+}
+
+.x-button:active{
+    background-color: red;
+}
+
+.glyphicon-remove {
+    color: white;
+}
+
+form.form-inline {
+    display: inline;
+}
+
+
+/********************************************************/
+form fieldset.inputs {
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+input#inputs-submit {
+    margin-top: 10px;
+}
+/********************************************************/
+
+
+td#up-arrow, td#down-arrow {
+    padding: 0px;
+}
+
+.records table tr td{
+    padding: 10px;
+    font-size: 1.15em;
+}
+
+.records h4 {
+    display: inline;
+    padding-left: 20px;
+}
+
+
+table tr:nth-child(even) td {
+    background-color: #dddddd;
+}
+
+table tr:nth-child(odd) td {
+    background-color: #cccccc;
+}
+
+
+/********************************************************/
+/********************************************************/
+
+.negative-duration {
+    color: red;
+    font-weight: bold;
+}
+
+.vertical-center {
+    vertical-align: center!important;
+}
+
+.padded-top {
+    padding-top: 10px;
+}
+
+.quarter-width {
+    width: 25%!important;
+}
+
+.half-width {
+    width: 50%!important;
+}
+
+.three-quarters-width {
+    width: 75%!important;
+}
+
+.full-width {
+    width: 100%!important;
+}
+
+.no-padding {
+    padding: 0px;
+}
+
+
