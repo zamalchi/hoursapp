@@ -175,12 +175,14 @@ class Record:
 		next_record = None
 		
 		try:
-			prev_record = records[index-1]
+			if (index-1 >= 0):
+				prev_record = records[index-1]
 		except IndexError:
 			prev_record = None
 			pass
 		try:
-			next_record = records[index+1]
+			if (index+1 < len(records)-1):
+				next_record = records[index+1]
 		except IndexError:
 			next_record = None
 			pass
