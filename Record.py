@@ -197,26 +197,32 @@ class Record:
 		new_record = records[index]
 
 		prev_record = Record.getPrevRecord(records, index)
-		next_record = Record.getPrevRecord(records, index)
+		next_record = Record.getNextRecord(records, index)
 
 		# if the previous record exists
 		if prev_record:
-			# calculate duration : new_start - prev_end : if overlap => negative duration
+			# calculate overlap : new_start - prev_end : if overlap => negative duration
 			# if the new start time is less than the previous end time: adjustment needed
-			duration = Record.getDuration(prev_record.end, new_record.start)
+			overlap = Record.getDuration(prev_record.end, new_record.start)
 			# if there was overlap
-			if (duration < 0):
+			if (overlap < 0):
 				# modify the prev_end time by subtracting the overlap duration
-				prev_record.modifyEnd(duration)
+				prev_record.modifyEnd(overlap)
+				print("Modifying prev_record by:", overlap)
+				print("prev_record:", str(prev_record))
+				print("new_record:", str(new_record))
 
 		# if the next record exists
 		if next_record:
-			# calculate duration : next_start - new_end : if overlap => negative duration
-			duration = Record.getDuration(new_record.end, next_record.start)
+			# calculate overlap : next_start - new_end : if overlap => negative duration
+			overlap = Record.getDuration(new_record.end, next_record.start)
 			# if there was overlap
-			if (duration < 0):
+			if (overlap < 0):
 				# modify next_start time by subtracting overlap duration
-				next_record.modifyStart(duration)
+				next_record.modifyStart(overlap)
+				print("Modifying next_record by:", overlap)
+				print("new_record:", str(new_record))
+				print("next_record:", str(next_record))
 
 	#############################################################
 

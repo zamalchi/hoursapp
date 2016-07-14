@@ -28,32 +28,27 @@
 			<div class="form-inline">
 				<!-- NAME : TEXT -->
 				% if name:
-					% print("setting name:", name)
-					<input name={{namer.name()}} id={{ider.name()}} type="text" value={{name}} class="form-control quarter-width" placeholder="Name" pattern={{NAME_REGEX}} required/>
+					<input name={{namer.name()}} id={{ider.name()}} type="text" value={{name}} class="form-control quarter-width" placeholder="Name" pattern={{NAME_REGEX}} required />
 				% else:
-					% print("not setting name")
-					<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control quarter-width" placeholder="Name" pattern={{NAME_REGEX}} required/>
+					<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control quarter-width" placeholder="Name" pattern={{NAME_REGEX}} required />
 				% end
 				<!-- START TIME -->
 				% if is_new_record:
-					% print("IS NEW RECORD")
-					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} autofocus/>
+					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} autofocus />
 				
 				% elif is_initial_record:
-					% print("IS INITIAL RECORD")
-						<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required/>
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required />
 				
 				% elif prev_start:
-					% print("IS OTHER PREV_START RECORD")
-						<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}}/>
+					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} />
 				
-				% else:
-					% print("IS OTHER RECORD")
-						<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}}/>
-
+				<!-- % else:
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} /> -->
 				% end
+
+				
 				<!-- END TIME -->
-				<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required/>
+				<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required />
 				<!-- DURATION : TEXT -->
 				<input name={{namer.duration()}} id={{ider.duration()}} type="text" class="form-control" placeholder="Duration"/>
 			</div>
