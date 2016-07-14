@@ -5,10 +5,11 @@ if (__name__ == "__main__"):
 
 
 import time
+import os
 
 
 class Record:
-
+	hoursDir = "hours/"
 	########################################################################################################
 	########################################################################################################
 	########################################################################################################	
@@ -20,7 +21,8 @@ class Record:
 	# START OF IO METHODS
 
 	@staticmethod
-	def readRecords(filePath):
+	def readRecords(name):
+		filePath = Record.hoursDir + "." + name
 		try:
 			f = open(filePath, 'r')
 			records = f.read().split('\n')
@@ -41,22 +43,38 @@ class Record:
 		return records
 
 	@staticmethod
-	def parseRecordsFromFile(filePath):
-		return Record.parseRecords(Record.readRecords(filePath))
+	def parseRecordsFromFile(name):
+		return Record.parseRecords(Record.readRecords(name))
 
 
 	@staticmethod
-	def writeRecords(filePath, records):
-		try:
-			s = ""
-			for r in records:
-				s += str(r) + "\n"
+	def writeRecords(name, records):
+		filePath = Record.hoursDir + name
+		res = ""
+		hiddenFilePath = Record.hoursDir + "." + name
+		hiddenRes = "" 
 
+		for r in records:
+			res += r.emailFormat() + "\n"
+			hiddenRes += str(r) + "\n"
+
+		try:
 			f = open(filePath, 'w')
-			f.write(s)
+			f.write(res)
+			f.close()
+
+			f = open(hiddenFilePath, 'w')
+			f.write(hiddenRes)
 			f.close()
 		except IOError:
 			pass
+
+
+	@staticmethod
+	def deleteRecords(name):
+		os.system("rm -f " + Record.hoursDir + "." + name)
+		os.system("rm -f " + Record.hoursDir + name)
+
 
 	# END OF IO METHODS
 	########################################################################################################

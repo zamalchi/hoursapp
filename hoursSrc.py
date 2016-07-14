@@ -34,10 +34,10 @@ namer = Labeler()
 SimpleTemplate.defaults["url"] = url
 
 # directory for saving hours information
-hoursDir = "hours"
+Record.hoursDir = "hours/"
 # if the directory doesn't exist, create it
-if not os.path.exists(hoursDir):
-	os.makedirs(hoursDir)
+if not os.path.exists(Record.hoursDir):
+	os.makedirs(Record.hoursDir)
 
 
 ### SMTP ###############################################################################################
@@ -109,10 +109,9 @@ def hours():
 	#######################################################
 
 	# try to open file with user's name and retrieve data
-	filePath = hoursDir + "/" + name
 	# for each record, create a new Record object and add to list to pass to template
 	# list of records as [obj]
-	records = Record.parseRecordsFromFile(filePath)
+	records = Record.parseRecordsFromFile(name)
 	
 	# DEBUG
 	# print("\n***DEBUG***")
@@ -138,8 +137,6 @@ def hours_post():
 	# index for inserting new Record into the list of records
 	index = int(request.forms.get(namer.insert()))
 
-	filePath = hoursDir + "/" + name
-
 	#######################################################
 	# parses form data and returns a Record obj
 	new_record = Record.getRecordFromHTML(request)
@@ -147,7 +144,7 @@ def hours_post():
 	#######################################################
 
 	# reads and parses Records on file
-	records = Record.parseRecordsFromFile(filePath)
+	records = Record.parseRecordsFromFile(name)
 
 	#######################################################
 
@@ -159,9 +156,9 @@ def hours_post():
 		# append to the end of unpulled existing records
 		# prevents adding to the beginning of an unexpected list
 		records.append(new_record)
-		print("Appending to list")
+		#print("Appending to list")
 	else:
-		print("Inserting in list at index:", index)
+		#print("Inserting in list at index:", index)
 		# insert new record at index provided from template form
 		records.insert(index, new_record)
 		Record.adjustAdjacentRecords(records, index)
@@ -169,9 +166,8 @@ def hours_post():
 	#for i in range(len(records)):
 	#	Record.adjustAdjacentRecords(records, i)
 	
-
 	# write back updated list
-	Record.writeRecords(filePath, records)
+	Record.writeRecords(name, records)
 	#######################################################
 
 	response.set_cookie("name", (name or ""))
@@ -222,9 +218,9 @@ def delete_records():
 	# get the name cookie
 	name = request.get_cookie("name")
 	if name:
-		# delete the user's record file
-		os.system("rm -f hours/" + name)
-	
+		# delete both of the user's record files
+		Record.deleteRecords(name)
+
 	# delete the name cookie
 		response.set_cookie("name", "")
 
@@ -246,26 +242,19 @@ def delete_single_record():
 	name = request.get_cookie("name")
 
 	if name:
-		filePath = hoursDir + "/" + name
-		
 		try:
-			# read records
-			f = open(filePath, 'r')
-			records = f.read().split('\n')
-			f.close()
+			# read and parse records from file
+			records = Record.parseRecordsFromFile(name)
 
 			# delete record
 			del records[index]
 			#records = records[:index] + records[index+1:]
 
 			if records:
-				# write back records
-				f = open(filePath, 'w')
-				f.write('\n'.join(records))
-				f.close()
+				Record.writeRecords(name, records)
 			else:
 				# if no records are left, delete the file
-				os.system("rm -f " + filePath)
+				Record.deleteRecords(name)
 
 		except IOError:
 			pass
@@ -289,7 +278,7 @@ def email_records():
 
 	if name:
 		# try to open file with user's name and retrieve data
-		filePath = hoursDir + "/" + name
+		filePath = Record.hoursDir + "/" + name
 
 		# for each record, create a new Record object and add to list to pass to template
 		# list of records as [obj]

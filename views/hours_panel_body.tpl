@@ -42,11 +42,11 @@
 				% elif prev_start:
 					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} />
 				
-				<!-- % else:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} /> -->
+				% else:
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required />
 				% end
 
-				
+
 				<!-- END TIME -->
 				<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required />
 				<!-- DURATION : TEXT -->
