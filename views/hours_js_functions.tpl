@@ -77,12 +77,11 @@ function openViewer() {
 	</body>
 	</html>
 	`);
-	var heightOffset = window.outerHeight - window.innerHeight;
- //  var widthOffset = window.outerWidth - window.innerWidth;
- //  var height = document.getElementById("content").clientHeight + heightOffset;
- //  var width = document.getElementById("content").clientWidth + widthOffset;
- //  window.resizeTo(width, height);
-	// OpenWindow.resizeTo();
+	var heightOffset = OpenWindow.outerHeight - OpenWindow.innerHeight;
+  var widthOffset = OpenWindow.outerWidth - OpenWindow.innerWidth;
+  var height = document.getElementById("viewerContents").clientHeight + heightOffset;
+  var width = document.getElementById("viewerContents").clientWidth + widthOffset;
+  OpenWindow.resizeTo(width, height);
 	OpenWindow.document.close();
 	self.name="main"
 }
