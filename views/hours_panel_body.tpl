@@ -59,7 +59,7 @@
 				<!-- LABEL : TEXT -->
 				<input name={{namer.label()}} id={{ider.label()}} type="text" class="form-control" placeholder="Label" required/>
 				<!-- DESCRIPTION : TEXT // not required (ex. lunch) -->
-				<input name={{namer.description()}} id={{ider.description()}} type="text" class="form-control half-width" placeholder="Description" />
+				<input name={{namer.description()}} id={{ider.description()}} type="text" class="form-control half-width" placeholder="Description" required />
 			</div>
 			<!-- END OF SINGLE LINE -->
 			<!-- ######################################################################################################### -->
