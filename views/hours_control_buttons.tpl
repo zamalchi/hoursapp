@@ -10,23 +10,30 @@
 					<div class="form-group">
 						<input type="text" id="setName" name="setName" class="form-control" placeholder="Enter name..." />
 					</div>
-					<button type="submit" class="btn btn-info">Pull records</button>
+					<button type="submit" class="btn btn-primary">Pull records</button>
 				</form>
 			</div>
 
 		
 			<div class="btn-group pull-right">
+				<!-- VIEW RECORDS -->
+				<form action="/view" method="post" class="form-inline" enctype="multipart/form-data">						
+					<div class="form-group">
+						<input id="view" name="view" type="submit" value="View Records" class="btn btn-info pull-right" onclick="viewRecords()" />
+						<input id="viewRecords" name="viewRecords" type="hidden" value={{name}}/>
+					</div>
+				</form>
 				<!-- DELETE RECORDS -->
 				<form action="/delete" method="post" class="form-inline" enctype="multipart/form-data">						
 					<div class="form-group">
-						<input id="delete" name="delete" type="submit" value="Delete Records" class="btn btn-danger pull-right" onclick="confirmDelete()"/>
+						<input id="delete" name="delete" type="submit" value="Delete Records" class="btn btn-danger pull-right" onclick="confirmDelete()" />
 						<input id="deleteUser" name="deleteUser" type="hidden" value={{name}}/>
 					</div>
 				</form>
 				<!-- EMAIL RECORDS -->
 				<form action="/email" method="post" class="form-inline" enctype="multipart/form-data">
 					<div class="form-group">						
-						<input id="email" name="email" type="submit" value="Email Records" class="btn btn-success pull-right" onclick="confirmEmail()"/>
+						<input id="email" name="email" type="submit" value="Email Records" class="btn btn-success pull-right" onclick="confirmEmail()" />
 						<input id="emailUser" name="emailUser" type="hidden" value={{name}}/>
 					</div>
 				</form>

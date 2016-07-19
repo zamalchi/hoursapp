@@ -313,6 +313,19 @@ def email_records():
 		redirect('hours')
 
 
+@route('/view', method="POST")
+def viewRecords():
+	# get name cookie
+	name = request.get_cookie("name")
+
+	if name:
+		try:
+			# read and parse records from file
+			records = Record.parseRecordsFromFile(name)
+			return template('view', records=records)
+
+		except IOError:
+			redirect('hours')
 
 ########################################################################################################
 ######################################  	HOURS FORM END		 ###########################################
