@@ -275,6 +275,8 @@ def delete_single_record():
 ### emails records
 @route('/email', method="POST")
 def email_records():
+	redirect('hours')
+
 	curTimeLong = time.strftime("%Y %b %d %X")
 	curTimeShort = time.strftime("%m-%d")
 		
