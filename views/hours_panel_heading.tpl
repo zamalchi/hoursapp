@@ -39,7 +39,7 @@
 			<div class="col-md-10 no-padding">
 				% if is_new_record:
 
-					<h4>New Record</h4>
+					<h4><strong>Insert new record: #{{ider.i+1}}</strong></h4>
 
 
 				% else:

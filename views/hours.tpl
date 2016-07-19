@@ -61,6 +61,35 @@
 					<div class="records">
 						<div class="panel-group" id="accordion">
 							% records = filter(None, records) # remove empty elements from records 
+
+							<!-- ######################################################################################################### -->
+							<!-- ######################################################################################################### -->
+							<!-- NEW RECORD FORM START -->
+
+							<div class="panel panel-default">
+			    			<!-- ######################################################################################################### -->
+			    			<!-- PANEL COLLAPSE/BODY START -->
+			    			<!-- differentiated because this form stays open: class="in" -->
+			    			% namer = Labeler()
+			    			% ider = Labeler(len(records))
+		    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse in">
+			    				% include('hours_panel_body.tpl', prev_start=records[-1].fend, i=len(records), name=name, is_new_record=True, is_initial_record=False)
+			    			</div>
+			    			<!-- PANEL BODY/COLLAPSE END -->
+			    			<!-- ######################################################################################################### -->
+						
+								<!-- ######################################################################################################### -->
+								<!-- PANEL HEADING START -->
+			    			% include('hours_panel_heading.tpl', r=None, i=len(records), is_new_record=True)
+			    			<!-- PANEL HEADING END -->
+			    			<!-- ######################################################################################################### -->
+							</div>
+							<!-- NEW RECORD FORM END -->
+							<!-- ######################################################################################################### -->
+							<!-- ######################################################################################################### -->
+
+							<hr />
+
 							<!-- PROVIDES NAMES FOR HTML ELEMS -->
 							% namer = Labeler()
 							<!-- PROVIDES IDS FOR HTML ELEMS -->
@@ -105,29 +134,7 @@
 							<!-- X -->
 							<!-- X -->
 
-							<!-- ######################################################################################################### -->
-							<!-- ######################################################################################################### -->
-							<!-- NEW RECORD FORM START -->
-
-							<div class="panel panel-default">
-			    			<!-- ######################################################################################################### -->
-			    			<!-- PANEL COLLAPSE/BODY START -->
-			    			<!-- differentiated because this form stays open: class="in" -->
-		    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse in">
-			    				% include('hours_panel_body.tpl', prev_start=prev_start, i=ider.i, name=name, is_new_record=True, is_initial_record=False)
-			    			</div>
-			    			<!-- PANEL BODY/COLLAPSE END -->
-			    			<!-- ######################################################################################################### -->
-						
-								<!-- ######################################################################################################### -->
-								<!-- PANEL HEADING START -->
-			    			% include('hours_panel_heading.tpl', r=r, i=ider.i, is_new_record=True)
-			    			<!-- PANEL HEADING END -->
-			    			<!-- ######################################################################################################### -->
-							</div>
-							<!-- NEW RECORD FORM END -->
-							<!-- ######################################################################################################### -->
-							<!-- ######################################################################################################### -->
+							
 							</div> <!-- /.panel-group -->
 						</div> <!-- /.records -->
 					</div> <!-- /.col-md- -->
