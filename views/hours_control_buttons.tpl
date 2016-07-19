@@ -1,6 +1,4 @@
 
-
-
 <div class="row">
 	<div class="col-md-10">
 		<div class="container-fluid" id="buttons">
@@ -14,15 +12,15 @@
 				</form>
 			</div>
 
-		
-			<div class="btn-group pull-right">
-				<!-- VIEW RECORDS -->
-				<form action="/view" method="post" class="form-inline" enctype="multipart/form-data">						
+			<!-- VIEW RECORDS -->
+			<div class="btn-group">
 					<div class="form-group">
-						<input id="view" name="view" type="submit" value="View Records" class="btn btn-info pull-right" onclick="viewRecords()" />
-						<input id="viewRecords" name="viewRecords" type="hidden" value={{name}}/>
+						<input id="view" name="view" type="submit" value="View Records" class="btn btn-info pull-right" onclick="openViewer()" />
+						<input id="viewRecords" name="viewRecords" type="hidden" value="{{!record_string}}" />
 					</div>
-				</form>
+			</div>
+
+			<div class="btn-group pull-right">
 				<!-- DELETE RECORDS -->
 				<form action="/delete" method="post" class="form-inline" enctype="multipart/form-data">						
 					<div class="form-group">
@@ -42,3 +40,4 @@
 		</div>
 	</div>
 </div>
+

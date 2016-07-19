@@ -49,5 +49,42 @@ function adjustNextIndex(insertID, recordIndex) {
 	document.getElementById(insertID).value = recordIndex;
 }
 
+function openViewer() {
+	var str = document.getElementById("viewRecords").value;
+	OpenWindow=window.open("", "newwin", "width=500, height=250, toolbar=no,scrollbars="+scroll+",menubar=no");
+	OpenWindow.moveTo(0,0);
+	OpenWindow.document.write(`
+	<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+	 	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='hours.css') }}" />
+		<title>Hours</title>
+	</head>
+	<body>
+	<div class="container" id="viewerContents">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-default">
+					<div class="panel-body">`);
+	OpenWindow.document.write(str);
+	OpenWindow.document.write(`
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</body>
+	</html>
+	`);
+	var heightOffset = window.outerHeight - window.innerHeight;
+ //  var widthOffset = window.outerWidth - window.innerWidth;
+ //  var height = document.getElementById("content").clientHeight + heightOffset;
+ //  var width = document.getElementById("content").clientWidth + widthOffset;
+ //  window.resizeTo(width, height);
+	// OpenWindow.resizeTo();
+	OpenWindow.document.close();
+	self.name="main"
+}
 
 </script>
