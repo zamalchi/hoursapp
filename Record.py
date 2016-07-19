@@ -22,7 +22,8 @@ class Record:
 
 	@staticmethod
 	def readRecords(name):
-		filePath = Record.hoursDir + "." + name
+		date = time.strftime("%Y-%m-%d-")
+		filePath = Record.hoursDir + "." + date + name
 		try:
 			f = open(filePath, 'r')
 			records = f.read().split('\n')
@@ -49,9 +50,10 @@ class Record:
 
 	@staticmethod
 	def writeRecords(name, records):
-		filePath = Record.hoursDir + name
+		date = time.strftime("%Y-%m-%d-")
+		filePath = Record.hoursDir + date + name
 		res = ""
-		hiddenFilePath = Record.hoursDir + "." + name
+		hiddenFilePath = Record.hoursDir + "." + date + name
 		hiddenRes = "" 
 
 		for r in records:
