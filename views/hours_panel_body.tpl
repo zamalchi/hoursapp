@@ -49,8 +49,6 @@
 
 				<!-- END TIME -->
 				<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required />
-				<!-- DURATION : TEXT -->
-				<input name={{namer.duration()}} id={{ider.duration()}} type="text" class="form-control" placeholder="Duration"/>
 			</div>
 			<!-- END OF SINGLE LINE -->
 			<!-- ######################################################################################################### -->
@@ -71,6 +69,8 @@
 			<div class="form-inline padded-top">
 				<!-- LEFT SIDE -->
 				<div class="pull-left">
+					<!-- DURATION : TEXT -->
+					<input name={{namer.duration()}} id={{ider.duration()}} type="text" class="form-control" placeholder="Duration" />
 					<!-- BILLABLE CHECKBOX -->
 					<div class="billable">
 						<span class="checkboxtext">Billable: </span>

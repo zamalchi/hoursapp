@@ -74,8 +74,9 @@ class Record:
 
 	@staticmethod
 	def deleteRecords(name):
-		os.system("rm -f " + Record.hoursDir + "." + name)
-		os.system("rm -f " + Record.hoursDir + name)
+		date = time.strftime("%Y-%m-%d-")
+		os.system("rm -f " + Record.hoursDir + "." + date + name)
+		os.system("rm -f " + Record.hoursDir + date + name)
 
 
 	# END OF IO METHODS
