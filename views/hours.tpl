@@ -158,9 +158,6 @@
 		% for r in records:
 			% record_string += "<p>" + r.emailFormat() + "</p>"
 		% end
-		% print("PRINTING RECORD_STRING")
-		% print(record_string)
-		% print("GOT TO THE END OF THAT")
 		% include('hours_control_buttons.tpl', name=name, record_string=record_string)
 		<!-- LIST CONTROL BUTTONS END -->
 		<!-- ######################################################################################################### -->

@@ -51,7 +51,7 @@ function adjustNextIndex(insertID, recordIndex) {
 
 function openViewer() {
 	var str = document.getElementById("viewRecords").value;
-	OpenWindow=window.open("", "newwin", "width=500, height=250, toolbar=no,scrollbars="+scroll+",menubar=no");
+	OpenWindow=window.open("", "newwin", "width=550, height=750, toolbar=no,scrollbars="+scroll+",menubar=no");
 	OpenWindow.moveTo(0,0);
 	OpenWindow.document.write(`
 	<html>
@@ -77,11 +77,9 @@ function openViewer() {
 	</body>
 	</html>
 	`);
-	var heightOffset = OpenWindow.outerHeight - OpenWindow.innerHeight;
-  var widthOffset = OpenWindow.outerWidth - OpenWindow.innerWidth;
-  var height = document.getElementById("viewerContents").clientHeight + heightOffset;
-  var width = document.getElementById("viewerContents").clientWidth + widthOffset;
-  OpenWindow.resizeTo(width, height);
+	var contents = document.getElementById("viewerContents");
+	console.log("width: " + contents.offsetWidth + " height: " + contents.offsetHeight)
+	OpenWindow.resizeTo(contents.offsetWidth, contents.offsetHeight);
 	OpenWindow.document.close();
 	self.name="main"
 }
