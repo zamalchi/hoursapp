@@ -97,8 +97,8 @@ TODO:
 ########################################################################################################
 
 def getNameCookie(request):
-	print("GOT NAME COOKIE:", request.get_cookie("name"))
-	print("OR:", request.get_cookie("name") or "")
+	#print("GOT NAME COOKIE:", request.get_cookie("name"))
+	#print("OR:", request.get_cookie("name") or "")
 	return request.get_cookie("name") or ""
 
 def setNameCookie(response, name):
@@ -106,8 +106,8 @@ def setNameCookie(response, name):
 
 
 def getDateCookie(request):
-	print("GOT DATE COOKIE:", request.get_cookie("date"))
-	print("OR:", request.get_cookie("date") or time.strftime("%Y-%m-%d"))
+	#print("GOT DATE COOKIE:", request.get_cookie("date"))
+	#print("OR:", request.get_cookie("date") or time.strftime("%Y-%m-%d"))
 	return request.get_cookie("date") or time.strftime("%Y-%m-%d")
 
 def setDateCookie(response, date):
