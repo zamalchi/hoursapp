@@ -28,30 +28,30 @@
 			<div class="form-inline">
 				<!-- NAME : TEXT -->
 				% if name:
-					<input name={{namer.name()}} id={{ider.name()}} type="text" value={{name}} class="form-control quarter-width" placeholder="Name" pattern={{NAME_REGEX}} required />
+					<input name={{namer.name()}} id={{ider.name()}} type="text" value={{name}} class="form-control third-width" placeholder="Name" pattern={{NAME_REGEX}} required />
 				% else:
-					<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control quarter-width" placeholder="Name" pattern={{NAME_REGEX}} required />
+					<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control third-width" placeholder="Name" pattern={{NAME_REGEX}} required />
 				% end
 				<!-- START TIME -->
 				% if is_new_record:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} />
+					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} />
 				
 				% elif is_initial_record:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
 				
 				% elif prev_start:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} />
+					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} />
 				
 				% else:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required />
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width placeholder="Start Time" pattern={{TIME_REGEX}} required />
 				% end
 
 
 				<!-- END TIME -->
 				% if is_new_record:
-					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required autofocus />
+					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} required autofocus />
 				% else:
-					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required />
+					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} required />
 				% end
 			</div>
 			<!-- END OF SINGLE LINE -->
@@ -61,9 +61,9 @@
 			<!-- SINGLE LINE -->
 			<div class="form-inline">
 				<!-- LABEL : TEXT -->
-				<input name={{namer.label()}} id={{ider.label()}} type="text" class="form-control" placeholder="Label" required/>
+				<input name={{namer.label()}} id={{ider.label()}} type="text" class="form-control quarter-width" placeholder="Label" required/>
 				<!-- DESCRIPTION : TEXT // not required (ex. lunch) -->
-				<input name={{namer.description()}} id={{ider.description()}} type="text" class="form-control half-width" placeholder="Description" required />
+				<input name={{namer.description()}} id={{ider.description()}} type="text" class="form-control two-thirds-width" placeholder="Description" required />
 			</div>
 			<!-- END OF SINGLE LINE -->
 			<!-- ######################################################################################################### -->
@@ -74,7 +74,7 @@
 				<!-- LEFT SIDE -->
 				<div class="pull-left">
 					<!-- DURATION : TEXT -->
-					<input name={{namer.duration()}} id={{ider.duration()}} type="text" class="form-control" placeholder="Duration" />
+					<input name={{namer.duration()}} id={{ider.duration()}} type="text" class="form-control quarter-width" placeholder="Duration" />
 					<!-- BILLABLE CHECKBOX -->
 					<div class="billable">
 						<span class="checkboxtext">Billable: </span>
