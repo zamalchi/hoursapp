@@ -248,11 +248,13 @@ def delete_records():
 	name = getNameCookie(request)
 	date = getDateCookie(request)
 
+	deleteConfirm = request.forms.get("deleteConfirm")
+
 	# delete the name cookie
 	#setNameCookie(response, "")
 	#setDateCookie(response, "")
 
-	if name:
+	if (deleteConfirm == "true") and name:
 		# delete both of the user's record files
 		Record.deleteRecords(name, date)
 

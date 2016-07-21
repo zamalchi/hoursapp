@@ -80,6 +80,15 @@ div.billable, div.emergency {
     margin-right: 10px;
 }
 
+div.form-group {
+    display: inline;
+}
+
+input#setDate {
+    width: 50%;
+}
+
+
 div.form-inline div.pull-right {
     margin-top: 5px;
 }
@@ -100,12 +109,23 @@ input[type=checkbox] {
 div#buttons {
     margin-top: 20px;
     margin-bottom: 10px;
+    vertical-align: center;
 }
 
 div#buttons button {
     margin-left: 10px;
     margin-right: 10px;
 }
+
+div#buttons #email, #delete {
+    margin-right: 10px;
+}
+
+/*div#buttons > .row > div {
+    padding-left: 10px;
+    padding-right: 10px;
+}*/
+
 
 .x-button {
     background-color: #E54747;
@@ -187,6 +207,10 @@ table tr:nth-child(odd) td {
 
 .quarter-width {
     width: 25%!important;
+}
+
+.third-width {
+    width: 33.33%!important;
 }
 
 .half-width {

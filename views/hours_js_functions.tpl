@@ -13,7 +13,10 @@ function focusEndTime(endID) {
 
 
 function confirmDelete() {
-	confirm("Are you sure you want to delete records?");
+	var choice = confirm("Are you sure you want to delete records?");
+	if (choice) {
+		document.getElementById("deleteConfirm").value = "true";
+	}
 }
 
 function emailRecords() {

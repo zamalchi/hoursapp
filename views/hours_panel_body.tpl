@@ -34,10 +34,10 @@
 				% end
 				<!-- START TIME -->
 				% if is_new_record:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} autofocus />
+					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} />
 				
 				% elif is_initial_record:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required />
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
 				
 				% elif prev_start:
 					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} />
@@ -48,7 +48,11 @@
 
 
 				<!-- END TIME -->
-				<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required />
+				% if is_new_record:
+					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required autofocus />
+				% else:
+					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} required />
+				% end
 			</div>
 			<!-- END OF SINGLE LINE -->
 			<!-- ######################################################################################################### -->
