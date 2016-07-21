@@ -13,10 +13,10 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="media">
-				<div class="media-left">
+				<div class="media-left media-middle">
 					<!-- ######################################################################################################### -->
 					<!-- INSERT BUTTON -->
-	  			<button name="collapseToggle" value={{ider.i}} class="btn btn-success btn-xs" type="button" data-toggle="collapse" data-target="#{{ider.record()}}" data-parent="#accordion">
+	  			<button name="collapseToggle" value={{ider.i}} class="btn btn-success btn-xs media-object" type="button" data-toggle="collapse" data-target="#{{ider.record()}}" data-parent="#accordion">
 	  				<span class="glyphicon glyphicon-chevron-down"></span>
 	  			</button>
 					<!-- ######################################################################################################### -->
@@ -28,7 +28,7 @@
 								<div class="form-group">
 								<!-- INDEX FOR DELETING RECORD : HIDDEN -->
 								<input type="hidden" name="recordIndex" value={{ider.i}}/>
-								<button class="btn btn-default x-button btn-xs" type="submit">
+								<button class="btn btn-default x-button btn-xs media-object" type="submit">
 								<span class="glyphicon glyphicon-remove"></span>
 								</button>
 							</div>

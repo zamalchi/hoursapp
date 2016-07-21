@@ -21,9 +21,16 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-10">
-				<h1 id="title">Hours</h1>
+			<div class="col-md-12">
+				<!-- <h1 id="title">Hours</h1> -->
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 pull-left">
 				<h3>{{date_title}}</h3>
+			</div>
+			<div class="col-md-6 pull-right">
+				<h3>Subtotal: {{subtotal}} hours</h3>
 			</div>
 		</div>
 

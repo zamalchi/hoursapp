@@ -21,6 +21,70 @@ class Record:
 	# START OF IO METHODS
 
 	@staticmethod
+	def readSubtotal(name, date):
+		if not date:
+			date = time.strftime("%Y-%m")
+		else:
+			date_obj = time.strptime(date, "%Y-%m-%d")
+			date = time.strftime("%Y-%m", date_obj)
+
+		date += "-"
+		
+		filePath = Record.hoursDir + "." + date + "subtotal-" + name
+		try:
+			f = open(filePath, 'r')
+			subtotal = f.read()
+			f.close()
+			return float(subtotal or 0.0)
+		except IOError:
+			return 0.0
+
+
+	@staticmethod
+	def writeSubtotal(name, date, subtotal):
+		if not date:
+			date = time.strftime("%Y-%m")
+		else:
+			date_obj = time.strptime(date, "%Y-%m-%d")
+			date = time.strftime("%Y-%m", date_obj)
+
+		date += "-"
+		
+		filePath = Record.hoursDir + "." + date + "subtotal-" + name
+
+		try:
+			f = open(filePath, 'w')
+			f.write(str(subtotal))
+			f.close()
+
+		except IOError:
+			pass
+	
+
+	@staticmethod
+	def countSubtotal(records):
+		new_subtotal = 0.0
+		for r in records:
+			if type(r) is str:
+				new_subtotal += float(Record(r).duration)
+			else:
+				new_subtotal += float(r.duration)
+		return new_subtotal
+
+	@staticmethod
+	def addToSubtotal(name, date, amount):
+		subtotal = Record.readSubtotal(name, date)
+		subtotal += float(amount)
+		Record.writeSubtotal(name, date, subtotal)
+
+	@staticmethod
+	def subtractFromSubtotal(name, date, amount):
+		subtotal = Record.readSubtotal(name, date)
+		subtotal -= float(amount)
+		Record.writeSubtotal(name, date, subtotal)
+
+
+	@staticmethod
 	def readRecords(name):
 		date = time.strftime("%Y-%m-%d-")
 

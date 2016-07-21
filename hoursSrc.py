@@ -130,6 +130,8 @@ def hours():
 	date = getDateCookie(request)
 	
 	start = request.get_cookie(namer.start()) or ""
+
+	subtotal = Record.readSubtotal(name, date)
 	#######################################################
 
 	# try to open file with user's name and retrieve data
@@ -144,7 +146,7 @@ def hours():
 	# print("***********\n")
 
 	#######################################################
-	return template('hours', records=records, name=name, date=date, start=start)
+	return template('hours', records=records, name=name, date=date, subtotal=subtotal, start=start)
 
 
 ########################################################################################################
@@ -173,6 +175,9 @@ def hours_post():
 	# reads and parses Records on file
 	records = Record.parseRecordsFromFile(name, date)
 
+	# count current subtotal for ONLY the day's records
+	current_local_subtotal = Record.countSubtotal(records)
+
 	#######################################################
 
 	# if the cookie is set, the user has pulled any existing files
@@ -189,6 +194,14 @@ def hours_post():
 		# insert new record at index provided from template form
 		records.insert(index, new_record)
 		Record.adjustAdjacentRecords(records, index)
+
+		# after adjusting the durations, recount all of the durations
+		new_local_subtotal = Record.countSubtotal(records)
+
+		# add the difference in summed durations back to the file
+		# when inserting between two records (whose durations are not locked), the subtotal should not change
+		Record.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
+
 
 	#for i in range(len(records)):
 	#	Record.adjustAdjacentRecords(records, i)
@@ -255,6 +268,13 @@ def delete_records():
 	#setDateCookie(response, "")
 
 	if (deleteConfirm == "true") and name:
+		# get records
+		records = Record.parseRecordsFromFile(name, date)
+		# get summed duration of records
+		summed_subtotal = Record.countSubtotal(records)
+		# subtract that amount from the subtotal on file
+		Record.subtractFromSubtotal(name, date, summed_subtotal)
+
 		# delete both of the user's record files
 		Record.deleteRecords(name, date)
 
@@ -280,6 +300,11 @@ def delete_single_record():
 		try:
 			# read and parse records from file
 			records = Record.parseRecordsFromFile(name, date)
+
+			# get the duration of the record to be deleted
+			deletedRecordDuration = records[index].duration
+			# subtract that amount from the subtotal on file
+			Record.subtractFromSubtotal(name, date, deletedRecordDuration)
 
 			# delete record
 			del records[index]
