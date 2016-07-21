@@ -31,6 +31,10 @@ class Labeler:
 		if self.i != None:
 			self.i += 1
 
+	def dec(self):
+		if self.i != None:
+			self.i -= 1
+
 
 	#############################################
 	def record(self):

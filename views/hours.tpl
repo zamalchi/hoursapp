@@ -113,7 +113,7 @@
 							<!-- PROVIDES NAMES FOR HTML ELEMS -->
 							% namer = Labeler()
 							<!-- PROVIDES IDS FOR HTML ELEMS -->
-							% ider = Labeler(0)
+							% ider = Labeler(len(records)-1)
 
 							% prev_start = ""
 
@@ -142,7 +142,7 @@
 								<!-- PANEL END -->
 								<hr />
 								<!-- Increment counter after -->
-								% ider.inc()
+								% ider.dec()
 								<!-- set the current end time to prev_start for possible use in the next_record -->
 								% prev_start = r.fend
 
