@@ -17,7 +17,7 @@
 					<!-- ######################################################################################################### -->
 					<!-- INSERT BUTTON -->
 	  			<button name="collapseToggle" value={{ider.i}} class="btn btn-success btn-xs" type="button" data-toggle="collapse" data-target="#{{ider.record()}}" data-parent="#accordion">
-	  				<span class="glyphicon glyphicon-chevron-up"></span>
+	  				<span class="glyphicon glyphicon-chevron-down"></span>
 	  			</button>
 					<!-- ######################################################################################################### -->
 

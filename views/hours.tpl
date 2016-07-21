@@ -53,7 +53,7 @@
 					<!-- PANEL -->
 					<div class="records">
 						<div class="panel panel-default">
-							% include('hours_panel_body.tpl', prev_start="", i=0, name=name, date=date, is_new_record=False, is_initial_record=True)
+							% include('hours_panel_body.tpl', prev_start="", prev_end="", i=0, name=name, date=date, is_new_record=False, is_initial_record=True)
 						</div>
 					</div>
 				</div>
@@ -87,22 +87,23 @@
 							<!-- NEW RECORD FORM START -->
 
 							<div class="panel panel-default">
+								<!-- ######################################################################################################### -->
+								<!-- PANEL HEADING START -->
+			    			% include('hours_panel_heading.tpl', r=None, i=len(records), is_new_record=True)
+			    			<!-- PANEL HEADING END -->
+			    			<!-- ######################################################################################################### -->
+
 			    			<!-- ######################################################################################################### -->
 			    			<!-- PANEL COLLAPSE/BODY START -->
 			    			<!-- differentiated because this form stays open: class="in" -->
 			    			% namer = Labeler()
 			    			% ider = Labeler(len(records))
 		    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse in">
-			    				% include('hours_panel_body.tpl', prev_start=records[-1].fend, i=len(records), name=name, date=date, is_new_record=True, is_initial_record=False)
+			    				% include('hours_panel_body.tpl', prev_start=records[-1].fend, prev_end="", i=len(records), name=name, date=date, is_new_record=True, is_initial_record=False)
 			    			</div>
 			    			<!-- PANEL BODY/COLLAPSE END -->
 			    			<!-- ######################################################################################################### -->
 						
-								<!-- ######################################################################################################### -->
-								<!-- PANEL HEADING START -->
-			    			% include('hours_panel_heading.tpl', r=None, i=len(records), is_new_record=True)
-			    			<!-- PANEL HEADING END -->
-			    			<!-- ######################################################################################################### -->
 							</div>
 							<!-- NEW RECORD FORM END -->
 							<!-- ######################################################################################################### -->
@@ -115,8 +116,6 @@
 							<!-- PROVIDES IDS FOR HTML ELEMS -->
 							% ider = Labeler(len(records)-1)
 
-							% prev_start = ""
-
 							% for r in reversed(records):
 
 								<!-- ######################################################################################################### -->
@@ -125,19 +124,21 @@
 
 								<!-- PANEL START -->
 								<div class="panel panel-default">
-									<!-- ######################################################################################################### -->
-				    			<!-- PANEL COLLAPSE/BODY START -->
-			    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse">
-			    					% include('hours_panel_body.tpl', prev_start=prev_start, i=ider.i, name=name, date=date, is_new_record=False, is_initial_record=False)
-				    			</div>					    			
-				    			<!-- PANEL BODY/COLLAPSE END -->
-									<!-- ######################################################################################################### -->
 
 									<!-- ######################################################################################################### -->
 									<!-- PANEL HEADING START -->					    			
 				    			% include('hours_panel_heading.tpl', r=r, i=ider.i, is_new_record=False)
 				    			<!-- PANEL HEADING END -->
 				    			<!-- ######################################################################################################### -->
+
+									<!-- ######################################################################################################### -->
+				    			<!-- PANEL COLLAPSE/BODY START -->
+			    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse">
+			    					% include('hours_panel_body.tpl', prev_start="", prev_end=r.fstart, i=ider.i, name=name, date=date, is_new_record=False, is_initial_record=False)
+				    			</div>					    			
+				    			<!-- PANEL BODY/COLLAPSE END -->
+									<!-- ######################################################################################################### -->
+
 								</div>
 								<!-- PANEL END -->
 								<hr />

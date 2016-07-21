@@ -21,8 +21,7 @@
 <div class="panel-body">
 	<form action="/hours" method="post" enctype="multipart/form-data">
 		<fieldset class="inputs form-group">
-			<!-- ######################################################################################################### -->
-			<hr />
+
 			<!-- ######################################################################################################### -->
 			<!-- SINGLE LINE -->
 			<div class="form-inline">
@@ -39,17 +38,16 @@
 				% elif is_initial_record:
 					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
 				
-				% elif prev_start:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} />
-				
 				% else:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width placeholder="Start Time" pattern={{TIME_REGEX}} required />
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
 				% end
 
 
 				<!-- END TIME -->
 				% if is_new_record:
 					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} required autofocus />
+				% elif prev_end:
+					<input name={{namer.end()}} id={{ider.end()}} type="text" value={{prev_end}} class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} required />
 				% else:
 					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} required />
 				% end
