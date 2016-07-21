@@ -3,10 +3,12 @@
 	<div class="col-md-10">
 		<div class="container-fluid" id="buttons">
 		
+			<!-- SEARCH FOR RECORDS -->
 			<div class="btn-group pull-left">
 				<form action="/setName" method="post" class="form-inline" enctype="multipart/form-data">
 					<div class="form-group">
-						<input type="text" id="setName" name="setName" class="form-control" placeholder="Enter name..." />
+						<input type="text" id="setName" name="setName" class="form-control" placeholder="Enter name..." required />
+						<input type="date" id="setDate" name="setDate" class="form-control" value=/>
 					</div>
 					<button type="submit" class="btn btn-primary">Pull records</button>
 				</form>

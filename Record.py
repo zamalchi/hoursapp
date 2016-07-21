@@ -23,6 +23,7 @@ class Record:
 	@staticmethod
 	def readRecords(name):
 		date = time.strftime("%Y-%m-%d-")
+
 		filePath = Record.hoursDir + "." + date + name
 		try:
 			f = open(filePath, 'r')
@@ -31,6 +32,22 @@ class Record:
 			return records
 		except IOError:
 			return []
+
+	@staticmethod
+	def readRecords(name, date):
+		if not date:
+			date = time.strftime("%Y-%m-%d")
+		date += "-"
+		
+		filePath = Record.hoursDir + "." + date + name
+		try:
+			f = open(filePath, 'r')
+			records = f.read().split('\n')
+			f.close()
+			return records
+		except IOError:
+			return []
+
 
 	# filters any empty records
 	# parses record strings and returns record objects
@@ -43,14 +60,44 @@ class Record:
 			records.append(Record(r))
 		return records
 
+
 	@staticmethod
 	def parseRecordsFromFile(name):
 		return Record.parseRecords(Record.readRecords(name))
+
+	@staticmethod
+	def parseRecordsFromFile(name, date):
+		return Record.parseRecords(Record.readRecords(name, date))
 
 
 	@staticmethod
 	def writeRecords(name, records):
 		date = time.strftime("%Y-%m-%d-")
+		filePath = Record.hoursDir + date + name
+		res = ""
+		hiddenFilePath = Record.hoursDir + "." + date + name
+		hiddenRes = "" 
+
+		for r in records:
+			res += r.emailFormat() + "\n"
+			hiddenRes += str(r) + "\n"
+
+		try:
+			f = open(filePath, 'w')
+			f.write(res)
+			f.close()
+
+			f = open(hiddenFilePath, 'w')
+			f.write(hiddenRes)
+			f.close()
+		except IOError:
+			pass
+
+	@staticmethod
+	def writeRecords(name, date, records):
+		if not date:
+			date = time.strftime("%Y-%m-%d")
+		date += "-"
 		filePath = Record.hoursDir + date + name
 		res = ""
 		hiddenFilePath = Record.hoursDir + "." + date + name
@@ -78,6 +125,13 @@ class Record:
 		os.system("rm -f " + Record.hoursDir + "." + date + name)
 		os.system("rm -f " + Record.hoursDir + date + name)
 
+	@staticmethod
+	def deleteRecords(name, date):
+		if not date:
+			date = time.strftime("%Y-%m-%d")
+		date += "-"
+		os.system("rm -f " + Record.hoursDir + "." + date + name)
+		os.system("rm -f " + Record.hoursDir + date + name)
 
 	# END OF IO METHODS
 	########################################################################################################
@@ -119,7 +173,7 @@ class Record:
 		end = Record.formatTime(end)
 
 		###
-		date = time.strftime("%Y-%m-%d")
+		date = request.get_cookie("date") or time.strftime("%Y-%m-%d")
 		startTime = date + " " + start
 		endTime = date + " " + end
 		#######################################################

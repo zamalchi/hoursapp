@@ -19,6 +19,7 @@
 		<div class="row">
 			<div class="col-md-10">
 				<h1 id="title">Hours</h1>
+				<h3>{{date}}</h3>
 			</div>
 		</div>
 
@@ -34,7 +35,7 @@
 				<div class="col-md-10">
 					<!-- PANEL -->
 					<div class="panel panel-default">
-						% include('hours_panel_body.tpl', prev_start="", i=0, name=name, is_new_record=False, is_initial_record=True)
+						% include('hours_panel_body.tpl', prev_start="", i=0, name=name, date=date, is_new_record=False, is_initial_record=True)
 					</div>
 				</div>
 			</div> 
@@ -73,7 +74,7 @@
 			    			% namer = Labeler()
 			    			% ider = Labeler(len(records))
 		    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse in">
-			    				% include('hours_panel_body.tpl', prev_start=records[-1].fend, i=len(records), name=name, is_new_record=True, is_initial_record=False)
+			    				% include('hours_panel_body.tpl', prev_start=records[-1].fend, i=len(records), name=name, date=date, is_new_record=True, is_initial_record=False)
 			    			</div>
 			    			<!-- PANEL BODY/COLLAPSE END -->
 			    			<!-- ######################################################################################################### -->
@@ -108,7 +109,7 @@
 									<!-- ######################################################################################################### -->
 				    			<!-- PANEL COLLAPSE/BODY START -->
 			    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse">
-			    					% include('hours_panel_body.tpl', prev_start=prev_start, i=ider.i, name=name, is_new_record=False, is_initial_record=False)
+			    					% include('hours_panel_body.tpl', prev_start=prev_start, i=ider.i, name=name, date=date, is_new_record=False, is_initial_record=False)
 				    			</div>					    			
 				    			<!-- PANEL BODY/COLLAPSE END -->
 									<!-- ######################################################################################################### -->

@@ -113,13 +113,14 @@ TODO:
 def hours():
 	#######################################################
 	name = request.get_cookie(namer.name()) or ""
+	date = request.get_cookie("date") or time.strftime("%Y-%m-%d")
 	start = request.get_cookie(namer.start()) or ""
 	#######################################################
 
 	# try to open file with user's name and retrieve data
 	# for each record, create a new Record object and add to list to pass to template
 	# list of records as [obj]
-	records = Record.parseRecordsFromFile(name)
+	records = Record.parseRecordsFromFile(name, date)
 	
 	# DEBUG
 	# print("\n***DEBUG***")
@@ -128,7 +129,7 @@ def hours():
 	# print("***********\n")
 
 	#######################################################
-	return template('hours', records=records, name=name, start=start)
+	return template('hours', records=records, name=name, date=date, start=start)
 
 
 ########################################################################################################
@@ -141,6 +142,9 @@ def hours_post():
 	#######################################################	
 	# name of user
 	name = request.forms.get(namer.name()).strip()
+
+	# date : either picked by user or default today
+	date = request.get_cookie("date") or time.strftime("%Y-%m-%d")
 	
 	# index for inserting new Record into the list of records
 	index = int(request.forms.get(namer.insert()))
@@ -152,7 +156,7 @@ def hours_post():
 	#######################################################
 
 	# reads and parses Records on file
-	records = Record.parseRecordsFromFile(name)
+	records = Record.parseRecordsFromFile(name, date)
 
 	#######################################################
 
@@ -175,7 +179,7 @@ def hours_post():
 	#	Record.adjustAdjacentRecords(records, i)
 	
 	# write back updated list
-	Record.writeRecords(name, records)
+	Record.writeRecords(name, date, records)
 	#######################################################
 
 	response.set_cookie("name", (name or ""))
@@ -208,10 +212,12 @@ def hours_post():
 @route('/setName', method="POST")
 def set_name():
 	# get name of user provided in specified field
-	name = request.forms.get("setName")
+	name = request.forms.get("setName") or ""
+	date = request.forms.get("setDate") or time.strftime("%Y-%m-%d")
 
 	# set name cookie
-	response.set_cookie("name", (name or ""))
+	response.set_cookie("name", name)
+	response.set_cookie("date", date)
 
 	# redirect to /hours to read file
 	redirect('hours')
