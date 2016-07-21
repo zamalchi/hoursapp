@@ -96,8 +96,22 @@ TODO:
 ########################################################################################################
 ########################################################################################################
 
+def getNameCookie(request):
+	print("GOT NAME COOKIE:", request.get_cookie("name"))
+	print("OR:", request.get_cookie("name") or "")
+	return request.get_cookie("name") or ""
+
+def setNameCookie(response, name):
+	response.set_cookie("name", name)
 
 
+def getDateCookie(request):
+	print("GOT DATE COOKIE:", request.get_cookie("date"))
+	print("OR:", request.get_cookie("date") or time.strftime("%Y-%m-%d"))
+	return request.get_cookie("date") or time.strftime("%Y-%m-%d")
+
+def setDateCookie(response, date):
+	response.set_cookie("date", date)
 
 
 
@@ -112,8 +126,9 @@ TODO:
 @route('/hours')
 def hours():
 	#######################################################
-	name = request.get_cookie(namer.name()) or ""
-	date = request.get_cookie("date") or time.strftime("%Y-%m-%d")
+	name = getNameCookie(request)
+	date = getDateCookie(request)
+	
 	start = request.get_cookie(namer.start()) or ""
 	#######################################################
 
@@ -144,7 +159,7 @@ def hours_post():
 	name = request.forms.get(namer.name()).strip()
 
 	# date : either picked by user or default today
-	date = request.get_cookie("date") or time.strftime("%Y-%m-%d")
+	date = getDateCookie(request)
 	
 	# index for inserting new Record into the list of records
 	index = int(request.forms.get(namer.insert()))
@@ -162,7 +177,7 @@ def hours_post():
 
 	# if the cookie is set, the user has pulled any existing files
 	# if there are no existing files, the cookie will be null
-	records_pulled = request.get_cookie("name")
+	records_pulled = getNameCookie(request)
 
 	if records and not records_pulled:
 		# append to the end of unpulled existing records
@@ -182,7 +197,7 @@ def hours_post():
 	Record.writeRecords(name, date, records)
 	#######################################################
 
-	response.set_cookie("name", (name or ""))
+	setNameCookie(response, name)
 	#response.set_cookie("start", end) # end of record becomes start of next record
 
 	redirect('hours')
@@ -216,8 +231,8 @@ def set_name():
 	date = request.forms.get("setDate") or time.strftime("%Y-%m-%d")
 
 	# set name cookie
-	response.set_cookie("name", name)
-	response.set_cookie("date", date)
+	setNameCookie(response, name)
+	setDateCookie(response, date)
 
 	# redirect to /hours to read file
 	redirect('hours')
@@ -230,13 +245,16 @@ def set_name():
 @route('/delete', method="POST")
 def delete_records():
 	# get the name cookie
-	name = request.get_cookie("name")
-	if name:
-		# delete both of the user's record files
-		Record.deleteRecords(name)
+	name = getNameCookie(request)
+	date = getDateCookie(request)
 
 	# delete the name cookie
-		response.set_cookie("name", "")
+	#setNameCookie(response, "")
+	#setDateCookie(response, "")
+
+	if name:
+		# delete both of the user's record files
+		Record.deleteRecords(name, date)
 
 	# redirect back to hours page
 	redirect('hours')
@@ -253,22 +271,19 @@ def delete_single_record():
 	# print("unedited index in deleteOne:", request.forms.get('recordIndex'))
 
 	# get name cookie
-	name = request.get_cookie("name")
+	name = getNameCookie(request)
+	date = getDateCookie(request)
 
 	if name:
 		try:
 			# read and parse records from file
-			records = Record.parseRecordsFromFile(name)
+			records = Record.parseRecordsFromFile(name, date)
 
 			# delete record
 			del records[index]
 			#records = records[:index] + records[index+1:]
 
-			if records:
-				Record.writeRecords(name, records)
-			else:
-				# if no records are left, delete the file
-				Record.deleteRecords(name)
+			Record.writeRecords(name, date, records)
 
 		except IOError:
 			pass
@@ -319,19 +334,21 @@ def email_records():
 		redirect('hours')
 
 
-@route('/view', method="POST")
-def viewRecords():
-	# get name cookie
-	name = request.get_cookie("name")
+# DEPRECTAED
+# @route('/view', method="POST")
+# def viewRecords():
+# 	# get name cookie
+# 	name = request.get_cookie("name")
+# 	date = request.get_cookie("date") or time.strftime("%Y-%m-%d")
 
-	if name:
-		try:
-			# read and parse records from file
-			records = Record.parseRecordsFromFile(name)
-			return template('view', records=records)
+# 	if name:
+# 		try:
+# 			# read and parse records from file
+# 			records = Record.parseRecordsFromFile(name, date)
+# 			return template('view', records=records)
 
-		except IOError:
-			redirect('hours')
+# 		except IOError:
+# 			redirect('hours')
 
 ########################################################################################################
 ######################################  	HOURS FORM END		 ###########################################

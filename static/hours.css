@@ -44,7 +44,7 @@ div.threeColumn {
 /********************************************************/
 
 div.records {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 div.labels label {
@@ -98,7 +98,8 @@ input[type=checkbox] {
 
 
 div#buttons {
-    margin-top: 50px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 div#buttons button {

@@ -7,6 +7,10 @@
 </head>
 
 <body>
+	% import time
+	% date_obj = time.strptime(date, "%Y-%m-%d")
+	% date_title = time.strftime("%a %d %b : %Y-%m-%d", date_obj)
+
 	% from Labeler import Labeler
 
 	<!-- ######################################################################################################### -->
@@ -19,9 +23,22 @@
 		<div class="row">
 			<div class="col-md-10">
 				<h1 id="title">Hours</h1>
-				<h3>{{date}}</h3>
+				<h3>{{date_title}}</h3>
 			</div>
 		</div>
+
+		<!-- ######################################################################################################### -->			
+		<!-- ######################################################################################################### -->
+		<!-- LIST CONTROL BUTTONS START -->
+		% record_string = ""
+		% for r in records:
+			% record_string += "<p>" + r.emailFormat() + "</p>"
+		% end
+		% include('hours_control_buttons.tpl', name=name, record_string=record_string)
+		<!-- LIST CONTROL BUTTONS END -->
+		<!-- ######################################################################################################### -->
+		<!-- ######################################################################################################### -->
+
 
 		<!-- ********************************************************************************************************* -->
 		<!-- ######################################################################################################### -->
@@ -34,8 +51,10 @@
 			<div class="row">
 				<div class="col-md-10">
 					<!-- PANEL -->
-					<div class="panel panel-default">
-						% include('hours_panel_body.tpl', prev_start="", i=0, name=name, date=date, is_new_record=False, is_initial_record=True)
+					<div class="records">
+						<div class="panel panel-default">
+							% include('hours_panel_body.tpl', prev_start="", i=0, name=name, date=date, is_new_record=False, is_initial_record=True)
+						</div>
 					</div>
 				</div>
 			</div> 
@@ -149,20 +168,6 @@
 		<!-- ********************************************************************************************************* -->
 
 
-
-
-
-		<!-- ######################################################################################################### -->			
-		<!-- ######################################################################################################### -->
-		<!-- LIST CONTROL BUTTONS START -->
-		% record_string = ""
-		% for r in records:
-			% record_string += "<p>" + r.emailFormat() + "</p>"
-		% end
-		% include('hours_control_buttons.tpl', name=name, record_string=record_string)
-		<!-- LIST CONTROL BUTTONS END -->
-		<!-- ######################################################################################################### -->
-		<!-- ######################################################################################################### -->
 
 	</div> <!-- /.container -->
 
