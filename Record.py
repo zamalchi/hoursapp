@@ -355,16 +355,27 @@ class Record:
 		new_record = records[index]
 
 		prev_record = Record.getPrevRecord(records, index)
-		next_record = Record.getNextRecord(records, index)
-
-		# if the previous record exists
 		if prev_record:
 			# if end time hasn't been supplied, supply it now from new_record
 			if prev_record.duration == Record.PENDING_CHAR:
 				prev_record.end = new_record.start
 				prev_record.fend = Record.formatTime(prev_record.end)
-				prev_record.duration = Record.getDuration(prev_record.start, prev_record.end)
-				records[index-1] = prev_record
+				
+
+		next_record = Record.getNextRecord(records, index)
+		if next_record:
+			# if end time is not supplied but next record exists, use that time
+			if new_record.duration == Record.PENDING_CHAR:
+				new_record.end = next_record.start
+				new_record.fend = Record.formatTime(new_record.end)
+
+
+
+		# if the previous record exists
+		if prev_record:
+			#	after checking both prev and next records in case of PENDING_CHAR...
+			prev_record.duration = Record.getDuration(prev_record.start, prev_record.end)
+			records[index-1] = prev_record
 
 			# calculate overlap : new_start - prev_end : if overlap => negative duration
 			# if the new start time is less than the previous end time: adjustment needed
@@ -379,6 +390,10 @@ class Record:
 
 		# if the next record exists
 		if next_record:
+			#	after checking both prev and next records in case of PENDING_CHAR...
+			new_record.duration = Record.getDuration(new_record.start, new_record.end)
+			records[index] = new_record
+		
 			# calculate overlap : next_start - new_end : if overlap => negative duration
 			overlap = Record.getDuration(new_record.end, next_record.start)
 			# if there was overlap

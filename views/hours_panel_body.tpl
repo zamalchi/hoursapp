@@ -49,10 +49,12 @@
 
 				<!-- ************************************************************************** -->
 				<!-- END TIME -->
-				% if is_new_record:
+				% if is_initial_record:
+					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" />
+				% elif is_new_record:
 					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} autofocus value="" />
 				% else:
-					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" />
+					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" required />
 				% end
 				<!-- ************************************************************************** -->
 
