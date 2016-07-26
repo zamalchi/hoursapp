@@ -47,11 +47,14 @@
 				<h3>{{date_title}}</h3>
 			</div>
 			<div class="col-md-6 pull-right">
+				
+				<h3 id="subtotalCounter">
 				% if pending_records:
-					<h3 id="subtotalCounter"><span class="pending-text">*</span> Subtotal [Today]: <strong>{{daily_subtotal}}</strong> [{{month}}]: <strong>{{subtotal}}</strong></h3>
-				% else:
-					<h3 id="subtotalCounter">Subtotal [Today]: <strong>{{daily_subtotal}}</strong> [{{month}}]: <strong>{{subtotal}}</strong></h3>
+					<span class="pending-text">* </span>
 				% end
+					Subtotal [Today]: <strong>{{daily_subtotal}}</strong> [{{month}}]: <strong>{{subtotal}}</strong>
+				</h3>
+				
 			</div>
 		</div>
 
