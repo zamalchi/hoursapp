@@ -6,6 +6,7 @@
  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='hours.css') }}" />
  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='control_buttons.css') }}" />
  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='panel_heading.css') }}" />
+ 	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='dropdown.css') }}" />
 </head>
 
 <body>
@@ -23,7 +24,7 @@
 	<!-- SCRIPTS END -->
 	<!-- ######################################################################################################### -->
 
-	% # pending_records is for modifying the subtotal with "*" to show there are pending records
+	<!-- pending_records is for modifying the subtotal with "*" to show there are pending records -->
 	% pending_records = False
 	
 	% record_string = ""
