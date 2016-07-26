@@ -10,6 +10,11 @@ import os
 
 class Record:
 	hoursDir = "hours/"
+
+	# used as a placeholder for the end time in an ongoing record
+	# it is replaced when the next record is created (with the new start time)
+	PENDING_CHAR = "***"
+
 	########################################################################################################
 	########################################################################################################
 	########################################################################################################	
@@ -65,23 +70,26 @@ class Record:
 	def countSubtotal(records):
 		new_subtotal = 0.0
 		for r in records:
-			if type(r) is str:
-				new_subtotal += float(Record(r).duration)
-			else:
-				new_subtotal += float(r.duration)
+			if r.duration != Record.PENDING_CHAR:
+				if type(r) is str:
+					new_subtotal += float(Record(r).duration)
+				else:
+					new_subtotal += float(r.duration)
 		return new_subtotal
 
 	@staticmethod
 	def addToSubtotal(name, date, amount):
-		subtotal = Record.readSubtotal(name, date)
-		subtotal += float(amount)
-		Record.writeSubtotal(name, date, subtotal)
+		if amount != Record.PENDING_CHAR:
+			subtotal = Record.readSubtotal(name, date)
+			subtotal += float(amount)
+			Record.writeSubtotal(name, date, subtotal)
 
 	@staticmethod
 	def subtractFromSubtotal(name, date, amount):
-		subtotal = Record.readSubtotal(name, date)
-		subtotal -= float(amount)
-		Record.writeSubtotal(name, date, subtotal)
+		if amount != Record.PENDING_CHAR:
+			subtotal = Record.readSubtotal(name, date)
+			subtotal -= float(amount)
+			Record.writeSubtotal(name, date, subtotal)
 
 
 	@staticmethod
@@ -209,7 +217,9 @@ class Record:
 		name = request.forms.get('name').strip().lower()
 
 		start = Record.parseTime(request.forms.get('start'))
+		print("RAW END HTML:", request.forms.get('end'))
 		end = Record.parseTime(request.forms.get('end'))
+		print("PARSING END FROM HTML:", end)
 		###
 		duration = request.forms.get('duration').strip()
 		billable = request.forms.get('billable')
@@ -223,21 +233,33 @@ class Record:
 		# if a duration is entered, lock it to prevent changing
 		# otherwise the duration is empty
 		if duration:
+			print("Locked duration!")
 			durationLocked = True
-
 		# if there is no duration and the times are present
 		elif start and end:
+			print("Calculating duration!")
+			print("Start:", start)
+			print("End:", end)
 			# calculate the duration
 			duration = Record.getDuration(start, end)
+		else:
+			print("Pending duration!")
+			# if end is not supplied, replace duration with Record.PENDING_CHAR
+			duration = Record.PENDING_CHAR
 
 		#######################################################
 
 		### restore colon in times
 		start = Record.formatTime(start)
-		end = Record.formatTime(end)
+		# if not supplied, set as Record.PENDING_CHAR 
+		if end:
+			end = Record.formatTime(end)
+		else:
+			end = Record.PENDING_CHAR
 
 		###
 		date = request.get_cookie("date") or time.strftime("%Y-%m-%d")
+
 		startTime = date + " " + start
 		endTime = date + " " + end
 		#######################################################
@@ -270,7 +292,9 @@ class Record:
 	# time: accept [*] return [str]
 	@staticmethod
 	def parseTime(time):
-		return str(time.strip()).translate(None, ':').zfill(4)
+		if time:
+			return str(time.strip()).translate(None, ':').zfill(4)
+		return ""
 
 	# adds a colon between hours and minutes
 	# ensures time is parsed correctly
@@ -284,6 +308,8 @@ class Record:
 	# time: accept [*] return [int]
 	@staticmethod
 	def getMinFromTime(time):
+		if time == Record.PENDING_CHAR:
+			return None
 		# if it is an int, it has already been processed, so return
 		# ex: called from getDuration()
 		if (type(time) == int):
@@ -340,6 +366,13 @@ class Record:
 
 		# if the previous record exists
 		if prev_record:
+			# if end time hasn't been supplied, supply it now from new_record
+			if prev_record.duration == Record.PENDING_CHAR:
+				prev_record.end = new_record.start
+				prev_record.fend = Record.formatTime(prev_record.end)
+				prev_record.duration = Record.getDuration(prev_record.start, prev_record.end)
+				records[index-1] = prev_record
+
 			# calculate overlap : new_start - prev_end : if overlap => negative duration
 			# if the new start time is less than the previous end time: adjustment needed
 			overlap = Record.getDuration(prev_record.end, new_record.start)

@@ -1,10 +1,10 @@
 
 input#setName {
-	width: 108px;
+	min-width: 108px;
 	max-width: 108px;
 }
 
 input#setDate {
-	width: 136px;
+	min-width: 136px;
 	max-width: 136px; 
 }

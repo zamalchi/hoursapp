@@ -5,6 +5,7 @@
 <!-- i: index of record and suffix of elem ids -->
 <!-- is_new_record: boolean for differentiating 'New Record' part (for record label) -->
 <!-- ##################### -->
+% from Record import Record
 
 % namer = Labeler()
 % ider = Labeler(i)
@@ -54,9 +55,16 @@
 						<!-- name|date <start>|date <end>|duration|label|billable|emergency|<description> -->
 						{{r.name}} |
 						{{r.date}}<strong> <u>{{r.fstart}}</u></strong> |
-						{{r.date}}<strong> <u>{{r.fend}}</u></strong> |
-						
-						% if (float(r.duration) <= 0):
+						{{r.date}}<strong>
+						% if r.fend == Record.PENDING_CHAR:
+							<span class="pending-text">{{r.fend}}</span></strong> |
+						% else:
+							<u>{{r.fend}}</u></strong> |
+						% end
+
+						% if (r.duration == Record.PENDING_CHAR):
+							<span class="negative-duration">{{r.duration}}</span>
+						% elif (float(r.duration) <= 0):
 							<span class="negative-duration">{{r.duration}}</span>
 						% else:
 							{{r.duration}}

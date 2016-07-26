@@ -6,10 +6,12 @@
 <!-- name: name cookie, if it is set -->
 <!-- is_new_record: boolean for differentiating 'New Record' part (for focusing) -->
 <!-- ##################### -->
+% from Record import Record
 
 
 <!-- times must match 15-minute interval pattern -->
-% TIME_REGEX = "(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45)"
+% # TIME_REGEX = "(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45)"
+% TIME_REGEX = "(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))"
 
 % NAME_REGEX = "[a-zA-Z]{2,}"
 
@@ -26,31 +28,34 @@
 			<!-- SINGLE LINE -->
 			<div class="form-inline">
 				<!-- NAME : TEXT -->
-				% if name:
-					<input name={{namer.name()}} id={{ider.name()}} type="text" value={{name}} class="form-control third-width" placeholder="Name" pattern={{NAME_REGEX}} required />
-				% else:
-					<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control third-width" placeholder="Name" pattern={{NAME_REGEX}} required />
-				% end
+				<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control third-width" placeholder="Name" pattern={{NAME_REGEX}} required value="{{name}}" />
+
+				<!-- ************************************************************************** -->
 				<!-- START TIME -->
-				% if is_new_record:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" value={{prev_start}} class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} />
-				
-				% elif is_initial_record:
+				% if is_initial_record:
 					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
-				
+
+				% elif (is_new_record) and (prev_start != Record.PENDING_CHAR):
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} value="{{prev_start}}" required />
+
+				% elif is_new_record:
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} value="" autofocus required />
+
 				% else:
-					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
+					<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} required />
 				% end
+				<!-- ************************************************************************** -->
 
 
+				<!-- ************************************************************************** -->
 				<!-- END TIME -->
 				% if is_new_record:
-					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} required autofocus />
-				% elif prev_end:
-					<input name={{namer.end()}} id={{ider.end()}} type="text" value={{prev_end}} class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} required />
+					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} autofocus value="" />
 				% else:
-					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} required />
+					<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" />
 				% end
+				<!-- ************************************************************************** -->
+
 			</div>
 			<!-- END OF SINGLE LINE -->
 			<!-- ######################################################################################################### -->

@@ -5,9 +5,12 @@
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='hours.css') }}" />
  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='control_buttons.css') }}" />
+ 	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='panel_heading.css') }}" />
 </head>
 
 <body>
+	% from Record import Record
+
 	% import time
 	% date_obj = time.strptime(date, "%Y-%m-%d")
 	% date_title = time.strftime("%a %d %b : %Y-%m-%d", date_obj)
@@ -20,6 +23,17 @@
 	<!-- SCRIPTS END -->
 	<!-- ######################################################################################################### -->
 
+	% # pending_records is for modifying the subtotal with "*" to show there are pending records
+	% pending_records = False
+	
+	% record_string = ""
+	% for r in records:
+		% if r.duration == Record.PENDING_CHAR:
+			% pending_records = True
+		% end
+		% record_string += "<p>" + r.emailFormat() + "</p>"
+	% end
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -31,17 +45,17 @@
 				<h3>{{date_title}}</h3>
 			</div>
 			<div class="col-md-6 pull-right">
-				<h3>Subtotal: {{subtotal}} hours</h3>
+				% if pending_records:
+					<h3>Subtotal: {{subtotal}} hours <span class="pending-text">*</span></h3>
+				% else:
+					<h3>Subtotal: {{subtotal}} hours</h3>
+				% end
 			</div>
 		</div>
 
 		<!-- ######################################################################################################### -->			
 		<!-- ######################################################################################################### -->
 		<!-- LIST CONTROL BUTTONS START -->
-		% record_string = ""
-		% for r in records:
-			% record_string += "<p>" + r.emailFormat() + "</p>"
-		% end
 		% include('hours_control_buttons.tpl', name=name, record_string=record_string)
 		<!-- LIST CONTROL BUTTONS END -->
 		<!-- ######################################################################################################### -->
