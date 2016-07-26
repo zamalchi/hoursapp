@@ -217,9 +217,7 @@ class Record:
 		name = request.forms.get('name').strip().lower()
 
 		start = Record.parseTime(request.forms.get('start'))
-		print("RAW END HTML:", request.forms.get('end'))
 		end = Record.parseTime(request.forms.get('end'))
-		print("PARSING END FROM HTML:", end)
 		###
 		duration = request.forms.get('duration').strip()
 		billable = request.forms.get('billable')
@@ -233,17 +231,12 @@ class Record:
 		# if a duration is entered, lock it to prevent changing
 		# otherwise the duration is empty
 		if duration:
-			print("Locked duration!")
 			durationLocked = True
 		# if there is no duration and the times are present
 		elif start and end:
-			print("Calculating duration!")
-			print("Start:", start)
-			print("End:", end)
 			# calculate the duration
 			duration = Record.getDuration(start, end)
 		else:
-			print("Pending duration!")
 			# if end is not supplied, replace duration with Record.PENDING_CHAR
 			duration = Record.PENDING_CHAR
 
