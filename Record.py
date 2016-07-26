@@ -358,17 +358,16 @@ class Record:
 		if prev_record:
 			# if end time hasn't been supplied, supply it now from new_record
 			if prev_record.duration == Record.PENDING_CHAR:
-				prev_record.end = new_record.start
-				prev_record.fend = Record.formatTime(prev_record.end)
-				
+				prev_record.setEnd(new_record.start)
 
 		next_record = Record.getNextRecord(records, index)
 		if next_record:
+			# if next_record has a pending duration, and new_record has an end time, set next_record.start = new_record.end
+			if (next_record.duration == Record.PENDING_CHAR) and (new_record.end != Record.PENDING_CHAR):
+				next_record.setStart(new_record.end)
 			# if end time is not supplied but next record exists, use that time
 			if new_record.duration == Record.PENDING_CHAR:
-				new_record.end = next_record.start
-				new_record.fend = Record.formatTime(new_record.end)
-
+				new_record.setEnd(new_record.start)
 
 
 		# if the previous record exists
