@@ -34,6 +34,8 @@
 		% record_string += "<p>" + r.emailFormat() + "</p>"
 	% end
 
+	% daily_subtotal = Record.countSubtotal(records)
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -46,9 +48,9 @@
 			</div>
 			<div class="col-md-6 pull-right">
 				% if pending_records:
-					<h3>Subtotal: {{subtotal}} hours <span class="pending-text">*</span></h3>
+					<h3 id="subtotalCounter"><span class="pending-text">*</span> Subtotal [Today]: <strong>{{daily_subtotal}}</strong> [{{month}}]: <strong>{{subtotal}}</strong></h3>
 				% else:
-					<h3>Subtotal [{{month}}]: {{subtotal}} hours</h3>
+					<h3 id="subtotalCounter">Subtotal [Today]: <strong>{{daily_subtotal}}</strong> [{{month}}]: <strong>{{subtotal}}</strong></h3>
 				% end
 			</div>
 		</div>
