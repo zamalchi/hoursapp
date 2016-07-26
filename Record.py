@@ -66,7 +66,6 @@ class Record:
 	def readSubtotal(name, date):
 
 		filePath = Record.getSubtotalFilePath(name, date)
-		print("Reading subtotal from:", filePath)
 		try:
 			f = open(filePath, 'r')
 			subtotal = f.read()
@@ -80,7 +79,6 @@ class Record:
 	def writeSubtotal(name, date, subtotal):
 
 		filePath = Record.getSubtotalFilePath(name, date)
-		print("Writing subtotal to:", filePath)
 		try:
 			f = open(filePath, 'w')
 			f.write(str(subtotal))

@@ -70,9 +70,9 @@
 				<div class="dropdown form-control">
 					<select class="dropdownSelect" onchange="dropdownChangeSelect(this)">
 					   <option></option>
-					   <option value="TS">TS</option>
-					   <option value="ENGAGING">ENGAGING</option>
-					   <option value="C3DDB">C3DDB</option>
+					   % for l in labels:
+					   	<option value="{{l}}">{{l}}</option>
+					   % end
 					</select>
 					<input class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Add/Select Label" id="{{ider.dropdown()}}" onfocus="this.select()" type="text" onchange="dropdownChangeType(this)" required />
 					<input name="{{namer.label()}}" id="{{ider.label()}}" type="hidden">

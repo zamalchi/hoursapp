@@ -63,6 +63,12 @@ def devp(msg):
 
 ########################################################################################################
 
+# sets labels for populating dropdown list in /hours
+def labelsInit(l):
+	global labels
+	labels = l
+
+########################################################################################################
 
 # for css reading in templates
 @route('/static/<filename>', name='static')
@@ -146,7 +152,7 @@ def hours():
 	# print("***********\n")
 
 	#######################################################
-	return template('hours', records=records, name=name, date=date, month=month, subtotal=subtotal, start=start)
+	return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal, start=start)
 
 
 ########################################################################################################

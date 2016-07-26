@@ -54,7 +54,7 @@
 				% end
 					Subtotal [Today]: <strong>{{daily_subtotal}}</strong> [{{month}}]: <strong>{{subtotal}}</strong>
 				</h3>
-				
+
 			</div>
 		</div>
 
@@ -80,7 +80,7 @@
 					<!-- PANEL -->
 					<div class="records">
 						<div class="panel panel-default">
-							% include('hours_panel_body.tpl', prev_start="", prev_end="", i=0, name=name, date=date, is_new_record=False, is_initial_record=True)
+							% include('hours_panel_body.tpl', labels=labels, prev_start="", prev_end="", i=0, name=name, date=date, is_new_record=False, is_initial_record=True)
 						</div>
 					</div>
 				</div>
@@ -126,7 +126,7 @@
 			    			% namer = Labeler()
 			    			% ider = Labeler(len(records))
 		    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse in">
-			    				% include('hours_panel_body.tpl', prev_start=records[-1].fend, prev_end="", i=len(records), name=name, date=date, is_new_record=True, is_initial_record=False)
+			    				% include('hours_panel_body.tpl', labels=labels, prev_start=records[-1].fend, prev_end="", i=len(records), name=name, date=date, is_new_record=True, is_initial_record=False)
 			    			</div>
 			    			<!-- PANEL BODY/COLLAPSE END -->
 			    			<!-- ######################################################################################################### -->
@@ -161,7 +161,7 @@
 									<!-- ######################################################################################################### -->
 				    			<!-- PANEL COLLAPSE/BODY START -->
 			    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse">
-			    					% include('hours_panel_body.tpl', prev_start="", prev_end=r.fstart, i=ider.i, name=name, date=date, is_new_record=False, is_initial_record=False)
+			    					% include('hours_panel_body.tpl', labels=labels, prev_start="", prev_end=r.fstart, i=ider.i, name=name, date=date, is_new_record=False, is_initial_record=False)
 				    			</div>					    			
 				    			<!-- PANEL BODY/COLLAPSE END -->
 									<!-- ######################################################################################################### -->

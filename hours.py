@@ -18,4 +18,16 @@ dev = args.d
 smtpInit(email)
 setDevMode(dev)
 
+# read labels from labels.txt
+labels = []
+try:
+	f = open("labels.txt", 'r')
+	labels = f.read().split()
+	f.close()
+except IOError:
+	print("***\nERROR: Labels file not found. Labels will not be populated.\n***")
+
+labelsInit(labels)
+
+
 run(host='localhost', port=port, debug=True)
