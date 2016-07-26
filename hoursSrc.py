@@ -113,17 +113,6 @@ def getDateCookie(request):
 def setDateCookie(response, date):
 	response.set_cookie("date", date)
 
-# defines the pay period ; used for labeling the subtotal counter
-def getSubtotalMonth(date):
-	date_obj = time.strptime(date, "%Y-%m-%d")
-	day_int = int(time.strftime("%d", date_obj))
-	month_int = int(time.strftime("%m", date_obj))
-	if day_int > 25:
-		month_int += 1
-	month_obj = time.strptime(str(month_int), "%m")
-
-	month = time.strftime("%b", month_obj)
-	return month
 
 ########################################################################################################
 ########################################################################################################
@@ -138,7 +127,7 @@ def hours():
 	name = getNameCookie(request)
 	date = getDateCookie(request)
 	
-	month = getSubtotalMonth(date)
+	month = Record.getSubtotalMonth(date)
 
 	start = request.get_cookie(namer.start()) or ""
 

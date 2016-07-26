@@ -26,16 +26,47 @@ class Record:
 	# START OF IO METHODS
 
 	@staticmethod
-	def readSubtotal(name, date):
+	def getSubtotalMonthInt(date):
+		date_obj = time.strptime(date, "%Y-%m-%d")
+		day_int = int(time.strftime("%d", date_obj))
+		month_int = int(time.strftime("%m", date_obj))
+		if day_int > 25:
+			month_int += 1
+		return month_int
+
+	# defines the pay period ; used for labeling the subtotal counter
+	@staticmethod
+	def getSubtotalMonth(date):
+		month_int = Record.getSubtotalMonthInt(date)
+		month_obj = time.strptime(str(month_int), "%m")
+
+		month = time.strftime("%b", month_obj)
+		return month
+
+	@staticmethod
+	def getSubtotalFilePath(name, date):
 		if not date:
 			date = time.strftime("%Y-%m")
 		else:
+			# turn date into date object
 			date_obj = time.strptime(date, "%Y-%m-%d")
-			date = time.strftime("%Y-%m", date_obj)
+			# get year from date object
+			year = time.strftime("%Y", date_obj)
+			# get adjusted month from date
+			month_int = Record.getSubtotalMonthInt(date)
+			# format month int into string
+			month = str(month_int).zfill(2)
 
-		date += "-"
-		
+		date = year + "-" + month + "-"
+
 		filePath = Record.hoursDir + "." + date + "subtotal-" + name
+		return filePath
+
+	@staticmethod
+	def readSubtotal(name, date):
+
+		filePath = Record.getSubtotalFilePath(name, date)
+		print("Reading subtotal from:", filePath)
 		try:
 			f = open(filePath, 'r')
 			subtotal = f.read()
@@ -47,16 +78,9 @@ class Record:
 
 	@staticmethod
 	def writeSubtotal(name, date, subtotal):
-		if not date:
-			date = time.strftime("%Y-%m")
-		else:
-			date_obj = time.strptime(date, "%Y-%m-%d")
-			date = time.strftime("%Y-%m", date_obj)
 
-		date += "-"
-		
-		filePath = Record.hoursDir + "." + date + "subtotal-" + name
-
+		filePath = Record.getSubtotalFilePath(name, date)
+		print("Writing subtotal to:", filePath)
 		try:
 			f = open(filePath, 'w')
 			f.write(str(subtotal))
