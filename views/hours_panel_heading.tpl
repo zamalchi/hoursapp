@@ -55,21 +55,26 @@
 						<!-- name|date <start>|date <end>|duration|label|billable|emergency|<description> -->
 						{{r.name}} |
 						{{r.date}}<strong> <u>{{r.fstart}}</u></strong> |
-						{{r.date}}<strong>
-						% if r.fend == Record.PENDING_CHAR:
-							<span class="pending-text">{{r.fend}}</span></strong> |
-						% else:
-							<u>{{r.fend}}</u></strong> |
-						% end
+						{{r.date}}
 
 						% if (r.duration == Record.PENDING_CHAR):
-							<span class="negative-duration">{{r.duration}}</span>
-						% elif (float(r.duration) <= 0):
-							<span class="negative-duration">{{r.duration}}</span>
+							<form class="form-inline" action="/completeRecord" method="post" enctype="multipart/form-data">
+								<div class="form-group">
+									<a href="#" onclick="this.parentElement.parentElement.submit();">
+										<strong><span class="pending-text">{{r.fend}}</span></strong> |
+										<span class="negative-duration">{{r.duration}}</span>
+										<input type="hidden" name="completeIndex" id="{{ider.complete()}}" value="{{ider.i}}" />
+									</a>
+								</div>
+							</form>
 						% else:
-							{{r.duration}}
+							<strong><u>{{r.fend}}</u></strong> |
+							% if (float(r.duration) <= 0):
+								<span class="negative-duration">{{r.duration}}</span>
+							% else:
+								{{r.duration}}
+							% end
 						% end
-						
 						| {{r.label}} | {{r.billable}} | {{r.emergency}} |
 						<strong>{{r.description}}</strong>
 						<!-- END OF FORMAT -->

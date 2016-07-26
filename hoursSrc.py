@@ -326,6 +326,36 @@ def delete_single_record():
 ########################################################################################################
 ########################################################################################################
 
+### fill in end time and duration for partial record
+@route('/completeRecord', method="POST")
+def complete_record():
+	name = getNameCookie(request)
+	date = getDateCookie(request)
+
+	index = int(request.forms.get("completeIndex"))
+
+	records = Record.parseRecordsFromFile(name, date)
+
+	####
+	record = records[index]
+
+	record.setEnd(Record.getCurrentRoundedTime())
+	record.getAndSetDuration()
+	
+	records[index] = record
+	####
+	
+	Record.adjustAdjacentRecords(records, index)
+
+	Record.writeRecords(name, date, records)
+
+	redirect('hours')
+
+
+########################################################################################################
+########################################################################################################
+
+
 ### emails records
 @route('/email', method="POST")
 def email_records():

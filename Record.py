@@ -349,6 +349,27 @@ class Record:
 		return float((e - s)/float(60))
 
 
+	# will round to the nearest quarter hour mark
+	@staticmethod
+	def roundTime(t):
+		time = Record.parseTime(t)                                                                                                                                                                                                                            
+		hours = int(time[:2])                                                                                                                                                                                                                    
+		minutes = int(time[2:])                                                                                                                                                                                                                      
+		quarters = minutes / 15                                                                                                                                                                                                                             
+		remainder = minutes % 15                                                                                                                                                                                                                             
+		if remainder > 7:                                                                                                                                                                                                                                
+			quarters += 1                                                                                                                                                                                                                               
+		if quarters > 3:                                                                                                                                                                                                                                
+			hours += 1                                                                                                                                                                                                                           
+			quarters = 0                                                                                                                                                                                                                                
+		return str(hours).zfill(2) + str(quarters * 15).zfill(2)       
+
+	# reutrns current time rounded to nearest quarter hour mark
+	@staticmethod
+	def getCurrentRoundedTime():
+		t = time.strftime("%H%M")
+		return Record.roundTime(t)
+
 	#############################################################
 	@staticmethod
 	def getPrevRecord(records, index):
@@ -501,6 +522,9 @@ class Record:
 
 	def setDuration(self, duration):
 		self.duration = float(duration)
+
+	def getAndSetDuration(self):
+		self.setDuration(Record.getDuration(self.start, self.end))
 
 	def modifyDuration(self, duration):
 		if not self.durationLocked:

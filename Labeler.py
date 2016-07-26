@@ -20,6 +20,7 @@ class Labeler:
 	SUBMIT = "submit"
 	INSERT = "insert"
 	DROPDOWN = "dropdown"
+	COMPLETE = "complete"
 
 	def __init__(self, i=None):
 		if i != None:
@@ -109,4 +110,10 @@ class Labeler:
 			return Labeler.DROPDOWN + str(self.i)
 		else:
 			return Labeler.DROPDOWN
+
+	def complete(self):
+		if self.i != None:
+			return Labeler.COMPLETE + str(self.i)
+		else:
+			return Labeler.COMPLETE
 	#############################################
