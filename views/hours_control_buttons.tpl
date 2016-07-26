@@ -7,7 +7,7 @@
 			<div class="btn-group pull-left">
 				<form action="/setName" method="post" class="form-inline" enctype="multipart/form-data">
 					<div class="form-group">
-						<input type="text" id="setName" name="setName" value={{name}} class="form-control input-sm third-width" placeholder="Enter name..." required />
+						<input type="text" id="setName" name="setName" value="{{name}}" class="form-control input-sm third-width" placeholder="Enter name..." required />
 						<input type="date" id="setDate" name="setDate" class="form-control input-sm" />
 					</div>
 					<button type="submit" class="btn btn-primary btn-sm">Pull records</button>
