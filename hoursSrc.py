@@ -346,6 +346,7 @@ def complete_record():
 	####
 	
 	Record.adjustAdjacentRecords(records, index)
+	Record.addToSubtotal(name, date, record.duration)
 
 	Record.writeRecords(name, date, records)
 
