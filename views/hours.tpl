@@ -48,7 +48,7 @@
 				% if pending_records:
 					<h3>Subtotal: {{subtotal}} hours <span class="pending-text">*</span></h3>
 				% else:
-					<h3>Subtotal: {{subtotal}} hours</h3>
+					<h3>Subtotal [{{month}}]: {{subtotal}} hours</h3>
 				% end
 			</div>
 		</div>
