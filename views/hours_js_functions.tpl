@@ -87,4 +87,19 @@ function openViewer() {
 	self.name="main"
 }
 
+function dropdownChangeSelect(self) {
+	var input = self.parentElement.querySelector("[name='dropdown']");
+	input.value = self.options[self.selectedIndex].text;
+
+	var value = self.parentElement.querySelector("[name='label']");
+	value.value = self.options[self.selectedIndex].value;
+}
+
+function dropdownChangeType(self) {
+	var input = self.parentElement.querySelector("[name='dropdown']");
+	var value = self.parentElement.querySelector("[name='label']");
+
+	value.value = input.value;
+}
+
 </script>

@@ -65,10 +65,21 @@
 			<!-- ######################################################################################################### -->
 			<!-- SINGLE LINE -->
 			<div class="form-inline">
+				<!-- <input name={{namer.label()}} id={{ider.label()}} type="text" class="form-control quarter-width" placeholder="Label" required/> -->
 				<!-- LABEL : TEXT -->
-				<input name={{namer.label()}} id={{ider.label()}} type="text" class="form-control quarter-width" placeholder="Label" required/>
+				<div class="dropdown form-control">
+					<select class="dropdownSelect" onchange="dropdownChangeSelect(this)">
+					   <option></option>
+					   <option value="TS">TS</option>
+					   <option value="ENGAGING">ENGAGING</option>
+					   <option value="C3DDB">C3DDB</option>
+					</select>
+					<input class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Add/Select Label" id="{{ider.dropdown()}}" onfocus="this.select()" type="text" onchange="dropdownChangeType(this)" required />
+					<input name="{{namer.label()}}" id="{{ider.label()}}" type="hidden">
+				</div>
+				
 				<!-- DESCRIPTION : TEXT // not required (ex. lunch) -->
-				<input name={{namer.description()}} id={{ider.description()}} type="text" class="form-control two-thirds-width" placeholder="Description" required />
+				<input  name={{namer.description()}} id={{ider.description()}} type="text" class="form-control" placeholder="Description" required />
 			</div>
 			<!-- END OF SINGLE LINE -->
 			<!-- ######################################################################################################### -->
