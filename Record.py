@@ -143,16 +143,13 @@ class Record:
 			return []
 
 
-	# filters any empty records
-	# parses record strings and returns record objects
-	# raw_records: accept [list[str]] return [list[Record]]
 	@staticmethod
+	# raw_records: accept [list[str]] return [list[Record]]
 	def parseRecords(raw_records):
+		# filter out empty records
 		r_r = filter(None, raw_records)
-		records = []
-		for r in r_r:
-			records.append(Record(r))
-		return records
+		# return list mapped to Record objects
+		return [Record(r) for r in r_r]
 
 
 	@staticmethod

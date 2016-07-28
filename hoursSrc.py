@@ -3,23 +3,27 @@ if (__name__ == "__main__"):
 	print("Exiting...")
 	exit()
 
-
 #TO RUN FROM WRAPPER CLASSES:
-# - csvInit(readerFile)
 # - smtpInit(mailTo)
-# - setClusterName(cname)
 # - setDevMode(dmode)
+# - labelsInit(labels)
+
+########################################################################################################
+########################################################################################################
+
+### PACKAGES ###########################################################################################
 
 import os
-#import csv
 import time
 import smtplib
 import sys
-#import zipfile
 
-#apache
+### APACHE #############################################################################################
+
 os.chdir(os.path.dirname(__file__))
 sys.path.insert(1, os.path.dirname(__file__))
+
+### IMPORTS ############################################################################################
 
 from bottle import Bottle, route, run, request, response, template, static_file, default_app, redirect, SimpleTemplate, url, get, post
 
@@ -29,9 +33,10 @@ from Record import Record
 from Labeler import Labeler
 namer = Labeler()
 
-
 # for css reading in templates
 SimpleTemplate.defaults["url"] = url
+
+### DIRECTORY ##########################################################################################
 
 # directory for saving hours information
 Record.hoursDir = "hours/"
@@ -39,8 +44,8 @@ Record.hoursDir = "hours/"
 if not os.path.exists(Record.hoursDir):
 	os.makedirs(Record.hoursDir)
 
-
 ### SMTP ###############################################################################################
+
 receivers = []
 
 def smtpInit(mailTo):
@@ -48,6 +53,7 @@ def smtpInit(mailTo):
 	# sets the admin email
 	global receivers
 	receivers = [mailTo]
+
 ### DEV MODE ###########################################################################################
 
 def setDevMode(dmode):
@@ -61,63 +67,51 @@ def devp(msg):
 	if devMode:
 		print(msg)
 
-########################################################################################################
+### LABELS #############################################################################################
 
 # sets labels for populating dropdown list in /hours
 def labelsInit(l):
 	global labels
 	labels = l
 
-########################################################################################################
+### CSS ROUTING ########################################################################################
 
 # for css reading in templates
 @route('/static/<filename>', name='static')
 def server_static(filename):
     return static_file(filename, root='static')
 
+### COOKIE GETTERS/SETTERS #############################################################################
 
-########################################################################################################
-######################################  	HOURS FORM START	 ###########################################
-########################################################################################################
-'''
-$ <-- done
-
-TODO: 
-	subtotal counter
-		modified by adding/removing records
-
-	maybe: ability to drag and drop records into different order, if that's really wanted by sb
-
-	finish commenting Record methods
-	
-	bootlint
-
-	variables and passing them to other templates
-
-	then also finish doing css for templates, once it fully works
-
-	figure out why SMTP isn't sending properly (even on the account webapp)
-'''
-
-########################################################################################################
-########################################################################################################
-
+### NAME ###
 def getNameCookie(request):
-	#print("GOT NAME COOKIE:", request.get_cookie("name"))
-	#print("OR:", request.get_cookie("name") or "")
 	return request.get_cookie("name") or ""
 
 def setNameCookie(response, name):
 	response.set_cookie("name", name)
 
-
+### DATE ###
 def getDateCookie(request):
-	#print("GOT DATE COOKIE:", request.get_cookie("date"))
-	#print("OR:", request.get_cookie("date") or time.strftime("%Y-%m-%d"))
 	return request.get_cookie("date") or time.strftime("%Y-%m-%d")
 
 def setDateCookie(response, date):
 	response.set_cookie("date", date)
+
+########################################################################################################
+########################################################################################################
+
+
+
+
+
+
+
+
+
+
+########################################################################################################
+######################################  	HOURS FORM START	 ###########################################
+########################################################################################################
 
 
 ########################################################################################################
@@ -142,18 +136,11 @@ def hours():
 
 	# try to open file with user's name and retrieve data
 	# for each record, create a new Record object and add to list to pass to template
-	# list of records as [obj]
+	# list of records as Record obj
 	records = Record.parseRecordsFromFile(name, date)
 	
-	# DEBUG
-	# print("\n***DEBUG***")
-	# for r in records:
-	# 	print(r)
-	# print("***********\n")
-
 	#######################################################
 	return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal, start=start)
-
 
 ########################################################################################################
 ########################################################################################################
@@ -161,8 +148,8 @@ def hours():
 
 @route('/hours', method="POST")
 def hours_post():
-	
 	#######################################################	
+	
 	# name of user
 	name = request.forms.get(namer.name()).strip()
 
@@ -173,6 +160,7 @@ def hours_post():
 	index = int(request.forms.get(namer.insert()))
 
 	#######################################################
+	
 	# parses form data and returns a Record obj
 	new_record = Record.getRecordFromHTML(request)
 
@@ -194,34 +182,34 @@ def hours_post():
 		# append to the end of unpulled existing records
 		# prevents adding to the beginning of an unexpected list
 		records.append(new_record)
-		#print("Appending to list")
 	else:
-		#print("Inserting in list at index:", index)
 		# insert new record at index provided from template form
 		records.insert(index, new_record)
+
+		# adjust timings of adjacent records in case of overlap
 		Record.adjustAdjacentRecords(records, index)
 
-		# after adjusting the durations, recount all of the durations
+		# after adjusting the durations, recount total duration for the day
 		new_local_subtotal = Record.countSubtotal(records)
 
 		# add the difference in summed durations back to the file
-		# when inserting between two records (whose durations are not locked), the subtotal should not change
+		# when inserting between two records (whose durations are not locked) (i.e. splicing a record in), the subtotal should not change
 		Record.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
 
-
-	#for i in range(len(records)):
-	#	Record.adjustAdjacentRecords(records, i)
+	#######################################################
 	
 	# write back updated list
 	Record.writeRecords(name, date, records)
+
 	#######################################################
 
+	# set name cookie with most recently used name (for insurance mostly)
 	setNameCookie(response, name)
-	#response.set_cookie("start", end) # end of record becomes start of next record
+
+	#######################################################
 
 	redirect('hours')
 
-
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
@@ -230,20 +218,32 @@ def hours_post():
 ########################################################################################################
 
 
+########################################################################################################
+######################################  	HOURS FORM END	 #############################################
+########################################################################################################
 
+#
+#
+#
+#
+#
+#
+#
+#
 
-
-
-
-
-
+########################################################################################################
+#####################################  	MISC ROUTES START	   ###########################################
+########################################################################################################
 
 
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
+########################################################################################################
+########################################################################################################
+########################################################################################################
 
-@route('/setName', method="POST")
+@route('/setCookies', method="POST")
 def set_name():
 	# get name of user provided in specified field
 	name = request.forms.get("setName") or ""
@@ -257,6 +257,7 @@ def set_name():
 	redirect('hours')
 
 
+########################################################################################################
 ########################################################################################################
 ########################################################################################################
 
@@ -287,6 +288,7 @@ def delete_records():
 	# redirect back to hours page
 	redirect('hours')
 
+########################################################################################################
 ########################################################################################################
 ########################################################################################################
 
@@ -415,6 +417,14 @@ def email_records():
 # 			redirect('hours')
 
 ########################################################################################################
-######################################  	HOURS FORM END		 ###########################################
+########################################################################################################
+########################################################################################################
+########################################################################################################
+########################################################################################################
+########################################################################################################
+
+
+########################################################################################################
+######################################  	MISC ROUTES END	   ###########################################
 ########################################################################################################
 
