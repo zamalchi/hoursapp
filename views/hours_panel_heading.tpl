@@ -28,7 +28,7 @@
 						<form class="form-inline" action="/deleteOne" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 								<!-- INDEX FOR DELETING RECORD : HIDDEN -->
-								<input type="hidden" name="recordIndex" value={{ider.i}}/>
+								<input type="hidden" name="recordIndex" value="{{ider.i}}" />
 								<button class="btn btn-default x-button btn-xs media-object" type="submit">
 								<span class="glyphicon glyphicon-remove"></span>
 								</button>

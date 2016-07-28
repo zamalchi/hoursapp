@@ -143,8 +143,9 @@ class Record:
 			return []
 
 
-	@staticmethod
+
 	# raw_records: accept [list[str]] return [list[Record]]
+	@staticmethod
 	def parseRecords(raw_records):
 		# filter out empty records
 		r_r = filter(None, raw_records)
@@ -520,7 +521,7 @@ class Record:
 	def setDuration(self, duration):
 		self.duration = float(duration)
 
-	def getAndSetDuration(self):
+	def calculateAndSetDuration(self):
 		self.setDuration(Record.getDuration(self.start, self.end))
 
 	def modifyDuration(self, duration):

@@ -10,6 +10,7 @@ if (__name__ == "__main__"):
 
 ########################################################################################################
 ########################################################################################################
+########################################################################################################
 
 ### PACKAGES ###########################################################################################
 
@@ -83,31 +84,40 @@ def server_static(filename):
 
 ### COOKIE GETTERS/SETTERS #############################################################################
 
-### NAME ###
+### NAME ########################################################
 def getNameCookie(request):
 	return request.get_cookie("name") or ""
 
 def setNameCookie(response, name):
 	response.set_cookie("name", name)
 
-### DATE ###
+### DATE ########################################################
 def getDateCookie(request):
 	return request.get_cookie("date") or time.strftime("%Y-%m-%d")
 
 def setDateCookie(response, date):
 	response.set_cookie("date", date)
 
+### CONSOLIDATED ################################################
+def getCookies(request):
+	return getNameCookie(request), getDateCookie(request)
+
+def setCookies(response, name, date):
+	setNameCookie(response, name)
+	setDateCookie(response, date)
+
 ########################################################################################################
 ########################################################################################################
+########################################################################################################
 
-
-
-
-
-
-
-
-
+#
+#
+#
+#
+#
+#
+#
+#
 
 ########################################################################################################
 ######################################  	HOURS FORM START	 ###########################################
@@ -124,11 +134,14 @@ def setDateCookie(response, date):
 @route('/hours')
 def hours():
 	#######################################################
-	name = getNameCookie(request)
-	date = getDateCookie(request)
 	
+	# get name and date cookies
+	name, date = getCookies(request)
+	
+	# get the month to use for the monthly subtotal
 	month = Record.getSubtotalMonth(date)
 
+	# get 
 	start = request.get_cookie(namer.start()) or ""
 
 	subtotal = Record.readSubtotal(name, date)
@@ -140,7 +153,8 @@ def hours():
 	records = Record.parseRecordsFromFile(name, date)
 	
 	#######################################################
-	return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal, start=start)
+	
+	return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal)
 
 ########################################################################################################
 ########################################################################################################
@@ -244,18 +258,25 @@ def hours_post():
 ########################################################################################################
 
 @route('/setCookies', method="POST")
-def set_name():
+def set_cookies():
+
+	#######################################################
+
 	# get name of user provided in specified field
 	name = request.forms.get("setName") or ""
+	
+	# get date: either set manually or defaults to current day
 	date = request.forms.get("setDate") or time.strftime("%Y-%m-%d")
 
-	# set name cookie
-	setNameCookie(response, name)
-	setDateCookie(response, date)
+	#######################################################
+
+	# set name and date cookie
+	setCookies(response, name, date)
+
+	#######################################################
 
 	# redirect to /hours to read file
 	redirect('hours')
-
 
 ########################################################################################################
 ########################################################################################################
@@ -264,26 +285,32 @@ def set_name():
 ### deletes records of current user
 @route('/delete', method="POST")
 def delete_records():
-	# get the name cookie
-	name = getNameCookie(request)
-	date = getDateCookie(request)
 
+	#######################################################
+
+	# get name and date cookies
+	name, date = getCookies(request)
+
+	# sets flag based on user's confirmation / denial from popup alert
 	deleteConfirm = request.forms.get("deleteConfirm")
 
-	# delete the name cookie
-	#setNameCookie(response, "")
-	#setDateCookie(response, "")
+	#######################################################
 
 	if (deleteConfirm == "true") and name:
+		
 		# get records
 		records = Record.parseRecordsFromFile(name, date)
+		
 		# get summed duration of records
 		summed_subtotal = Record.countSubtotal(records)
+		
 		# subtract that amount from the subtotal on file
 		Record.subtractFromSubtotal(name, date, summed_subtotal)
 
 		# delete both of the user's record files
 		Record.deleteRecords(name, date)
+
+	#######################################################
 
 	# redirect back to hours page
 	redirect('hours')
@@ -292,72 +319,88 @@ def delete_records():
 ########################################################################################################
 ########################################################################################################
 
-### deletes a single record
+### deletes one record from those currently displayed
 @route('/deleteOne', method="POST")
 def delete_single_record():
 
-	# get w/o last char, since it comes in with a trailing '/'
-	index = int(request.forms.get('recordIndex')[:-1])
-	# print("unedited index in deleteOne:", request.forms.get('recordIndex'))
+	#######################################################
 
-	# get name cookie
-	name = getNameCookie(request)
-	date = getDateCookie(request)
+	# get index based on which delete button was clicked / which form was submitted
+	index = int(request.forms.get('recordIndex'))
 
-	if name:
-		try:
-			# read and parse records from file
-			records = Record.parseRecordsFromFile(name, date)
+	# get name and date cookies
+	name, date = getCookies(request)
 
-			# get the duration of the record to be deleted
-			deletedRecordDuration = records[index].duration
-			# subtract that amount from the subtotal on file
-			Record.subtractFromSubtotal(name, date, deletedRecordDuration)
+	#######################################################
 
-			# delete record
-			del records[index]
-			#records = records[:index] + records[index+1:]
+	# read and parse records from file
+	records = Record.parseRecordsFromFile(name, date)
 
-			Record.writeRecords(name, date, records)
+	# get the duration of the record to be deleted
+	deletedRecordDuration = records[index].duration
 
-		except IOError:
-			pass
+	# subtract that amount from the subtotal on file
+	Record.subtractFromSubtotal(name, date, deletedRecordDuration)
+
+	# delete record
+	del records[index]
+
+	# write back updated records
+	Record.writeRecords(name, date, records)
+
+	#######################################################
 
 	redirect('hours')
 
+########################################################################################################
 ########################################################################################################
 ########################################################################################################
 
 ### fill in end time and duration for partial record
 @route('/completeRecord', method="POST")
 def complete_record():
-	name = getNameCookie(request)
-	date = getDateCookie(request)
 
+	#######################################################
+
+	# get name and date cookies
+	name, date = getCookies(request)
+
+	# get index of completed record
 	index = int(request.forms.get("completeIndex"))
 
+	#######################################################
+
+	# get records from file
 	records = Record.parseRecordsFromFile(name, date)
 
-	####
+	# get particular record to complete
 	record = records[index]
 
+	# set the end time of the partial record to be the current time (rounded to 15 minutes)
 	record.setEnd(Record.getCurrentRoundedTime())
+
+	# calculate and set the duration
 	record.getAndSetDuration()
 	
+	# update the changed record in the list
 	records[index] = record
-	####
-	
+
+	# adjust adjacent records in case of overlap	
 	Record.adjustAdjacentRecords(records, index)
+
+	# add new duration to the subtotal
 	Record.addToSubtotal(name, date, record.duration)
 
+	# write back updated records
 	Record.writeRecords(name, date, records)
+
+	#######################################################
 
 	redirect('hours')
 
-
 ########################################################################################################
 ########################################################################################################
-
+########################################################################################################
 
 ### emails records
 @route('/email', method="POST")
@@ -399,23 +442,6 @@ def email_records():
 	else:
 		redirect('hours')
 
-
-# DEPRECTAED
-# @route('/view', method="POST")
-# def viewRecords():
-# 	# get name cookie
-# 	name = request.get_cookie("name")
-# 	date = request.get_cookie("date") or time.strftime("%Y-%m-%d")
-
-# 	if name:
-# 		try:
-# 			# read and parse records from file
-# 			records = Record.parseRecordsFromFile(name, date)
-# 			return template('view', records=records)
-
-# 		except IOError:
-# 			redirect('hours')
-
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
@@ -427,4 +453,8 @@ def email_records():
 ########################################################################################################
 ######################################  	MISC ROUTES END	   ###########################################
 ########################################################################################################
+
+
+
+
 
