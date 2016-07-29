@@ -29,6 +29,13 @@ class Record:
 	# used as a placeholder for the end time in an ongoing record
 	# it is replaced when the next record is created (with the new start time)
 	PENDING_CHAR = "***"
+	
+	########################################################################################################
+
+	#
+	#
+	#
+	#
 
 	#### STATIC METHODS START ##############################################################################
 	########################################################################################################
@@ -69,6 +76,8 @@ class Record:
 	### GENERATE SUBTOTAL FILENAME: (YYYY-MM-NAME-subtotal) ################################################
 	@staticmethod
 	def getSubtotalFileName(name, date):
+
+		#######################################################
 		
 		if not date:
 			# if not supplied, get current date
@@ -87,11 +96,13 @@ class Record:
 			# format month int into string
 			month = str(month_int).zfill(2)
 
+		#######################################################
+
+		# ("YYYY-MM-")
 		date = year + "-" + month + "-"
 
-		fileName = Record.getHiddenFileName(name, date)
-
-		return fileName
+		# ("DIR/.YYYY-MM-subtotal-NAME")
+		return Record.hoursDir + "." + date + "subtotal-" + name
 
 	########################################################################################################
 	### GENERATOR METHODS END ##############################################################################
@@ -173,7 +184,7 @@ class Record:
 		#######################################################
 
 		# system calls to delete both normal and hidden file
-		os.system("rm -f " + filename)
+		os.system("rm -f " + fileName)
 		os.system("rm -f " + hiddenFileName)
 
 	### READS SUBTOTAL FILE ################################################################################
@@ -326,7 +337,12 @@ class Record:
 	### READ RECORDS FILE AND PARSE INTO RECORD OBJECTS ####################################################
 	@staticmethod
 	def parseRecordsFromFile(name, date):
-		return Record.parseRecords(Record.readRecords(name, date))
+
+		# read in records
+		raw_records = Record.readRecords(name, date)
+
+		# return parsed Record objects
+		return Record.parseRecords(raw_records)
 
 	### PARSE HTML FORM INTO RECORD OBJECT #################################################################
 	@staticmethod
@@ -432,71 +448,121 @@ class Record:
 	### TIME METHODS START #################################################################################
 	########################################################################################################
 
-	# removes colon and adds leading '0' if missing
-	# time: accept [*] return [str]
+	### PARSE TIME INTO ("HHMM") FORMAT ####################################################################
 	@staticmethod
 	def parseTime(time):
+
 		if time:
+			# removes colon and adds leading '0' if missing
 			return str(time.strip()).translate(None, ':').zfill(4)
+		
 		return ""
 
-	# adds a colon between hours and minutes
-	# ensures time is parsed correctly
-	# time: accept [*] return [str]
+	### FORMAT TIME INTO ("HH:MM") FORMAT ##################################################################
 	@staticmethod
 	def formatTime(time):
+
+		# ensures time is parsed correctly
 		p = Record.parseTime(time)
+		
+		# adds a colon between hours and minutes
 		return str(p)[:2] + ':' + p[2:]
 
-	# takes [hrmn | hr:mn] format and returns as number of minutes
-	# time: accept [*] return [int]
+	### CONVERT TIME INTO NUMBER OF MINUTES ################################################################
 	@staticmethod
 	def getMinFromTime(time):
+		
+		# checks for not present time
 		if time == Record.PENDING_CHAR:
 			return None
+
 		# if it is an int, it has already been processed, so return
 		# ex: called from getDuration()
 		if (type(time) == int):
 			return time
+		
+		# ensures it is parsed
 		p = Record.parseTime(time)
+
+		# returns number of minutes
 		return (int(p[:2]) * 60) + int(p[2:])
 
-	# takes number of minutes and returns as [hrmn] format
-	# min: accept [str | int] return [str]
+	### CONVERT NUMBER OF MINUTES INTO ("HHMM") ############################################################
 	@staticmethod
 	def getTimeFromMin(min):
+		
+		# ensures int type
 		i = int(min)
+
+		# gets hours through integer division
 		hours = str(i/60).zfill(2)
+
+		# gets minutes through modulus
 		minutes = str(i%60).zfill(2)
+
+		# return ("HHMM")
 		return hours + minutes
 
-
+	### CALCULATE THE DURATION USING THE START AND END TIMES ###############################################
 	@staticmethod
 	def getDuration(start, end):
+		
+		# get number of minutes from start time
 		s = Record.getMinFromTime(start)
+		
+		# get number of minutes from end time
 		e = Record.getMinFromTime(end)
+
+		# return number of hours as float (x.xx)
 		return float((e - s)/float(60))
 
-
-	# will round to the nearest quarter hour mark
+	### ROUND PASSED IN TIME TO NEAREST 15-MINUTE MARK #####################################################
 	@staticmethod
 	def roundTime(t):
-		time = Record.parseTime(t)                                                                                                                                                                                                                            
-		hours = int(time[:2])                                                                                                                                                                                                                    
-		minutes = int(time[2:])                                                                                                                                                                                                                      
-		quarters = minutes / 15                                                                                                                                                                                                                             
-		remainder = minutes % 15                                                                                                                                                                                                                             
-		if remainder > 7:                                                                                                                                                                                                                                
-			quarters += 1                                                                                                                                                                                                                               
-		if quarters > 3:                                                                                                                                                                                                                                
-			hours += 1                                                                                                                                                                                                                           
-			quarters = 0                                                                                                                                                                                                                                
-		return str(hours).zfill(2) + str(quarters * 15).zfill(2)       
 
-	# reutrns current time rounded to nearest quarter hour mark
+		#######################################################
+
+		# ensure the time is parsed correctly
+		time = Record.parseTime(t)
+
+		# parse the hours                                                                                                                                                                                                                 
+		hours = int(time[:2])
+
+		# parse the minutes                                                                                                                                                                                                                    
+		minutes = int(time[2:])
+
+		#######################################################
+
+		# calculate the number of quarter-hour units (rounded down) the minutes equal
+		quarters = minutes / 15
+
+		# calculate how far from the next quarter-hour mark the minutes are
+		remainder = minutes % 15
+
+		#######################################################
+
+		# if the time is at least 7 minutes into the current quarter-hour, increment quarters
+		if remainder > 7:
+			quarters += 1
+
+		# if there are over three quarters, the hour has been passed: add an hour and reset quarters to 0
+		if quarters > 3:
+			hours += 1
+			quarters = 0
+
+		#######################################################
+
+		# return ("HHMM") now rounded to the quarter-hour
+		return str(hours).zfill(2) + str(quarters * 15).zfill(2)
+
+	### ROUND CURRENT TIME TO NEAREST 15-MINUTE MARK #######################################################
 	@staticmethod
 	def getCurrentRoundedTime():
+
+		# get current time
 		t = time.strftime("%H%M")
+
+		# round it to 15-minute mark
 		return Record.roundTime(t)
 
 	########################################################################################################
@@ -505,87 +571,156 @@ class Record:
 	#
 	#
 
+	### RECORD METHODS START ###############################################################################
+	########################################################################################################
 
-	#############################################################
+	### RETURNS PREVIOUS RECORD IN LIST or NONE ############################################################
 	@staticmethod
 	def getPrevRecord(records, index):
+		
 		try:
+			# if the previous index is a valid index
 			if (index-1 >= 0):
+
+				# return the previuos record 
 				return records[index-1]
+		
 		except IndexError:
 			pass
+			
+		# if returning the prev record was unsuccessful, return None 
 		return None
 
+	### RETURNS NEXT RECORD IN LIST or NONE ################################################################
 	@staticmethod
 	def getNextRecord(records, index):
+		
 		try:
+			# if the next index is a valid index
 			if (index+1 < len(records)):
+				
+				# return the next record 
 				return records[index+1]
+		
 		except IndexError:
-			pass
+			pass	
+		
+		# if returning the prev record was unsuccessful, return None 
 		return None
 
-	#############################################################
+
+	### CHECKS IF RECORD OVERLAPS WITH ADJACENT RECORDS AND ADJUSTS ADJACENT START/END TIMES ACCORDINGLY ###
 	@staticmethod
 	def adjustAdjacentRecords(records, index):
-		if not records:
-			raise Exception("Record.spliceInRecords(): records var is null")
 
+		#######################################################
+
+		# if the records list is empty, print error statement and return from function
+		if not records:
+			print("ERROR: empty records list passed into Record.adjustAdjacentRecords()")
+			return
+
+		#######################################################
+
+		# get the newly inserted record
 		new_record = records[index]
 
+		# get the previous record if it exists
 		prev_record = Record.getPrevRecord(records, index)
+
+		# get the next record if it exists
+		next_record = Record.getNextRecord(records, index)
+
+		#######################################################
+		# FUNCTION: SETS PREVIOUS RECORD'S END TIME
+
 		if prev_record:
-			# if end time hasn't been supplied, supply it now from new_record
+			
+			# if the previous record's end time has not been supplied
 			if prev_record.duration == Record.PENDING_CHAR:
+
+				# set the previous record's end time to be the new record's start time
 				prev_record.setEnd(new_record.start)
 
-		next_record = Record.getNextRecord(records, index)
+				# the new record *FINISHES* the previous record
+				# visually: [START]~previous~[PENDING --> END]   [START]~new~[PENDING|END]
+
+		#######################################################
+		# FUNCTION: SHIFTS NEXT RECORD'S START TIME (IF PARTIAL RECORD)
+
 		if next_record:
-			# if next_record has a pending duration, and new_record has an end time, set next_record.start = new_record.end
+			
+			# if (the next record's end time has not been supplied) and (the new record has an end time)
+			# NOTE: if the next record doesn't have a supplied end time, the new record MUST have an end time (required by HTML input)
 			if (next_record.duration == Record.PENDING_CHAR) and (new_record.end != Record.PENDING_CHAR):
+				
+				# supply the next record's start time using the new record's end time
 				next_record.setStart(new_record.end)
-			# if end time is not supplied but next record exists, use that time
+
+				# the new record *SHIFTS* the next record forward to match its end time
+				# visually: [START]~new~[END]   [START --> MODIFIED START]~next~[PENDING] 
+		
+			
+			####### REQUIRED TAG IN HTML END TIME INPUT BYPASSES THIS CODE ######
+
+			# FUNCTION: SETS NEW RECORD'S END TIME (REDUNDANT)
+
+			# NOTE: this case seems to work, but the HTML requires the end time in this case, so this isn't currently executed
+
+			# if (a next record exists) and (the new record has a pending duration)
 			if new_record.duration == Record.PENDING_CHAR:
-				new_record.setEnd(new_record.start)
 
+				# set the end time of the new record to be the next record's start time
+				new_record.setEnd(next_record.start)
+			
+			#######
 
-		# if the previous record exists
+		#######################################################
+
+		# after ensuring the previous record's end time is set
+
 		if prev_record:
-			#	after checking both prev and next records in case of PENDING_CHAR...
+
+			# calculate the previous record's duration using its start and end times
 			prev_record.duration = Record.getDuration(prev_record.start, prev_record.end)
+			
+			# update the record in the list
 			records[index-1] = prev_record
 
 			# calculate overlap : new_start - prev_end : if overlap => negative duration
 			# if the new start time is less than the previous end time: adjustment needed
 			overlap = Record.getDuration(prev_record.end, new_record.start)
+			
 			# if there was overlap
 			if (overlap < 0):
+				
 				# modify the prev_end time by subtracting the overlap duration
 				prev_record.modifyEnd(overlap)
-				# print("Modifying prev_record by:", overlap)
-				# print("prev_record:", str(prev_record))
-				# print("new_record:", str(new_record))
 
-		# if the next record exists
+		#######################################################
+
+		# if the next record exists, the new record has been ensured to be complete (can't have two pending records)
+
 		if next_record:
-			#	after checking both prev and next records in case of PENDING_CHAR...
+
+			# calculate the new record's duration using its start and end times
 			new_record.duration = Record.getDuration(new_record.start, new_record.end)
+
+			# update the record in the list
 			records[index] = new_record
 		
 			# calculate overlap : next_start - new_end : if overlap => negative duration
+			# if the next record's start is less than the new record's end: adjustment needed
 			overlap = Record.getDuration(new_record.end, next_record.start)
+			
 			# if there was overlap
 			if (overlap < 0):
+
 				# modify next_start time by subtracting overlap duration
 				next_record.modifyStart(overlap)
-				# print("Modifying next_record by:", overlap)
-				# print("new_record:", str(new_record))
-				# print("next_record:", str(next_record))
 
-	#############################################################
-
-
-
+	########################################################################################################
+	### RECORD METHODS END #################################################################################
 
 	#
 	#
@@ -594,19 +729,55 @@ class Record:
 	########################################################################################################
 	#### STATIC METHODS END ################################################################################
 
+	#
+	#
+	#
+	#
+	#
+	#
+	#
+	#
 
+	#### INSTANCE METHODS START ############################################################################
+	########################################################################################################
+	########################################################################################################
+
+	#
+	#
+
+	### CONSTRUCTOR START ##################################################################################
+	########################################################################################################
+
+	### DEFAULT CONSTRUCTOR: PARSES PROPERLY FORMATTED STRING INTO RECORD OBJECT ###########################
 	def __init__(self, string):
+
+		#######################################################
+
 		elems = string.split('|')
 		start_DT = elems[1].split(" ")
 		end_DT = elems[2].split(" ")
 
+		#######################################################
+
 		self.name = elems[0]
 
 		self.date = start_DT[0]
+
+		#######################################################
+
+		# formatted start ("HH:MM")
 		self.fstart = start_DT[1]
+
+		# start ("HHMM")
 		self.start = Record.parseTime(self.fstart)
+		
+		# formatted end ("HH:MM")
 		self.fend = end_DT[1]
+
+		# end ("HHMM")
 		self.end = Record.parseTime(self.fend)
+
+		#######################################################
 
 		self.duration = elems[3]
 
@@ -616,67 +787,136 @@ class Record:
 		self.label = elems[6]
 		self.description = elems[7]
 
-		# if manually entered, the duration will NOT be adjustable
-		if (elems[8] == "True"):
-			self.durationLocked = True
-		else:
+		#######################################################
+
+		# in the case of trying to construct a record without a durationLocked field (elems[8])
+		if len(elems) < 9:
+			# default to False
 			self.durationLocked = False
+		
+		else:
+			# if manually entered, the duration will NOT be adjustable
+			# this field is only visible in the Record object or in the hidden version of the file		
+			if (elems[8] == "True"):
+				self.durationLocked = True
+			else:
+				self.durationLocked = False
 
-	#############################################################
+	########################################################################################################
+	### CONSTRUCTOR END ####################################################################################
 
+	#
+	#
+
+	### DURATION METHODS START #############################################################################
+	########################################################################################################
+
+	### SETS DURATION TO SUPPLIED VALUE ####################################################################
+	def setDuration(self, duration):
+		self.duration = float(duration)
+
+	### CALCULATES THE DURATION FROM START AND END TIMES, THEN SETS THE DURATION ###########################
+	def calculateAndSetDuration(self):
+		self.setDuration(Record.getDuration(self.start, self.end))
+
+	### IF NOT LOCKED, *MODIFIES* THE DURATION BY THE SUPPLIED AMOUNT ######################################
+	def modifyDuration(self, amount):
+		
+		if not self.durationLocked:
+
+			# get the duration
+			d = float(self.duration)
+
+			# add the amount (supplying a negative amount will subtract from the duration)
+			d += float(amount)
+
+			# set modified duration
+			self.duration = str(d)
+
+	########################################################################################################
+	### DURATION METHODS END ###############################################################################
+
+	#
+	#
+
+	### TIME METHODS START #################################################################################
+	########################################################################################################
+
+	### SET START TIME WHILE ENSURING CORRECT PARSING/FORMATTING ###########################################
 	def setStart(self, time):
+		
 		t = str(time)
+		
+		# parse time for start field
 		i = Record.parseTime(t)
+
+		# format parsed time for fstart (formatted start) field
 		s = Record.formatTime(i)
 
 		self.start = i
 		self.fstart = s
 
-
+	### SET END TIME WHILE ENSURING CORRECT PARSING/FORMATTING #############################################
 	def setEnd(self, time):
+		
 		t = str(time)
+		
+		# parse time for end field
 		i = Record.parseTime(t)
+
+		# format parsed time for fend (formatted end) field
 		s = Record.formatTime(i)
 
 		self.end = i
 		self.fend = s
 
-	############################################################
-
+	### MODIFY START TIME AND DURATION BY ADDING SUPPLIED AMOUNT ###########################################
 	def modifyStart(self, amount):
+
+		# get start time in minutes
 		start = Record.getMinFromTime(self.start)
-		new = float(start) - (float(amount)*60)
+
+		# convert amount into minutes and add to start time
+		new = float(start) + (float(amount)*60)
+
+		# set start to new value (converted back into a string)
 		self.setStart(Record.getTimeFromMin(int(new)))
-		self.modifyDuration(float(amount))
 
+		# modify the duration by subtracting the amount added to the start time 
+		self.modifyDuration(-float(amount))
+
+	### MODIFY END TIME AND DURATION BY A SUPPLIED AMOUNT ##################################################
 	def modifyEnd(self, amount):
+
+		# get the end time in minutes
 		end = Record.getMinFromTime(self.end)
+
+		# convert amount into minutes and add to end time
 		new = float(end) + (float(amount)*60)
+
+		# set end to new value (converted back into a string)
 		self.setEnd(Record.getTimeFromMin(int(new)))
+
+		# modify the duration by adding the amount added to the end time
 		self.modifyDuration(float(amount))
 
+	### MODIFY START AND END TIMES BY A SUPPLIED AMOUNT (SHIFTS RECORD AS A WHOLE W/O MODIFYING DURATION) ##
 	def modifyTimes(self, amount):
 		self.modifyStart(amount)
 		self.modifyEnd(amount)
 
-	#############################################################
+	########################################################################################################
+	### TIME METHODS END ###################################################################################
 
-	def setDuration(self, duration):
-		self.duration = float(duration)
-
-	def calculateAndSetDuration(self):
-		self.setDuration(Record.getDuration(self.start, self.end))
-
-	def modifyDuration(self, duration):
-		if not self.durationLocked:
-			d = float(self.duration)
-			d += float(duration)
-			self.duration = str(d)
-
-	#############################################################
-
-
+	#
+	#
+	
+	### TO_STRING METHODS START ############################################################################
+	########################################################################################################
+	
+	### DEFAULT TO_STRING CALLED VIA str() #################################################################
 	def __str__(self):
+		# contains durationLocked --> intended for writing to hidden file
 		return "{0}|{1} {2}|{3} {4}|{5}|{6}|{7}|{8}|{9}|{10}".format(
 			self.name,
 			self.date, self.fstart,
@@ -686,8 +926,9 @@ class Record:
 			self.label, self.description,
 			self.durationLocked)
 
-	# does not contain durationLocked
+	### SECONDARY TO_STRING TO MATCH CORRECT RECORD STRING FORMAT (FOR PAYROLL) ############################
 	def emailFormat(self):
+		# does not contain durationLocked
 		return "{0}|{1} {2}|{3} {4}|{5}|{6}|{7}|{8}|{9}".format(
 			self.name,
 			self.date, self.fstart,
@@ -695,6 +936,21 @@ class Record:
 			self.duration,
 			self.billable, self.emergency,
 			self.label, self.description)
+
+	########################################################################################################
+	### TO_STRING METHODS END ##############################################################################
+
+	#
+	#
+
+	########################################################################################################
+	########################################################################################################
+	#### INSTANCE METHODS END ##############################################################################
+
+	#
+	#
+	#
+	#
 
 ########################################################################################################
 ########################################################################################################

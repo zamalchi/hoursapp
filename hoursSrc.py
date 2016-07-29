@@ -380,7 +380,7 @@ def complete_record():
 	record.setEnd(Record.getCurrentRoundedTime())
 
 	# calculate and set the duration
-	record.getAndSetDuration()
+	record.calculateAndSetDuration()
 	
 	# update the changed record in the list
 	records[index] = record
