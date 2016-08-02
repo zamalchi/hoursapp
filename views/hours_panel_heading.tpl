@@ -56,34 +56,41 @@
 						<!-- FORMATTED RECORD TEXT -->
 						<h4 class="panel-title pull-left">
 
-						<!-- FORMAT RECORD START/END/DESCRIPTION -->
+						<form class="form-inline" action="/saveRecord" method="post" enctype="multipart/form-data">
 
-						<!-- name|date <start>|date <end>|duration|label|billable|emergency|<description> -->
-						{{r.name}} |
-						{{r.date}}<strong> <u>{{r.fstart}}</u></strong> |
-						{{r.date}}
+							<!-- FORMAT RECORD START/END/DESCRIPTION -->
 
-						% if (r.duration == Record.PENDING_CHAR):
-							<form class="form-inline" action="/completeRecord" method="post" enctype="multipart/form-data">
-								<div class="form-group">
-									<a href="#" onclick="this.parentElement.parentElement.submit();">
-										<strong><span class="pending-text">{{r.fend}}</span></strong> |
-										<span class="negative-duration">{{r.duration}}</span>
-										<input type="hidden" name="completeIndex" id="{{ider.complete()}}" value="{{ider.i}}" />
-									</a>
-								</div>
-							</form>
-						% else:
-							<strong><u>{{r.fend}}</u></strong> |
-							% if (float(r.duration) <= 0):
-								<span class="negative-duration">{{r.duration}}</span>
+							<!-- name|date <start>|date <end>|duration|label|billable|emergency|<description> -->
+							{{r.name}} |
+							{{r.date}}
+							<div name="start" class="record-content" contenteditable="true"><strong><u>{{r.fstart}}</u></strong></div> |
+							{{r.date}}
+
+							% if (r.duration == Record.PENDING_CHAR):
+								<form class="form-inline" action="/completeRecord" method="post" enctype="multipart/form-data">
+									<div class="form-group">
+										<a href="#" onclick="this.parentElement.parentElement.submit();">
+											<strong><span class="pending-text">{{r.fend}}</span></strong> |
+											<span class="negative-duration">{{r.duration}}</span>
+											<input type="hidden" name="completeIndex" id="{{ider.complete()}}" value="{{ider.i}}" />
+										</a>
+									</div>
+								</form>
 							% else:
-								{{r.duration}}
+								<div name="start" class="record-content" contenteditable="true"><strong><u>{{r.fend}}</u></strong></div> |
+								<div name="duration" class="record-content" contenteditable="true">
+								% if (float(r.duration) <= 0):
+									<span class="negative-duration">{{r.duration}}</span>
+								% else:
+									{{r.duration}}
+								% end
+								</div>
 							% end
-						% end
-						| {{r.label}} | {{r.billable}} | {{r.emergency}} |
-						<strong>{{r.description}}</strong>
-						<!-- END OF FORMAT -->
+							| <div name="label" class="record-content" contenteditable="true" >{{r.label}}</div> | {{r.billable}} | {{r.emergency}} |
+							<div name="description" class="record-content" contenteditable="true"><strong>{{r.description}}</strong>
+							<!-- END OF FORMAT -->
+
+						</form>
 
 						</h4>
 

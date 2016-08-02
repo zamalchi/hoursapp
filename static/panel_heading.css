@@ -10,3 +10,7 @@
 button[name="collapseToggle"], button[name="editButton"] {
 	display: inline !important;
 }
+
+.record-content {
+	display: inline;
+}
