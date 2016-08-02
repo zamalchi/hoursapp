@@ -2,3 +2,11 @@
 .pending-text {
 	color: red;
 }
+
+.media[name="recordControlButtons"] .media-left {
+	min-width: 90px !important;
+}
+
+button[name="collapseToggle"], button[name="editButton"] {
+	display: inline !important;
+}

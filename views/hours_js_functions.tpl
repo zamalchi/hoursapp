@@ -102,4 +102,25 @@ function dropdownChangeType(self) {
 	value.value = input.value;
 }
 
+
+function editButtonClick(self) {
+	var span = self.getElementsByTagName("span")[0];
+	span.className = "glyphicon glyphicon-save";
+
+	self.classList.remove("btn-info");
+	self.classList.add("btn-primary");
+	self.onclick = function() {
+		saveButtonClick(self);
+	};
+}
+
+function saveButtonClick(self) {
+	var span = self.getElementsByTagName("span")[0];
+	span.className = "glyphicon glyphicon-edit";
+
+	self.classList.remove("btn-primary");
+	self.classList.add("btn-info");
+	self.onclick = function() { editButtonClick(self); };
+}
+
 </script>

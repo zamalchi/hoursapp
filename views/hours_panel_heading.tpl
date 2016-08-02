@@ -13,7 +13,7 @@
 <div class="panel-heading"> 				
 	<div class="container-fluid">
 		<div class="row">
-			<div class="media">
+			<div class="media" name="recordControlButtons">
 				<div class="media-left media-middle">
 					<!-- ######################################################################################################### -->
 					<!-- INSERT BUTTON -->
@@ -23,13 +23,19 @@
 					<!-- ######################################################################################################### -->
 
 					<!-- ######################################################################################################### -->
-					<!-- DELETE RECORD FORM -->
 					% if not is_new_record:
+
+						<!-- EDIT BUTTON -->
+		  			<button name="editButton" value={{ider.i}} class="btn btn-info btn-xs media-object" type="button" onclick="editButtonClick(this);" >
+		  				<span class="glyphicon glyphicon-edit"></span>
+		  			</button>
+
+						<!-- DELETE RECORD FORM -->
 						<form class="form-inline" action="/deleteOne" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 								<!-- INDEX FOR DELETING RECORD : HIDDEN -->
 								<input type="hidden" name="recordIndex" value="{{ider.i}}" />
-								<button class="btn btn-default x-button btn-xs media-object" type="submit">
+								<button class="btn btn-default x-button btn-xs media-object inline" type="submit">
 								<span class="glyphicon glyphicon-remove"></span>
 								</button>
 							</div>
