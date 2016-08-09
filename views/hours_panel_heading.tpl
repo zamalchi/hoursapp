@@ -26,9 +26,13 @@
 					% if not is_new_record:
 
 						<!-- EDIT BUTTON -->
-		  			<button name="editButton" value={{ider.i}} class="btn btn-info btn-xs media-object" type="button" onclick="editButtonClick(this);" >
-		  				<span class="glyphicon glyphicon-edit"></span>
-		  			</button>
+						<form class="form-inline" action="/editRecord" method="post" enctype="multipart/form-data">
+			  			<button type="submit" name="editButton" id="{{ider.edit()}}" value={{ider.i}} class="btn btn-primary btn-xs media-object" type="button" disabled >
+								<input type="hidden" name="recordIndex" value="{{ider.i}}" />
+								<input type="hidden" id="{{ider.new_description()}}" name="newDescription" value="" />
+			  				<span class="glyphicon glyphicon-save"></span>
+			  			</button>
+		  			</form>
 
 						<!-- DELETE RECORD FORM -->
 						<form class="form-inline" action="/deleteOne" method="post" enctype="multipart/form-data">
@@ -63,7 +67,7 @@
 							<!-- name|date <start>|date <end>|duration|label|billable|emergency|<description> -->
 							{{r.name}} |
 							{{r.date}}
-							<div name="start" class="record-content" contenteditable="true"><strong><u>{{r.fstart}}</u></strong></div> |
+							<div name="start" class="record-content"><strong><u>{{r.fstart}}</u></strong></div> |
 							{{r.date}}
 
 							% if (r.duration == Record.PENDING_CHAR):
@@ -77,8 +81,8 @@
 									</div>
 								</form>
 							% else:
-								<div name="start" class="record-content" contenteditable="true"><strong><u>{{r.fend}}</u></strong></div> |
-								<div name="duration" class="record-content" contenteditable="true">
+								<div name="start" class="record-content"><strong><u>{{r.fend}}</u></strong></div> |
+								<div name="duration" class="record-content">
 								% if (float(r.duration) <= 0):
 									<span class="negative-duration">{{r.duration}}</span>
 								% else:
@@ -86,8 +90,11 @@
 								% end
 								</div>
 							% end
-							| <div name="label" class="record-content" contenteditable="true" >{{r.label}}</div> | {{r.billable}} | {{r.emergency}} |
-							<div name="description" class="record-content" contenteditable="true"><strong>{{r.description}}</strong>
+							<div name="label" class="record-content">{{r.label}}</div> | {{r.billable}} | {{r.emergency}} |
+							<div name="description" class="record-content" onkeyup="enableSaveButton(this);" >
+								<input type="hidden" name="recordIndex" value="{{ider.i}}" contenteditable="false" />
+								<strong contenteditable="true" >{{r.description}}</strong>
+							</div>
 							<!-- END OF FORMAT -->
 
 						</form>

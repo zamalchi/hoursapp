@@ -402,6 +402,32 @@ def complete_record():
 ########################################################################################################
 ########################################################################################################
 
+### updates the description field of a specific record ; triggered by the save button
+@route('/editRecord', method="POST")
+def edit_record():
+	index = int(request.forms.get("recordIndex"))
+
+	text = request.forms.get("newDescription")
+
+	if text:
+		# replace <br> with " " in case of enter button being pressed
+		text = text.replace("<br>", " ").strip()
+
+		name, date = getCookies(request)
+
+		records = Record.parseRecordsFromFile(name, date)
+
+		records[index].description = text
+
+		Record.writeRecords(name, date, records)
+
+	redirect('hours')
+
+
+########################################################################################################
+########################################################################################################
+########################################################################################################
+
 ### emails records
 @route('/email', method="POST")
 def email_records():

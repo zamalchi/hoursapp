@@ -103,24 +103,26 @@ function dropdownChangeType(self) {
 }
 
 
-function editButtonClick(self) {
-	var span = self.getElementsByTagName("span")[0];
-	span.className = "glyphicon glyphicon-save";
-
-	self.classList.remove("btn-info");
-	self.classList.add("btn-primary");
-	self.onclick = function() {
-		saveButtonClick(self);
-	};
-}
-
-function saveButtonClick(self) {
-	var span = self.getElementsByTagName("span")[0];
-	span.className = "glyphicon glyphicon-edit";
-
-	self.classList.remove("btn-primary");
-	self.classList.add("btn-info");
-	self.onclick = function() { editButtonClick(self); };
+function enableSaveButton(self) {
+	// console.log("SELF: " + self);
+	// console.log("CHILDREN: " + self.children);
+	// console.log("CHILD 0: " + self.children[0]);
+	// get i value from hidden child
+	var i = self.children[0].value;
+	// get ith edit button
+	var btn = document.getElementById("edit" + i);
+	// console.log("BTN: " + btn);
+	// enable btn
+	btn.disabled = false;
+	
+	// get element where new description text will be submitted
+	var new_description = document.getElementById("newDescription" + i);
+	// console.log("NEW DESC: " + new_description)
+	// get text from description field
+	var text = self.children[1].innerHTML;
+	// console.log("TEXT: " + text);
+	// set new text to form element
+	new_description.value = text;
 }
 
 </script>

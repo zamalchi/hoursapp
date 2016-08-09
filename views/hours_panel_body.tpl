@@ -79,7 +79,7 @@
 				</div>
 				
 				<!-- DESCRIPTION : TEXT // not required (ex. lunch) -->
-				<input  name={{namer.description()}} id={{ider.description()}} type="text" class="form-control" placeholder="Description" required />
+				<input  name={{namer.description()}} id={{ider.description()}} type="text" class="form-control" placeholder="Notes" required />
 			</div>
 			<!-- END OF SINGLE LINE -->
 			<!-- ######################################################################################################### -->

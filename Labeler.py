@@ -21,6 +21,8 @@ class Labeler:
 	INSERT = "insert"
 	DROPDOWN = "dropdown"
 	COMPLETE = "complete"
+	EDIT = "edit"
+	NEW_DESCRIPTION = "newDescription"
 
 	def __init__(self, i=None):
 		if i != None:
@@ -116,4 +118,16 @@ class Labeler:
 			return Labeler.COMPLETE + str(self.i)
 		else:
 			return Labeler.COMPLETE
+
+	def edit(self):
+		if self.i != None:
+			return Labeler.EDIT + str(self.i)
+		else:
+			return Labeler.EDIT
+
+	def new_description(self):
+		if self.i != None:
+			return Labeler.NEW_DESCRIPTION + str(self.i)
+		else:
+			return Labeler.NEW_DESCRIPTION
 	#############################################
