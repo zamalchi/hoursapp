@@ -22,6 +22,13 @@
 					</div>
 			</div>
 
+			<!-- VIEW UPDATES -->
+			<div class="btn-group">
+					<div class="form-group">
+						<input id="viewUpdates" name="viewUpdates" type="submit" value="View Updates" class="btn btn-default btn-sm pull-right" onclick="openUpdateViewer()" />
+					</div>
+			</div>
+
 			<div class="btn-group pull-right">
 				<!-- DELETE RECORDS -->
 				<form action="/delete" method="post" class="form-inline" enctype="multipart/form-data">						

@@ -87,6 +87,55 @@ function openViewer() {
 	self.name="main"
 }
 
+
+function openUpdateViewer() {
+	OpenWindow=window.open("", "newwin", "width=750, height=750, toolbar=no,scrollbars="+scroll+",menubar=no");
+	OpenWindow.moveTo(0,0);
+	OpenWindow.document.write(`
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+ 	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='hours.css') }}" />
+	<title>Updates</title>
+</head>
+<body>
+<div class="container" id="viewerContents">
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="panel">
+				<div class="panel-heading">
+					<h4>Updates</h4>
+				</div>
+				<div class="panel-body">
+					<ol>
+						<li>
+							Deleting a record requires a double-click on the delete button
+						</li>
+						<li>
+							Notes/description can be edited and saved with the save button OR by pressing enter
+						</li>
+						<li>
+							Pulling records with an empty date defaults to the current date
+						</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+`);
+	OpenWindow.document.close();
+	self.name="main"
+}
+
+
+
+
+
+
 function dropdownChangeSelect(self) {
 	var input = self.parentElement.querySelector("[name='dropdown']");
 	input.value = self.options[self.selectedIndex].text;
