@@ -23,6 +23,7 @@ class Labeler:
 	COMPLETE = "complete"
 	EDIT = "edit"
 	NEW_DESCRIPTION = "newDescription"
+	#DESCRIPTION_BUTTON_DIV = "descriptionButtonDiv"
 
 	def __init__(self, i=None):
 		if i != None:
@@ -130,4 +131,10 @@ class Labeler:
 			return Labeler.NEW_DESCRIPTION + str(self.i)
 		else:
 			return Labeler.NEW_DESCRIPTION
+
+	# def description_button_div(self):
+	# 	if self.i != None:
+	# 		return Labeler.DESCRIPTION_BUTTON_DIV + str(self.i)
+	# 	else:
+	# 		return Labeler.DESCRIPTION_BUTTON_DIV
 	#############################################

@@ -103,14 +103,24 @@ function dropdownChangeType(self) {
 }
 
 
-function enableSaveButton(self) {
+function enableSaveButton(event, self) {
+
+	// get i value from hidden child
+	var i = self.children[0].value;
+
+	// get ith edit button
+	var btn = document.getElementById("edit" + i);
+
+	// if enter button was pressed, submit the form
+	if (event.keyCode === 13) {
+		btn.parentElement.submit();
+	}
+
 	// console.log("SELF: " + self);
 	// console.log("CHILDREN: " + self.children);
 	// console.log("CHILD 0: " + self.children[0]);
-	// get i value from hidden child
-	var i = self.children[0].value;
-	// get ith edit button
-	var btn = document.getElementById("edit" + i);
+
+
 	// console.log("BTN: " + btn);
 	// enable btn
 	btn.disabled = false;
