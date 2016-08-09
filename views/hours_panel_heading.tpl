@@ -39,7 +39,7 @@
 								<div class="form-group">
 								<!-- INDEX FOR DELETING RECORD : HIDDEN -->
 								<input type="hidden" name="recordIndex" value="{{ider.i}}" />
-								<button class="btn btn-default x-button btn-xs media-object inline" type="submit">
+								<button name="deleteButton" class="btn btn-default x-button btn-xs media-object" type="button" ondblclick="this.parentElement.parentElement.submit();" >
 								<span class="glyphicon glyphicon-remove"></span>
 								</button>
 							</div>
