@@ -72,8 +72,14 @@ def devp(msg):
 
 # sets labels for populating dropdown list in /hours
 def labelsInit(l):
+	# read labels from labels.txt
 	global labels
-	labels = l
+	try:
+		f = open("labels.txt", 'r')
+		labels = f.read().split("\n")
+		f.close()
+	except IOError:
+		print("***\nERROR: Labels file not found. Labels will not be populated.\n***")
 
 ### CSS ROUTING ########################################################################################
 
