@@ -148,6 +148,31 @@ function openUpdateViewer() {
 
 
 function dropdownChangeSelect(self) {
+	var index = self.attributes["data-index"].value;
+	var selected = self.options[self.selectedIndex];
+
+	var billable = selected.attributes["data-billable"].value
+	var emergency = selected.attributes["data-emergency"].value
+
+	if (billable === "Y") {
+		console.log("SETTING BILLABLE TO TRUE");
+		document.getElementById("billable" + index).checked = true;
+	} else {
+		console.log("SETTING BILLABLE TO FALSE");
+		document.getElementById("billable" + index).checked = false;
+	}
+
+	if (emergency === "Y") {
+		console.log("SETTING EMERGENCY TO TRUE");
+		document.getElementById("emergency" + index).checked = true;
+	} else {
+		console.log("SETTING EMERGENCY TO FALSE");
+		document.getElementById("emergency" + index).checked = false;
+	}
+
+	console.log(index, billable, emergency);
+	console.log(selected);
+
 	var input = self.parentElement.querySelector("[name='dropdown']");
 	input.value = self.options[self.selectedIndex].text;
 

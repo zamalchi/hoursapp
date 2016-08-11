@@ -68,10 +68,21 @@
 				<!-- <input name={{namer.label()}} id={{ider.label()}} type="text" class="form-control quarter-width" placeholder="Label" required/> -->
 				<!-- LABEL : TEXT -->
 				<div class="dropdown form-control">
-					<select class="dropdownSelect" onchange="dropdownChangeSelect(this)">
-					   <option></option>
-					   % for l in labels:
-					   	<option value="{{l}}">{{l}}</option>
+					<!-- INITIAL VALUES USED FOR DEFAULT AND INDEX OFFSET -->
+					% ls_name = [""]
+					% ls_billable = ["Y"]
+					% ls_emergency = ["N"]
+
+					% for each in labels:
+				   	% l = each.split(" | ")
+				   	% ls_name.append(l[0])
+				   	% ls_billable.append(l[1])
+				   	% ls_emergency.append(l[2])
+					% end
+
+					<select class="dropdownSelect" data-index="{{ider.i}}" onchange="dropdownChangeSelect(this)">
+					   % for i, each in enumerate(ls_name):
+					   	<option value="{{each}}" data-billable="{{ls_billable[i]}}" data-emergency="{{ls_emergency[i]}}">{{each}}</option>
 					   % end
 					</select>
 					<input class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Add/Select Label" id="{{ider.dropdown()}}" onfocus="this.select()" type="text" onchange="dropdownChangeType(this)" required />
