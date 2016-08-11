@@ -60,7 +60,7 @@
 						<!-- FORMATTED RECORD TEXT -->
 						<h4 class="panel-title pull-left">
 
-						<form class="form-inline" action="/saveRecord" method="post" enctype="multipart/form-data">
+						<form class="form-inline" action="/completeRecord" method="post" enctype="multipart/form-data">
 
 							<!-- FORMAT RECORD START/END/DESCRIPTION -->
 
@@ -90,6 +90,7 @@
 								% end
 								</div>
 							% end
+							|
 							<div name="label" class="record-content">{{r.label}}</div> | {{r.billable}} | {{r.emergency}} |
 							<div name="description" class="record-content" onkeyup="enableSaveButton(event, this);" >
 								<input type="hidden" name="recordIndex" value="{{ider.i}}" contenteditable="false" />
