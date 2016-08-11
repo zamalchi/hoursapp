@@ -110,6 +110,17 @@ function openUpdateViewer() {
 				<div class="panel-body">
 					<ol>
 						<li>
+							Incomplete records now have an input field for the end time
+							<ul>
+								<li>
+									End time can be saved with the save button OR by pressing enter
+								</li>
+								<li>
+									Entered time must conform to 15-minute intervals (this is checked)
+								</li>
+							</ul>
+						</li>
+						<li>
 							Deleting a record requires a double-click on the delete button
 						</li>
 						<li>
