@@ -29,5 +29,8 @@ except IOError:
 
 labelsInit(labels)
 
-
-run(host='localhost', port=port, debug=True)
+if dev == "True":
+	# reloader: restart on module file change
+	run(reloader=True, host='localhost', port=port, debug=True)
+else:
+	run(host='localhost', port=port, debug=True)
