@@ -31,7 +31,7 @@
 								<input type="hidden" name="recordIndex" value="{{ider.i}}" />
 								<input type="hidden" id="{{ider.new_description()}}" name="newDescription" value="" />
 								<input type="hidden" id="{{ider.complete_end_time()}}" name="completeEndTime" value="" />
-			  				<span class="glyphicon glyphicon-save"></span>
+			  				<span class="glyphicon glyphicon-edit"></span>
 			  			</button>
 		  			</form>
 

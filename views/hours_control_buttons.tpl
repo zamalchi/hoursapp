@@ -23,9 +23,17 @@
 			</div>
 
 			<!-- VIEW UPDATES -->
+			% updates = ""
+			% try:
+				% f = open("UPDATES")
+				% updates = f.read()
+				% f.close()
+			% except IOError:
+				% updates = "Update file not found"
+			% end
 			<div class="btn-group">
 					<div class="form-group">
-						<input id="viewUpdates" name="viewUpdates" type="submit" value="View Updates" class="btn btn-default btn-sm pull-right" onclick="openUpdateViewer()" />
+						<input id="viewUpdates" name="viewUpdates" type="submit" value="View Updates" class="btn btn-default btn-sm pull-right" onclick="openUpdateViewer(this)" data-updates="{{updates}}" />
 					</div>
 			</div>
 

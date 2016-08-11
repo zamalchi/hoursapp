@@ -88,9 +88,40 @@ function openViewer() {
 }
 
 
-function openUpdateViewer() {
+function openUpdateViewer(self) {
 	OpenWindow=window.open("", "newwin", "width=750, height=750, toolbar=no,scrollbars="+scroll+",menubar=no");
 	OpenWindow.moveTo(0,0);
+// 	OpenWindow.document.write(`
+// <html>
+// <head>
+// 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+// 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+//  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='hours.css') }}" />
+// 	<title>Updates</title>
+// </head>
+// <body>
+// <div class="container" id="viewerContents">
+// 	<div class="row">
+// 		<div class="col-md-6 col-md-offset-3">
+// 			<div class="panel">
+// 				<div class="panel-heading">
+// 					<h4>Updates</h4>
+// 				</div>
+// 				<div class="panel-body">
+// 					<ol>`);
+// 		for (line in self.attributes["data-updates"].value.split("\n")) {
+// 			OpenWindow.document.write(`<li>` + line + `</li>`);
+// 		}
+// 		OpenWindow.document.write(`
+// 					</ol>
+// 				</div>
+// 			</div>
+// 		</div>
+// 	</div>
+// </div>
+// </body>
+// </html>
+// `);
 	OpenWindow.document.write(`
 <html>
 <head>
@@ -205,7 +236,7 @@ function dropdownChangeType(self) {
 	billable = billable.replace(/,|'|\[|\]/g, '').split(" ");
 	emergency = emergency.replace(/,|'|\[|\]/g, '').split(" ");
 
-	var selected_index = names.indexOf(self.value);
+	var selected_index = names.indexOf(self.value.toUpperCase());
 
 	if (selected_index >= 0) {
 		setCheckboxes(index, billable[selected_index], emergency[selected_index]);
