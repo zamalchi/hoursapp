@@ -144,7 +144,23 @@ function openUpdateViewer() {
 
 
 
+function setCheckboxes(index, billable, emergency) {
+	if (billable === "Y") {
+		// console.log("SETTING BILLABLE TO TRUE");
+		document.getElementById("billable" + index).checked = true;
+	} else {
+		// console.log("SETTING BILLABLE TO FALSE");
+		document.getElementById("billable" + index).checked = false;
+	}
 
+	if (emergency === "Y") {
+		// console.log("SETTING EMERGENCY TO TRUE");
+		document.getElementById("emergency" + index).checked = true;
+	} else {
+		// console.log("SETTING EMERGENCY TO FALSE");
+		document.getElementById("emergency" + index).checked = false;
+	}
+}
 
 
 function dropdownChangeSelect(self) {
@@ -154,24 +170,10 @@ function dropdownChangeSelect(self) {
 	var billable = selected.attributes["data-billable"].value
 	var emergency = selected.attributes["data-emergency"].value
 
-	if (billable === "Y") {
-		console.log("SETTING BILLABLE TO TRUE");
-		document.getElementById("billable" + index).checked = true;
-	} else {
-		console.log("SETTING BILLABLE TO FALSE");
-		document.getElementById("billable" + index).checked = false;
-	}
+	setCheckboxes(index, billable, emergency);
 
-	if (emergency === "Y") {
-		console.log("SETTING EMERGENCY TO TRUE");
-		document.getElementById("emergency" + index).checked = true;
-	} else {
-		console.log("SETTING EMERGENCY TO FALSE");
-		document.getElementById("emergency" + index).checked = false;
-	}
-
-	console.log(index, billable, emergency);
-	console.log(selected);
+	// console.log(index, billable, emergency);
+	// console.log(selected);
 
 	var input = self.parentElement.querySelector("[name='dropdown']");
 	input.value = self.options[self.selectedIndex].text;
@@ -181,6 +183,25 @@ function dropdownChangeSelect(self) {
 }
 
 function dropdownChangeType(self) {
+	var index = self.attributes["data-index"].value;
+	var names = self.attributes["data-name"].value;
+	var billable = self.attributes["data-billable"].value;
+	var emergency = self.attributes["data-emergency"].value;
+	
+
+	names = names.replace(/,|'|\[|\]/g, '').split(" ");
+	billable = billable.replace(/,|'|\[|\]/g, '').split(" ");
+	emergency = emergency.replace(/,|'|\[|\]/g, '').split(" ");
+
+	var selected_index = names.indexOf(self.value);
+
+	if (selected_index >= 0) {
+		setCheckboxes(index, billable[selected_index], emergency[selected_index]);
+	} else {
+		setCheckboxes(index, billable[0], emergency[0]);
+	}
+
+
 	var input = self.parentElement.querySelector("[name='dropdown']");
 	var value = self.parentElement.querySelector("[name='label']");
 

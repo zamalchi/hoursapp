@@ -85,7 +85,7 @@
 					   	<option value="{{each}}" data-billable="{{ls_billable[i]}}" data-emergency="{{ls_emergency[i]}}">{{each}}</option>
 					   % end
 					</select>
-					<input class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Add/Select Label" id="{{ider.dropdown()}}" onfocus="this.select()" type="text" onchange="dropdownChangeType(this)" required />
+					<input class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Add/Select Label" id="{{ider.dropdown()}}" onfocus="this.select()" type="text" onchange="dropdownChangeType(this)" data-name="{{ls_name}}" data-billable="{{ls_billable}}" data-emergency="{{ls_emergency}}" data-index="{{ider.i}}" required />
 					<input name="{{namer.label()}}" id="{{ider.label()}}" type="hidden">
 				</div>
 				
