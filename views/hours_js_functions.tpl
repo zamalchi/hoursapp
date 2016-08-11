@@ -110,6 +110,8 @@ function openUpdateViewer() {
 				<div class="panel-body">
 					<ol>
 						<li>
+							Incomplete records now have an input field AND a button that will insert current rounded time
+						<li>
 							Checkboxes are modified based on the value of the label select/input elem
 							<ul>
 								<li>

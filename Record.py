@@ -858,17 +858,13 @@ class Record:
 
 	### SET END TIME WHILE ENSURING CORRECT PARSING/FORMATTING #############################################
 	def setEnd(self, time):
-		print("SETTING END??")
 		t = str(time)
 		
 		# parse time for end field
 		i = Record.parseTime(t)
 
-		print("PARSED:", i)
 		# format parsed time for fend (formatted end) field
 		s = Record.formatTime(i)
-
-		print("FORMATTED:", s)
 
 		self.end = i
 		self.fend = s

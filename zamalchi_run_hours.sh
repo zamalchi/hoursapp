@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./hours.py -p 8081 -m zamalchi@techsquare.com -d True
+./hours.py -p 8083 -m zamalchi@techsquare.com -d False

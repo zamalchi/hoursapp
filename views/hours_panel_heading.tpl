@@ -71,16 +71,23 @@
 
 						% if (r.duration == Record.PENDING_CHAR):
 							<div class="form-group" name="completeEndTime" onkeyup="enableSaveButton(event, this);" >
-								<!-- <a href="#" onclick="this.parentElement.parentElement.submit();">
-									<strong><span class="pending-text">{{r.fend}}</span></strong> |
-									<span class="negative-duration">{{r.duration}}</span>
-									<input type="hidden" name="completeIndex" id="{{ider.complete()}}" value="{{ider.i}}" />
-								</a> -->
+
 									<input type="hidden" name="completeIndex" id="{{ider.complete()}}" value="{{ider.i}}" />
 									<input type="text" name="completeEndTime" class="form-control input-sm" placeholder=" ... " />
 							</div>
+							|
+							<form class="form-inline" action="/completeRecord" method="post" enctype="multipart/form-data">
+								<div class="form-group">
+									<input type="hidden" name="completeIndex" value="{{ider.i}}" />
+								</div>
+								<button type="submit" class="btn btn-default btn-sm">
+									<span class="negative-duration">{{r.duration}}</span>
+								</button>
+							</form>
+
 						% else:
 							<div name="start" class="record-content"><strong><u>{{r.fend}}</u></strong></div> |
+							
 							<div name="duration" class="record-content">
 							% if (float(r.duration) <= 0):
 								<span class="negative-duration">{{r.duration}}</span>

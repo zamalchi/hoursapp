@@ -356,17 +356,60 @@ def delete_single_record():
 ########################################################################################################
 ########################################################################################################
 
+### updates the description field of a specific record ; triggered by the save button
+@route('/editRecord', method="POST")
+def edit_record():
+	index = int(request.forms.get("recordIndex"))
+
+	name, date = getCookies(request)
+	
+	records = Record.parseRecordsFromFile(name, date)
+
+	record = records[index]
+
+	description = request.forms.get("newDescription")
+
+	if description:
+		# replace <br> with " " in case of enter button being pressed
+		description = description.replace("<br>", " ").strip()
+
+		record.description = description
+
+
+	endTime = request.forms.get("completeEndTime")	
+
+	if endTime:
+		import re
+		rx = "(0[1-9]|1[0-9]|2[0-3]):?(00|15|30|45)"
+
+		if re.match(rx, endTime):
+			record.setEnd(endTime)
+			record.calculateAndSetDuration()
+
+
+	Record.addToSubtotal(name, date, record.duration)
+
+	records[index] = record
+
+	Record.writeRecords(name, date, records)
+
+	redirect('hours')
+
+
+########################################################################################################
+########################################################################################################
+########################################################################################################
+
 ### fill in end time and duration for partial record
 @route('/completeRecord', method="POST")
 def complete_record():
-
 	#######################################################
-
-	# get name and date cookies
-	name, date = getCookies(request)
 
 	# get index of completed record
 	index = int(request.forms.get("completeIndex"))
+
+	# get name and date cookies
+	name, date = getCookies(request)
 
 	#######################################################
 
@@ -381,7 +424,7 @@ def complete_record():
 
 	# calculate and set the duration
 	record.calculateAndSetDuration()
-	
+
 	# update the changed record in the list
 	records[index] = record
 
@@ -398,49 +441,18 @@ def complete_record():
 
 	redirect('hours')
 
-########################################################################################################
-########################################################################################################
-########################################################################################################
-
-### updates the description field of a specific record ; triggered by the save button
-@route('/editRecord', method="POST")
-def edit_record():
-	index = int(request.forms.get("recordIndex"))
-
-	name, date = getCookies(request)
-	
-	records = Record.parseRecordsFromFile(name, date)
-
-
-	description = request.forms.get("newDescription")
-
-	if description:
-		# replace <br> with " " in case of enter button being pressed
-		description = description.replace("<br>", " ").strip()
-
-		records[index].description = description
-
-
-	endTime = request.forms.get("completeEndTime")	
-
-	if endTime:
-		import re
-		rx = "(0[1-9]|1[0-9]|2[0-3]):?(00|15|30|45)"
-
-		if re.match(rx, endTime):
-			records[index].setEnd(endTime)
-			records[index].calculateAndSetDuration()
-
-
-
-	Record.writeRecords(name, date, records)
-
-	redirect('hours')
 
 
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
+
+
+
+
+
+
+
 
 ### emails records
 @route('/email', method="POST")
