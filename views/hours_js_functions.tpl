@@ -110,6 +110,16 @@ function openUpdateViewer() {
 				<div class="panel-body">
 					<ol>
 						<li>
+							Checkboxes are modified based on the value of the label select/input elem
+							<ul>
+								<li>
+									Selecting a value will match the presets on file
+								</li>
+								<li>
+									Typing in a value will dynamically check if it matches an option
+							</ul>
+						</li>
+						<li>
 							Incomplete records now have an input field for the end time
 							<ul>
 								<li>
