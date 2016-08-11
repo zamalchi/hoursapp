@@ -23,6 +23,7 @@ class Labeler:
 	COMPLETE = "complete"
 	EDIT = "edit"
 	NEW_DESCRIPTION = "newDescription"
+	COMPLETE_END_TIME = "completeEndTime"
 	#DESCRIPTION_BUTTON_DIV = "descriptionButtonDiv"
 
 	def __init__(self, i=None):
@@ -131,6 +132,13 @@ class Labeler:
 			return Labeler.NEW_DESCRIPTION + str(self.i)
 		else:
 			return Labeler.NEW_DESCRIPTION
+
+	def complete_end_time(self):
+		if self.i != None:
+			return Labeler.COMPLETE_END_TIME + str(self.i)
+		else:
+			return Labeler.COMPLETE_END_TIME
+
 
 	# def description_button_div(self):
 	# 	if self.i != None:

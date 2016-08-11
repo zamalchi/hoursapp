@@ -407,19 +407,33 @@ def complete_record():
 def edit_record():
 	index = int(request.forms.get("recordIndex"))
 
-	text = request.forms.get("newDescription")
+	name, date = getCookies(request)
+	
+	records = Record.parseRecordsFromFile(name, date)
 
-	if text:
+
+	description = request.forms.get("newDescription")
+
+	if description:
 		# replace <br> with " " in case of enter button being pressed
-		text = text.replace("<br>", " ").strip()
+		description = description.replace("<br>", " ").strip()
 
-		name, date = getCookies(request)
+		records[index].description = description
 
-		records = Record.parseRecordsFromFile(name, date)
 
-		records[index].description = text
+	endTime = request.forms.get("completeEndTime")	
 
-		Record.writeRecords(name, date, records)
+	if endTime:
+		import re
+		rx = "(0[1-9]|1[0-9]|2[0-3]):?(00|15|30|45)"
+
+		if re.match(rx, endTime):
+			records[index].setEnd(endTime)
+			records[index].calculateAndSetDuration()
+
+
+
+	Record.writeRecords(name, date, records)
 
 	redirect('hours')
 

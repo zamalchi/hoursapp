@@ -165,23 +165,28 @@ function enableSaveButton(event, self) {
 		btn.parentElement.submit();
 	}
 
-	// console.log("SELF: " + self);
-	// console.log("CHILDREN: " + self.children);
-	// console.log("CHILD 0: " + self.children[0]);
-
-
-	// console.log("BTN: " + btn);
 	// enable btn
 	btn.disabled = false;
 	
-	// get element where new description text will be submitted
-	var new_description = document.getElementById("newDescription" + i);
-	// console.log("NEW DESC: " + new_description)
-	// get text from description field
-	var text = self.children[1].innerHTML;
-	// console.log("TEXT: " + text);
-	// set new text to form element
-	new_description.value = text;
+	if (self.attributes["name"].value === "description") {
+		// get element where new description text will be submitted
+		var new_description = document.getElementById("newDescription" + i);
+		// console.log("NEW DESC: " + new_description)
+		// get text from description field
+		var text = self.children[1].innerHTML;
+		// console.log("TEXT: " + text);
+		// set new text to form element
+		new_description.value = text;
+	
+	} else if (self.attributes["name"].value === "completeEndTime") {
+		
+		var new_end_time = document.getElementById("completeEndTime" + i);
+
+		var text = self.children[1].value;
+
+		new_end_time.value = text;
+	}
+	
 }
 
 </script>

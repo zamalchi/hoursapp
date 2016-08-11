@@ -18,3 +18,11 @@ button[name="collapseToggle"], button[name="editButton"], button[name="deleteBut
 button[name="deleteButton"]:focus {
 	background-color: red;
 }
+
+input[name="completeEndTime"] {
+	min-width: 60px;
+	max-width: 60px;
+	font-size: 0.9em;
+	border: 1px solid red;
+	display: inline;
+}
