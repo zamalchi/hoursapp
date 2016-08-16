@@ -431,8 +431,9 @@ class Record:
 			date, start,
 			date, end,
 			duration,
+			label,
 			billable, emergency,
-			label, description,
+			description,
 			durationLocked)
 
 		#######################################################
@@ -781,10 +782,11 @@ class Record:
 
 		self.duration = elems[3]
 
-		self.billable = elems[4]
-		self.emergency = elems[5]
+		self.label = elems[4]
 
-		self.label = elems[6]
+		self.billable = elems[5]
+		self.emergency = elems[6]
+
 		self.description = elems[7]
 
 		#######################################################
@@ -921,8 +923,9 @@ class Record:
 			self.date, self.fstart,
 			self.date, self.fend,
 			self.duration,
+			self.label,
 			self.billable, self.emergency,
-			self.label, self.description,
+			self.description,
 			self.durationLocked)
 
 	### SECONDARY TO_STRING TO MATCH CORRECT RECORD STRING FORMAT (FOR PAYROLL) ############################
@@ -933,8 +936,9 @@ class Record:
 			self.date, self.fstart,
 			self.date, self.fend,
 			self.duration,
+			self.label,
 			self.billable, self.emergency,
-			self.label, self.description)
+			self.description)
 
 	########################################################################################################
 	### TO_STRING METHODS END ##############################################################################
