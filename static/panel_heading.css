@@ -26,3 +26,8 @@ input[name="completeEndTime"] {
 	border: 1px solid red;
 	display: inline;
 }
+
+[name="record-display-string"] {
+	padding-top: 2px !important;
+	padding-bottom: 2px !important;
+}

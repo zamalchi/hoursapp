@@ -59,7 +59,7 @@
 
 						<!-- ######################################################################################################### -->
 						<!-- FORMATTED RECORD TEXT -->
-						<h4 class="panel-title pull-left">
+						<h4 class="panel-title pull-left" name="record-display-string">
 
 						<!-- FORMAT RECORD START/END/DESCRIPTION -->
 
