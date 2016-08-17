@@ -76,7 +76,10 @@ def labelsInit(l):
 	global labels
 	try:
 		f = open("labels.txt", 'r')
-		labels = f.read().split("\n")
+
+		# parses into list and filters out any empty lines (ex. trailing \n)
+		labels = filter(None, f.read().split("\n"))
+
 		f.close()
 	except IOError:
 		print("***\nERROR: Labels file not found. Labels will not be populated.\n***")

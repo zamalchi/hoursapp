@@ -1,5 +1,5 @@
-TS | Y | Y
+TS | Y | N
 ENGAGING | Y | N
-C3DDB | N | Y
-NEURO | N | N
+C3DDB | Y | N
+NEURO | Y | N
 HOLYOKE | Y | N

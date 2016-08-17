@@ -97,7 +97,6 @@
 							</div>
 						% end
 						|
-						% print("LABEL:", r.label, "BILLABLE:", r.billable, "EMERGENCY:", r.emergency)
 						<div name="label" class="record-content">{{r.label}}</div> | {{r.billable}} | {{r.emergency}} |
 						<div name="description" id="{{'foobar' + str(ider.i)}}" class="record-content" onkeyup="enableSaveButton(event, this);" >
 							<input type="hidden" name="recordIndex" value="{{ider.i}}" contenteditable="false" />
