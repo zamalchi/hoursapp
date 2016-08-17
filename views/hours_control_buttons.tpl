@@ -46,15 +46,16 @@
 					</div>
 				</form>
 			</div>
-			<div class="btn-group pull-right">
+			<!-- <div class="btn-group pull-right"> -->
 				<!-- EMAIL RECORDS -->
-				<form action="/email" method="post" class="form-inline" enctype="multipart/form-data">
+				<!-- <form action="/email" method="post" class="form-inline" enctype="multipart/form-data">
 					<div class="form-group">						
 						<input id="email" name="email" type="submit" value="Email" class="btn btn-success btn-sm pull-right" onclick="confirmEmail()" />
 						<input id="emailUser" name="emailUser" type="hidden" value="{{name}}" />
 					</div>
-				</form>
-			</div> <!-- ./btn-group -->
+				</form> -->
+			<!-- </div> -->
+			<!--./btn-group -->
 		
 		</div>
 	</div>
