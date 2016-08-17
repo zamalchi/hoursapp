@@ -141,6 +141,9 @@ function openUpdateViewer(self) {
 				<div class="panel-body">
 					<ol>
 						<li>
+							<span class="bugfix">BUGFIX</span> : monthly subtotal used to be wrongly incremented when a record's notes were changed
+						</li>
+						<li>
 							Incomplete records now have an input field AND a button that will insert current rounded time
 						<li>
 							Checkboxes are modified based on the value of the label select/input elem

@@ -248,3 +248,6 @@ table tr:nth-child(odd) td {
 }
 
 
+.bugfix {
+    color: red;
+}
