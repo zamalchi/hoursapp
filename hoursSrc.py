@@ -395,8 +395,7 @@ def edit_record():
 			record.setEnd(endTime)
 			record.calculateAndSetDuration()
 
-
-	Record.addToSubtotal(name, date, record.duration)
+		Record.addToSubtotal(name, date, record.duration)
 
 	records[index] = record
 
