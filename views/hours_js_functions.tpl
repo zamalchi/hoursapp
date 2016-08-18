@@ -113,9 +113,19 @@ function openUpdateViewer(self) {
 			<div class="panel">
 				<div class="panel-heading">
 					<h4>Updates</h4>
+					<p>If it crashes terribly, this is the pre-refactoring commit:<br><strong>08a19fa444c57092410c25c72f1a252a5749d028</strong></p>
 				</div>
 				<div class="panel-body">
 					<ol>
+						<li>
+							Displayed notes now use an input element and have a separate line
+						</li>
+						<li>
+							Button to supply current end time has been removed. Submitting with the field empty will use the current time	
+						</li>
+						<li>
+							Save button has been removed (redundant)
+						</li>
 						<li>
 							<span class="bugfix">BUGFIX</span> : monthly subtotal used to be wrongly incremented when a record's notes were changed
 						</li>
