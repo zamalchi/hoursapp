@@ -1,11 +1,18 @@
+<!-- ######################################################################################################### -->
 
 
-<!-- ##################### -->
+<!-- TO BE INSERTED INTO A PANEL ELEMENT (*BEFORE*/AFTER) A PANEL-HEADING -->
+
+<!-- ######################################################################################################### -->
+
 <!-- REQUIRES -->
 <!-- i: index of record and suffix of elem ids -->
 <!-- name: name cookie, if it is set -->
 <!-- is_new_record: boolean for differentiating 'New Record' part (for focusing) -->
-<!-- ##################### -->
+
+<!-- ######################################################################################################### -->
+
+<!-- TODO: determine if this import is needed -->
 % from Record import Record
 
 
@@ -15,10 +22,19 @@
 
 % NAME_REGEX = "[a-zA-Z]{2,}"
 
-
+<!-- PROVIDE NAMES AND IDS FOR ELEMENTS (IDS INCLUDE THE INDEX OF THE RECORD) -->
 % namer = Labeler()
 % ider = Labeler(i)
 
+<!-- ######################################################################################################### -->
+<!-- ######################################################################################################### -->
+<!-- ######################################################################################################### -->
+<!-- ######################################################################################################### -->
+
+
+
+
+<!-- START OF PANEL-BODY HTML -->
 
 <div class="panel-body">
 	<form action="/hours" method="post" enctype="multipart/form-data">
@@ -128,3 +144,5 @@
 		</fieldset>
 	</form>
 </div> <!-- /.panel-body -->
+
+<!-- END OF PANEL-BODY HTML -->
