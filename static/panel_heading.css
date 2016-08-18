@@ -19,7 +19,7 @@ button[name="deleteButton"]:focus {
 	background-color: red;
 }
 
-input[name="completeEndTime"] {
+input[name="completeEnd"] {
 	min-width: 60px;
 	max-width: 60px;
 	font-size: 0.9em;
@@ -32,6 +32,12 @@ input[name="completeEndTime"] {
 	padding-bottom: 2px !important;
 }
 
-span[name="notes"] {
+input[name="notes"] {
 	font-weight: bold;
+	margin-top: 5px;
+	width: 90%;
+}
+
+.full-width {
+	width: 100%;
 }

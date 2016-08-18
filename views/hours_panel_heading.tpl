@@ -20,6 +20,8 @@
 % namer = Labeler()
 % ider = Labeler(i)
 
+% TIME_REGEX = "(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))"
+
 <!-- ######################################################################################################### -->
 <!-- ######################################################################################################### -->
 <!-- ######################################################################################################### -->
@@ -47,8 +49,12 @@
 						<!-- ######################################################################################################### -->
 						<!-- ######################################################################################################### -->
 
-						<!-- INSERT BUTTON (ALWAYS PRESENT) -->
-		  			<button name="collapseToggle" value={{ider.i}} class="btn btn-success btn-xs media-object" type="button" data-toggle="collapse" data-target="#{{ider.record()}}" data-parent="#accordion">
+						<!-- COLLAPSE BUTTON (ALWAYS PRESENT) : toggles (accordion-style) the panel-body elems on the page -->
+						<!-- TODO: needed in button? : data-index="{{ider.i}}" -->
+		  			<button name="collapseToggle" type="button"  
+							class="btn btn-success btn-xs media-object"
+							data-toggle="collapse" data-target="#{{ider.record()}}" data-parent="#accordion">
+		  				
 		  				<span class="glyphicon glyphicon-chevron-down"></span>
 		  			</button>
 						
@@ -59,27 +65,35 @@
 						% if not is_new_record:
 
 							<!-- EDIT BUTTON -->
-							<form class="form-inline" action="/editRecord" method="post" enctype="multipart/form-data">
+							<!-- TODO: fully decide that button is (not) needed; edit-forms can be submitted via pressing enter -->
+<!-- 							<form class="form-inline" action="/editRecord" method="post" enctype="multipart/form-data">
 				  			<button type="submit" name="editButton" id="{{ider.edit()}}" value={{ider.i}} class="btn btn-primary btn-xs media-object" type="button" disabled >
 									<input type="hidden" name="recordIndex" value="{{ider.i}}" />
 									<input type="hidden" id="{{ider.new_description()}}" name="newDescription" value="" />
 									<input type="hidden" id="{{ider.complete_end_time()}}" name="completeEndTime" value="" />
 				  				<span class="glyphicon glyphicon-edit"></span>
 				  			</button>
-			  			</form>
+			  			</form> -->
 	
 							<!-- ######################################################################################################### -->
 
-							<!-- DELETE RECORD FORM -->
+							<!-- DELETE SINGLE RECORD FORM -->
 							<form class="form-inline" action="/deleteOne" method="post" enctype="multipart/form-data">
 									<div class="form-group">
-									<!-- INDEX FOR DELETING RECORD : HIDDEN -->
-									<input type="hidden" name="recordIndex" value="{{ider.i}}" />
-									<button name="deleteButton" class="btn btn-default x-button btn-xs media-object" type="button" ondblclick="this.parentElement.parentElement.submit();" >
-									<span class="glyphicon glyphicon-remove"></span>
-									</button>
-								</div>
+
+										<!-- RECORD INDEX : *value* is passed back via form -->
+										<input name="index" type="hidden" value="{{ider.i}}" />
+
+										<!-- DELETE BUTTON : submits form on double-click -->
+										<button name="delete" type="button"
+											class="btn btn-default x-button btn-xs media-object"
+											ondblclick="this.parentElement.parentElement.submit();" >
+											
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+									</div>
 							</form>
+
 						% end
 
 						<!-- ######################################################################################################### -->
@@ -139,11 +153,13 @@
 								<!-- COMPLETE END TIME FORM -->
 								<form action="/completeEndTime" method="post" class="form-inline" enctype="multipart/form-data" >
 									<div class="form-group">
-											<!-- END TIME : input able to submit form -->
-											<input type="text" name="completeEndTime"
-														 class="form-control input-sm" placeholder="     " 
-														 onkeyup="enableSaveButton(event, this);" 
-														 data-index="{{ider.i}}" />
+
+											<!-- RECORD INDEX : *value* is passed back via form -->
+											<input name="index" type="hidden" value="{{ider.i}}" />
+
+											<!-- END TIME : input able to submit form ; value is passed back -->
+											<input type="text" name="completeEnd" class="form-control input-sm"
+												placeholder="     " pattern={{TIME_REGEX}} />
 									</div>
 								</form>
 
@@ -181,19 +197,21 @@
 							
 							<!-- BILLABLE | EMERGENCY -->
 							| {{r.billable}} | {{r.emergency}} |
-							
+	
+							<br>
+
 							<!-- ######################################################################################################### -->
 
 							<!-- COMPLETE NOTES FORM -->
 							<form action="/completeNotes" method="post" name="completeNotes" class="form-inline" enctype="multipart/form-data">
-								<div class="form-group">
-									<!-- NOTES : editable, submits on (keydown === enter) -->
-									<span name="notes" contenteditable="true"
-												data-index="{{ider.i}}" class="record-content"
-												onkeyup="enableSaveButton(this);"
-												onkeydown="submitOnEnterPressed(event, this.parentElement.parentElement);">
-										{{r.description}}
-									</span>
+								<div class="form-group full-width">
+
+									<!-- RECORD INDEX : *value* is passed back via form -->
+									<input name="index" type="hidden" value="{{ider.i}}" />
+
+									<!-- NOTES : submits on (keydown === enter) ; value is passed back via form -->
+									<input name="notes" class="record-content" value="{{r.description}}" />
+
 								</div>
 							</form>
 

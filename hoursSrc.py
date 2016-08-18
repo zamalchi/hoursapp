@@ -333,9 +333,9 @@ def delete_records():
 def delete_single_record():
 
 	#######################################################
-
+	
 	# get index based on which delete button was clicked / which form was submitted
-	index = int(request.forms.get('recordIndex'))
+	index = int(request.forms.get('index'))
 
 	# get name and date cookies
 	name, date = getCookies(request)
@@ -365,56 +365,55 @@ def delete_single_record():
 ########################################################################################################
 ########################################################################################################
 
-### updates the description field of a specific record ; triggered by the save button
-@route('/editRecord', method="POST")
-def edit_record():
-	index = int(request.forms.get("recordIndex"))
+### updates the notes field of a specific record ; triggered by the save button
+@route('/completeNotes', method="POST")
+def complete_notes():
+	#######################################################
+
+	# get index of completed record
+	index = int(request.forms.get("index"))
+
+	notes = request.forms.get("notes")
 
 	name, date = getCookies(request)
+
+	#######################################################
+
+	if notes:
 	
-	records = Record.parseRecordsFromFile(name, date)
-
-	record = records[index]
-
-	description = request.forms.get("newDescription")
-
-	if description:
+		records = Record.parseRecordsFromFile(name, date)
+		
+		record = records[index]
+		
 		# replace <br> with " " in case of enter button being pressed
-		description = description.replace("<br>", " ").strip()
+		notes = notes.replace("<br>", " ").strip()
 
-		record.description = description
+		# TODO: description --> notes
+		record.description = notes
 
+		records[index] = record
 
-	endTime = request.forms.get("completeEndTime")	
+		Record.writeRecords(name, date, records)
 
-	if endTime:
-		import re
-		rx = "(0[1-9]|1[0-9]|2[0-3]):?(00|15|30|45)"
-
-		if re.match(rx, endTime):
-			record.setEnd(endTime)
-			record.calculateAndSetDuration()
-
-		Record.addToSubtotal(name, date, record.duration)
-
-	records[index] = record
-
-	Record.writeRecords(name, date, records)
+	#######################################################
 
 	redirect('hours')
 
 
+
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
 
-### fill in end time and duration for partial record
-@route('/completeRecord', method="POST")
-def complete_record():
+@route('/completeEndTime', method="POST")
+def complete_end_time():
 	#######################################################
 
 	# get index of completed record
-	index = int(request.forms.get("completeIndex"))
+	index = int(request.forms.get('index'))
+
+	# get the submitted end time (which has already been pattern matched) OR get current rounded time
+	end = request.forms.get('completeEnd') or Record.getCurrentRoundedTime()
 
 	# get name and date cookies
 	name, date = getCookies(request)
@@ -427,38 +426,26 @@ def complete_record():
 	# get particular record to complete
 	record = records[index]
 
-	# set the end time of the partial record to be the current time (rounded to 15 minutes)
-	record.setEnd(Record.getCurrentRoundedTime())
+	# set the end time
+	record.setEnd(end)
 
-	# calculate and set the duration
+	# calculate and set duration
 	record.calculateAndSetDuration()
 
-	# update the changed record in the list
-	records[index] = record
-
-	# adjust adjacent records in case of overlap	
-	Record.adjustAdjacentRecords(records, index)
-
-	# add new duration to the subtotal
+	# add the new duration to the subtotal
 	Record.addToSubtotal(name, date, record.duration)
 
-	# write back updated records
+	# write back record
+	records[index] = record
 	Record.writeRecords(name, date, records)
 
 	#######################################################
 
 	redirect('hours')
 
-
-
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
-
-
-
-
-
 
 
 
