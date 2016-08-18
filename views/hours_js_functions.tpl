@@ -2,15 +2,6 @@
 
 <script type="text/javascript">
 
-/*
-// come back to this maybe
-function focusEndTime(endID) {
-	console.log("In focusEndTime()")
-	console.log("endID:", endID)
-	document.getElementById(endID).focus();
-}
-*/
-
 
 function confirmDelete() {
 	var choice = confirm("Are you sure you want to delete records?");
@@ -31,26 +22,11 @@ function focusAndClearField(id) {
 	elem.focus();
 }
 
-// @param recordID: id of record that should stay open
-// loops through and closes all of the records; then opens the one specified by recordID
-// function openForm(recordID) {
-// 	var i = 0
-// 	var form = document.getElementById('record' + i)
-// 	while (form != null) {
-// 		form.classList.remove('in');
-// 		form.classList.add('collapse');
-// 		// get next record
-// 		form = document.getElementById('record' + (++i))
-// 	}
-// 	// set specified record to be open
-// 	var form = document.getElementById(recordID);
-// 	form.classList.remove('collapse');
-// 	form.classList.add('in');
-// }
 
 function adjustNextIndex(insertID, recordIndex) {
 	document.getElementById(insertID).value = recordIndex;
 }
+
 
 function openViewer() {
 	var str = document.getElementById("viewRecords").value;
@@ -254,38 +230,6 @@ function dropdownChangeType(self) {
 	value.value = input.value;
 }
 
-
-// function enableSaveButton(self) {
-
-// 	// get i value from hidden child
-// 	var i = self.attributes["data-index"].value;
-
-// 	// get ith edit button
-// 	var btn = document.getElementById("edit" + i);
-
-// 	// enable btn
-// 	btn.disabled = false;
-	
-// 	// if (self.attributes["name"].value === "description") {
-// 	// 	// get element where new description text will be submitted
-// 	// 	var new_description = document.getElementById("newDescription" + i);
-// 	// 	// console.log("NEW DESC: " + new_description)
-// 	// 	// get text from description field
-// 	// 	var text = self.children[1].innerHTML;
-// 	// 	// console.log("TEXT: " + text);
-// 	// 	// set new text to form element
-// 	// 	new_description.value = text;
-	
-// 	// } else if (self.attributes["name"].value === "completeEndTime") {
-		
-// 	// 	var new_end_time = document.getElementById("completeEndTime" + i);
-
-// 	// 	var text = self.children[1].value;
-
-// 	// 	new_end_time.value = text;
-// 	// }
-	
-// }
 
 function submitOnEnterPressed(event, formElem) {
 

@@ -61,21 +61,8 @@
 						<!-- ######################################################################################################### -->
 						<!-- ######################################################################################################### -->
 						
-						<!-- IF NOT NEW RECORD (ELSE NOTHING) -->
+						<!-- DELETE BUTTON IF NOT NEW RECORD (ELSE NOTHING) -->
 						% if not is_new_record:
-
-							<!-- EDIT BUTTON -->
-							<!-- TODO: fully decide that button is (not) needed; edit-forms can be submitted via pressing enter -->
-<!-- 							<form class="form-inline" action="/editRecord" method="post" enctype="multipart/form-data">
-				  			<button type="submit" name="editButton" id="{{ider.edit()}}" value={{ider.i}} class="btn btn-primary btn-xs media-object" type="button" disabled >
-									<input type="hidden" name="recordIndex" value="{{ider.i}}" />
-									<input type="hidden" id="{{ider.new_description()}}" name="newDescription" value="" />
-									<input type="hidden" id="{{ider.complete_end_time()}}" name="completeEndTime" value="" />
-				  				<span class="glyphicon glyphicon-edit"></span>
-				  			</button>
-			  			</form> -->
-	
-							<!-- ######################################################################################################### -->
 
 							<!-- DELETE SINGLE RECORD FORM -->
 							<form class="form-inline" action="/deleteOne" method="post" enctype="multipart/form-data">
