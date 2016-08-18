@@ -3,7 +3,7 @@
 	color: red;
 }
 
-.media[name="recordControlButtons"] .media-left {
+[name="recordControls"] {
 	min-width: 90px !important;
 }
 
