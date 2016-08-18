@@ -160,13 +160,13 @@
 							<!-- ##################################################### -->
 
 							<!-- COMPLETE NOTES FORM -->
-							<form action="/completeNotes" method="post" class="form-inline" enctype="multipart/form-data">
+							<form action="/completeNotes" method="post" name="completeNotes" class="form-inline" enctype="multipart/form-data">
 								<div class="form-group">
 									<!-- NOTES : editable, submits on (keydown === enter) -->
 									<span name="notes" contenteditable="true"
 												data-index="{{ider.i}}" class="record-content"
 												onkeyup="enableSaveButton(this);"
-												onkeydown="submitOnEnterPressed(event, this);">
+												onkeydown="submitOnEnterPressed(event, this.parentElement.parentElement);">
 										{{r.description}}
 									</span>
 								</div>
