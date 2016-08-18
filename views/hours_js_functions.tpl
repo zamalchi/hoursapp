@@ -255,41 +255,45 @@ function dropdownChangeType(self) {
 }
 
 
-function enableSaveButton(event, self) {
+function enableSaveButton(self) {
 
 	// get i value from hidden child
-	var i = self.children[0].value;
+	var i = self.attributes["data-index"].value;
 
 	// get ith edit button
 	var btn = document.getElementById("edit" + i);
 
-	// if enter button was pressed, submit the form
-	if (event.keyCode === 13) {
-		btn.parentElement.submit();
-	}
-
 	// enable btn
 	btn.disabled = false;
 	
-	if (self.attributes["name"].value === "description") {
-		// get element where new description text will be submitted
-		var new_description = document.getElementById("newDescription" + i);
-		// console.log("NEW DESC: " + new_description)
-		// get text from description field
-		var text = self.children[1].innerHTML;
-		// console.log("TEXT: " + text);
-		// set new text to form element
-		new_description.value = text;
+	// if (self.attributes["name"].value === "description") {
+	// 	// get element where new description text will be submitted
+	// 	var new_description = document.getElementById("newDescription" + i);
+	// 	// console.log("NEW DESC: " + new_description)
+	// 	// get text from description field
+	// 	var text = self.children[1].innerHTML;
+	// 	// console.log("TEXT: " + text);
+	// 	// set new text to form element
+	// 	new_description.value = text;
 	
-	} else if (self.attributes["name"].value === "completeEndTime") {
+	// } else if (self.attributes["name"].value === "completeEndTime") {
 		
-		var new_end_time = document.getElementById("completeEndTime" + i);
+	// 	var new_end_time = document.getElementById("completeEndTime" + i);
 
-		var text = self.children[1].value;
+	// 	var text = self.children[1].value;
 
-		new_end_time.value = text;
-	}
+	// 	new_end_time.value = text;
+	// }
 	
 }
+
+function submitOnEnterPressed(event, self) {
+	
+	// if enter button was pressed, submit the form
+	if (event.keyCode === 13) {
+		self.parentElement.submit();
+	}
+}
+
 
 </script>

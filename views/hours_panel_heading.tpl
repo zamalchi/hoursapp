@@ -10,6 +10,8 @@
 % namer = Labeler()
 % ider = Labeler(i)
 
+<!-- ######################################################################################################### -->
+
 <div class="panel-heading"> 				
 	<div class="container-fluid">
 		<div class="row">
@@ -48,68 +50,118 @@
 					% end
 					<!-- ######################################################################################################### -->
 				</div>
-			
+						
+				<!-- ######################################################################################################### -->
+				<!-- ********************************************************************************************************* -->
+				<!-- ********************************************************************************************************* -->
+				<!-- ######################################################################################################### -->
+				
 				<div class="media-body">
+
+					<!-- IF NEW RECORD -->
 					% if is_new_record:
 
+						<!-- RECORD COUNTER -->
 						<h4 class="panel-title"><strong>Insert new record: #{{ider.i+1}}</strong></h4>
 
-
+					<!-- ELSE NOT NEW RECORD -->
 					% else:
 
 						<!-- ######################################################################################################### -->
+						<!-- ********************************************************************************************************* -->
+						<!-- ######################################################################################################### -->
 						<!-- FORMATTED RECORD TEXT -->
+						<!-- name|date <start>|date <end>|duration|label|billable|emergency|<description> -->
+
 						<h4 class="panel-title pull-left" name="record-display-string">
 
-						<!-- FORMAT RECORD START/END/DESCRIPTION -->
+						{{r.name}} | {{r.date}}
 
-						<!-- name|date <start>|date <end>|duration|label|billable|emergency|<description> -->
-						{{r.name}} |
-						{{r.date}}
-						<div name="start" class="record-content"><strong><u>{{r.fstart}}</u></strong></div> |
-						{{r.date}}
+						<!-- START TIME -->
+						<div name="start" class="record-content"><strong><u>{{r.fstart}}</u></strong></div>
 
+						| {{r.date}}
+
+						<!-- ##################################################### -->
+						<!-- ##################################################### -->
+						<!-- IF INCOMPLETE RECORD (END TIME AND DURATION) -->
 						% if (r.duration == Record.PENDING_CHAR):
-							<div class="form-group" name="completeEndTime" onkeyup="enableSaveButton(event, this);" >
-
-									<input type="hidden" name="completeIndex" id="{{ider.complete()}}" value="{{ider.i}}" />
-									<input type="text" name="completeEndTime" class="form-control input-sm" placeholder=" ... " />
-							</div>
-							|
-							<form class="form-inline" action="/completeRecord" method="post" enctype="multipart/form-data">
-								<div class="form-group">
-									<input type="hidden" name="completeIndex" value="{{ider.i}}" />
-								</div>
-								<button type="submit" class="btn btn-default btn-sm">
-									<span class="negative-duration">{{r.duration}}</span>
-								</button>
-							</form>
-
-						% else:
-							<div name="start" class="record-content"><strong><u>{{r.fend}}</u></strong></div> |
 							
+							<!-- COMPLETE END TIME FORM -->
+							<form action="/completeEndTime" method="post" class="form-inline" enctype="multipart/form-data" >
+								<div class="form-group">
+										<!-- END TIME : input able to submit form -->
+										<input type="text" name="completeEndTime"
+													 class="form-control input-sm" placeholder="     " 
+													 onkeyup="enableSaveButton(event, this);" 
+													 data-index="{{ider.i}}" />
+								</div>
+							</form>
+	
+							<!-- ##################################################### -->
+
+							<!-- INCOMPLETE DURATION -->
+							| <span class="negative-duration">{{r.duration}}</span>
+
+						<!-- ##################################################### -->
+						<!-- ##################################################### -->
+						<!-- ELSE COMPLETE RECORD (END TIME AND DURATION) -->
+						% else:
+
+							<!-- END TIME -->
+							<div name="end" class="record-content"><strong><u>{{r.fend}}</u></strong></div> |
+							
+							<!-- DURATION -->
 							<div name="duration" class="record-content">
-							% if (float(r.duration) <= 0):
-								<span class="negative-duration">{{r.duration}}</span>
-							% else:
-								{{r.duration}}
-							% end
+								<!-- check if negative -> error -->
+								% if (float(r.duration) <= 0):
+									<span class="negative-duration">{{r.duration}}</span>
+								% else:
+									{{r.duration}}
+								% end
 							</div>
+
+						<!-- ##################################################### -->
+						<!-- ##################################################### -->
 						% end
-						|
-						<div name="label" class="record-content">{{r.label}}</div> | {{r.billable}} | {{r.emergency}} |
-						<div name="description" id="{{'foobar' + str(ider.i)}}" class="record-content" onkeyup="enableSaveButton(event, this);" >
-							<input type="hidden" name="recordIndex" value="{{ider.i}}" contenteditable="false" />
-							<strong contenteditable="true" >{{r.description}}</strong>
-						</div>
-						<!-- END OF FORMAT -->
+
+						<!-- LABEL -->
+						| <div name="label" class="record-content">{{r.label}}</div>
+						
+						<!-- BILLABLE | EMERGENCY -->
+						| {{r.billable}} | {{r.emergency}} |
+						
+						<!-- ##################################################### -->
+
+						<!-- COMPLETE NOTES FORM -->
+						<form action="/completeNotes" method="post" class="form-inline" enctype="multipart/form-data">
+							<div class="form-group">
+								<!-- NOTES : editable, submits on (keydown === enter) -->
+								<span name="notes" contenteditable="true"
+											data-index="{{ider.i}}" class="record-content"
+											onkeyup="enableSaveButton(this);"
+											onkeydown="submitOnEnterPressed(event, this);">
+									{{r.description}}
+								</span>
+							</div>
+						</form>
 
 						</h4>
 
+						<!-- END OF FORMAT -->
+						<!-- ######################################################################################################### -->
+						<!-- ********************************************************************************************************* -->
+						<!-- ######################################################################################################### -->
+
 					% end
 
-					<!-- ######################################################################################################### -->
 				</div>
+
+				<!-- ######################################################################################################### -->
+				<!-- ********************************************************************************************************* -->
+				<!-- ********************************************************************************************************* -->
+				<!-- ######################################################################################################### -->
+
 			</div>
 		</div>
 	</div>

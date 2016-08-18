@@ -31,3 +31,7 @@ input[name="completeEndTime"] {
 	padding-top: 2px !important;
 	padding-bottom: 2px !important;
 }
+
+span[name="notes"] {
+	font-weight: bold;
+}
