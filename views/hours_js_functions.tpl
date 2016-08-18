@@ -287,11 +287,11 @@ function enableSaveButton(self) {
 	
 }
 
-function submitOnEnterPressed(event, self) {
-	
+function submitOnEnterPressed(event, formElem) {
+
 	// if enter button was pressed, submit the form
 	if (event.keyCode === 13) {
-		self.parentElement.submit();
+		formElem.submit();
 	}
 }
 
