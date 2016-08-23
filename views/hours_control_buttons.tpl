@@ -38,6 +38,7 @@
 			</div>
 
 			<div class="btn-group pull-right">
+				
 				<!-- DELETE RECORDS -->
 				<form action="/delete" method="post" class="form-inline" enctype="multipart/form-data">						
 					<div class="form-group">
@@ -45,6 +46,15 @@
 						<input id="deleteConfirm" name="deleteConfirm" type="hidden" value="false" />
 					</div>
 				</form>
+
+				<!-- EMAIL RECORDS -->
+				<form action="/email" method="post" class="form-inline" enctype="multipart/form-data">
+					<div class="form-group">						
+						<input id="email" name="email" type="submit" value="Email" class="btn btn-success btn-sm pull-right" onclick="confirmEmail(this)" data-sender="{{sender}}" data-receivers="{{receivers}}" />
+						<input id="emailConfirm" name="emailConfirm" type="hidden" value="false" />
+					</div>
+				</form>
+
 			</div>
 			<!-- <div class="btn-group pull-right"> -->
 				<!-- EMAIL RECORDS -->

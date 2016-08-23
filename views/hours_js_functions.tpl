@@ -10,8 +10,16 @@ function confirmDelete() {
 	}
 }
 
-function emailRecords() {
-	confirm("Are you sure you want to email records?");
+function confirmEmail(self) {
+	var sender = self.attributes['data-sender'].value;
+	var receivers = self.attributes['data-receivers'].value;
+
+	var choice = confirm("Sender: " + sender + "\n" + 
+		"Receivers: " + receivers + "\n\n" +
+		"Are you sure you want to email records?");
+	if (choice) {
+		document.getElementById("emailConfirm").value = "true";
+	}
 }
 
 

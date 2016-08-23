@@ -54,24 +54,14 @@ if not os.path.exists(Record.hoursDir):
 
 receivers = []
 
-def smtpInit(mailTo):
+def smtpInit(mailTo='', mailFrom='root'):
     # this is called from the wrapper file
-    # sets the admin email
+    # sets the sender and receiver for emails
     global receivers
+    global sender
+
     receivers = [mailTo]
-
-### DEV MODE ###########################################################################################
-
-def setDevMode(dmode):
-    global devMode
-    devMode = dmode
-    print("DEV MODE: " + str(devMode))
-
-# dev print : prints when in dev mode
-def devp(msg):
-    global devMode
-    if devMode:
-        print(msg)
+    sender = mailFrom
 
 ### LABELS #############################################################################################
 
@@ -165,7 +155,8 @@ def hours():
 
     #######################################################
 
-    return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal)
+    return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal,
+                    sender=sender, receivers=receivers)
 
 
 ########################################################################################################
@@ -518,23 +509,33 @@ def toggle_emergency():
 ### emails records
 @route('/email', method="POST")
 def email_records():
-    redirect('hours')
 
-    curTimeShort = time.strftime("%m-%d")
+    #######################################################
 
-    sender = "root"
-    subject = "Hours " + curTimeShort + " (Subtotal: xx.x)"
+    # get name and date cookies
+    name, date = getCookies(request)
+
+    # sets flag based on user's confirmation / denial from popup alert
+    emailConfirm = request.forms.get("emailConfirm")
+
+    #######################################################
+
+    subtotal = Record.readSubtotal(name, date) or '0.0'
+
+    #######################################################
+
+    curTimeShort = time.strftime("%m/%d")
+
+    sender = "zamalchi@intranet.techsquare.com"
+    subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
     body = ""
 
-    name = request.get_cookie(namer.name()) or ""
+    #######################################################
 
-    if name:
+    if (emailConfirm == "true") and name:
+
         # try to open file with user's name and retrieve data
-        filePath = Record.hoursDir + "/" + name
-
-        # for each record, create a new Record object and add to list to pass to template
-        # list of records as [obj]
-        records = Record.parseRecordsFromFile(filePath)
+        records = Record.parseRecordsFromFile(name, date)
 
         for r in records:
             body += r.emailFormat() + "\n"
@@ -545,14 +546,11 @@ def email_records():
             mail = smtplib.SMTP("localhost")
             mail.sendmail(sender, receivers, message)
             mail.quit()
-            # print("Sender:", sender, "\nReceivers:", receivers)
-            return "<h2>Message sent???</h2>"
 
         except smtplib.SMTPException:
-            return "<h2>Error: could not send email.</h2>"
+            pass
 
-    else:
-        redirect('hours')
+    redirect('hours')
 
 ########################################################################################################
 ########################################################################################################
