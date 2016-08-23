@@ -1,9 +1,5 @@
-if (__name__ == "__main__"):
-	print("Run webapp through wrapper.")
-	print("Exiting...")
-	exit()
 
-#TO RUN FROM WRAPPER CLASSES:
+# TO RUN FROM WRAPPER CLASSES:
 # - smtpInit(mailTo)
 # - setDevMode(dmode)
 # - labelsInit(labels)
@@ -19,22 +15,31 @@ import time
 import smtplib
 import sys
 
-### APACHE #############################################################################################
-
-os.chdir(os.path.dirname(__file__))
-sys.path.insert(1, os.path.dirname(__file__))
-
 ### IMPORTS ############################################################################################
 
-from bottle import Bottle, route, run, request, response, template, static_file, default_app, redirect, SimpleTemplate, url, get, post
+from bottle import route, request, response, template, static_file, redirect, SimpleTemplate, url
 
 # Record class
 from Record import Record
 # Labeler class
 from Labeler import Labeler
+
 namer = Labeler()
 
-# for css reading in templates
+### APACHE #############################################################################################
+
+os.chdir(os.path.dirname(__file__))
+sys.path.insert(1, os.path.dirname(__file__))
+
+### RUNNING AS MAIN ####################################################################################
+
+if __name__ == "__main__":
+    print("Run webapp through wrapper.")
+    print("Exiting...")
+    exit()
+
+### FOR CSS READING IN TEMPLATES #######################################################################
+
 SimpleTemplate.defaults["url"] = url
 
 ### DIRECTORY ##########################################################################################
@@ -43,46 +48,46 @@ SimpleTemplate.defaults["url"] = url
 Record.hoursDir = "hours/"
 # if the directory doesn't exist, create it
 if not os.path.exists(Record.hoursDir):
-	os.makedirs(Record.hoursDir)
+    os.makedirs(Record.hoursDir)
 
 ### SMTP ###############################################################################################
 
 receivers = []
 
 def smtpInit(mailTo):
-	# this is called from the wrapper file
-	# sets the admin email
-	global receivers
-	receivers = [mailTo]
+    # this is called from the wrapper file
+    # sets the admin email
+    global receivers
+    receivers = [mailTo]
 
 ### DEV MODE ###########################################################################################
 
 def setDevMode(dmode):
-	global devMode
-	devMode = dmode
-	print("DEV MODE: " + str(devMode))
+    global devMode
+    devMode = dmode
+    print("DEV MODE: " + str(devMode))
 
 # dev print : prints when in dev mode
 def devp(msg):
-	global devMode
-	if devMode:
-		print(msg)
+    global devMode
+    if devMode:
+        print(msg)
 
 ### LABELS #############################################################################################
 
 # sets labels for populating dropdown list in /hours
 def labelsInit(l):
-	# read labels from labels.txt
-	global labels
-	try:
-		f = open("labels.txt", 'r')
+    # read labels from labels.txt
+    global labels
+    try:
+        f = open(l, 'r')
 
-		# parses into list and filters out any empty lines (ex. trailing \n)
-		labels = filter(None, f.read().split("\n"))
+        # parses into list and filters out any empty lines (ex. trailing \n)
+        labels = filter(None, f.read().split("\n"))
 
-		f.close()
-	except IOError:
-		print("***\nERROR: Labels file not found. Labels will not be populated.\n***")
+        f.close()
+    except IOError:
+        print("***\nERROR: Labels file not found. Labels will not be populated.\n***")
 
 ### CSS ROUTING ########################################################################################
 
@@ -95,25 +100,25 @@ def server_static(filename):
 
 ### NAME ########################################################
 def getNameCookie(request):
-	return request.get_cookie("name") or ""
+    return request.get_cookie("name") or ""
 
 def setNameCookie(response, name):
-	response.set_cookie("name", name)
+    response.set_cookie("name", name)
 
 ### DATE ########################################################
 def getDateCookie(request):
-	return request.get_cookie("date") or time.strftime("%Y-%m-%d")
+    return request.get_cookie("date") or time.strftime("%Y-%m-%d")
 
 def setDateCookie(response, date):
-	response.set_cookie("date", date)
+    response.set_cookie("date", date)
 
 ### CONSOLIDATED ################################################
 def getCookies(request):
-	return getNameCookie(request), getDateCookie(request)
+    return getNameCookie(request), getDateCookie(request)
 
 def setCookies(response, name, date):
-	setNameCookie(response, name)
-	setDateCookie(response, date)
+    setNameCookie(response, name)
+    setDateCookie(response, date)
 
 ########################################################################################################
 ########################################################################################################
@@ -129,7 +134,7 @@ def setCookies(response, name, date):
 #
 
 ########################################################################################################
-######################################  	HOURS FORM START	 ###########################################
+######################################### HOURS FORM START #############################################
 ########################################################################################################
 
 
@@ -142,28 +147,26 @@ def setCookies(response, name, date):
 
 @route('/hours')
 def hours():
-	#######################################################
-	
-	# get name and date cookies
-	name, date = getCookies(request)
-	
-	# get the month to use for the monthly subtotal
-	month = Record.getSubtotalMonth(date)
+    #######################################################
 
-	# get 
-	start = request.get_cookie(namer.start()) or ""
+    # get name and date cookies
+    name, date = getCookies(request)
 
-	subtotal = Record.readSubtotal(name, date)
-	#######################################################
+    # get the month to use for the monthly subtotal
+    month = Record.getSubtotalMonth(date)
 
-	# try to open file with user's name and retrieve data
-	# for each record, create a new Record object and add to list to pass to template
-	# list of records as Record obj
-	records = Record.parseRecordsFromFile(name, date)
-	
-	#######################################################
-	
-	return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal)
+    subtotal = Record.readSubtotal(name, date)
+    #######################################################
+
+    # try to open file with user's name and retrieve data
+    # for each record, create a new Record object and add to list to pass to template
+    # list of records as Record obj
+    records = Record.parseRecordsFromFile(name, date)
+
+    #######################################################
+
+    return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal)
+
 
 ########################################################################################################
 ########################################################################################################
@@ -171,78 +174,79 @@ def hours():
 
 @route('/hours', method="POST")
 def hours_post():
-	#######################################################	
-	
-	# name of user
-	name = request.forms.get(namer.name()).strip()
+    #######################################################
 
-	# date : either picked by user or default today
-	date = getDateCookie(request)
-	
-	# index for inserting new Record into the list of records
-	index = int(request.forms.get(namer.insert()))
+    # name of user
+    name = request.forms.get(namer.name()).strip()
 
-	#######################################################
-	
-	# parses form data and returns a Record obj
-	new_record = Record.getRecordFromHTML(request)
+    # date : either picked by user or default today
+    date = getDateCookie(request)
 
-	#######################################################
+    # index for inserting new Record into the list of records
+    index = int(request.forms.get(namer.insert()))
 
-	# reads and parses Records on file
-	records = Record.parseRecordsFromFile(name, date)
+    #######################################################
 
-	# count current subtotal for ONLY the day's records
-	current_local_subtotal = Record.countSubtotal(records)
+    # parses form data and returns a Record obj
+    new_record = Record.getRecordFromHTML(request)
 
-	#######################################################
+    #######################################################
 
-	# if the cookie is set, the user has pulled any existing files
-	# if there are no existing files, the cookie will be null
-	records_pulled = getNameCookie(request)
+    # reads and parses Records on file
+    records = Record.parseRecordsFromFile(name, date)
 
-	if records and not records_pulled:
-		# append to the end of unpulled existing records
-		# prevents adding to the beginning of an unexpected list
-		records.append(new_record)
-	else:
-		# insert new record at index provided from template form
-		records.insert(index, new_record)
+    # count current subtotal for ONLY the day's records
+    current_local_subtotal = Record.countSubtotal(records)
 
-		# adjust timings of adjacent records in case of overlap
-		Record.adjustAdjacentRecords(records, index)
+    #######################################################
 
-		# after adjusting the durations, recount total duration for the day
-		new_local_subtotal = Record.countSubtotal(records)
+    # if the cookie is set, the user has pulled any existing files
+    # if there are no existing files, the cookie will be null
+    records_pulled = getNameCookie(request)
 
-		# add the difference in summed durations back to the file
-		# when inserting between two records (whose durations are not locked) (i.e. splicing a record in), the subtotal should not change
-		Record.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
+    if records and not records_pulled:
+        # append to the end of unpulled existing records
+        # prevents adding to the beginning of an unexpected list
+        records.append(new_record)
+    else:
+        # insert new record at index provided from template form
+        records.insert(index, new_record)
 
-	#######################################################
-	
-	# write back updated list
-	Record.writeRecords(name, date, records)
+        # adjust timings of adjacent records in case of overlap
+        Record.adjustAdjacentRecords(records, index)
 
-	#######################################################
+        # after adjusting the durations, recount total duration for the day
+        new_local_subtotal = Record.countSubtotal(records)
 
-	# set name cookie with most recently used name (for insurance mostly)
-	setNameCookie(response, name)
+        # add the difference in summed durations back to the file
+        # when inserting between two records (whose durations are not locked)
+        # (i.e. splicing a record in), the subtotal should not change
+        Record.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
 
-	#######################################################
+    #######################################################
 
-	redirect('hours')
+    # write back updated list
+    Record.writeRecords(name, date, records)
 
+    #######################################################
+
+    # set name cookie with most recently used name (for insurance mostly)
+    setNameCookie(response, name)
+
+    #######################################################
+
+    redirect('hours')
+
+########################################################################################################
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
-########################################################################################################
 
 
 ########################################################################################################
-######################################  	HOURS FORM END	 #############################################
+######################################## HOURS FORM END ################################################
 ########################################################################################################
 
 #
@@ -255,7 +259,7 @@ def hours_post():
 #
 
 ########################################################################################################
-#####################################  	MISC ROUTES START	   ###########################################
+##################################### MISC ROUTES START ################################################
 ########################################################################################################
 
 
@@ -268,24 +272,23 @@ def hours_post():
 
 @route('/setCookies', method="POST")
 def set_cookies():
+    #######################################################
 
-	#######################################################
+    # get name of user provided in specified field
+    name = request.forms.get("setName") or ""
 
-	# get name of user provided in specified field
-	name = request.forms.get("setName") or ""
-	
-	# get date: either set manually or defaults to current day
-	date = request.forms.get("setDate") or time.strftime("%Y-%m-%d")
+    # get date: either set manually or defaults to current day
+    date = request.forms.get("setDate") or time.strftime("%Y-%m-%d")
 
-	#######################################################
+    #######################################################
 
-	# set name and date cookie
-	setCookies(response, name, date)
+    # set name and date cookie
+    setCookies(response, name, date)
 
-	#######################################################
+    #######################################################
 
-	# redirect to /hours to read file
-	redirect('hours')
+    # redirect to /hours to read file
+    redirect('hours')
 
 ########################################################################################################
 ########################################################################################################
@@ -294,35 +297,33 @@ def set_cookies():
 ### deletes records of current user
 @route('/delete', method="POST")
 def delete_records():
+    #######################################################
 
-	#######################################################
+    # get name and date cookies
+    name, date = getCookies(request)
 
-	# get name and date cookies
-	name, date = getCookies(request)
+    # sets flag based on user's confirmation / denial from popup alert
+    deleteConfirm = request.forms.get("deleteConfirm")
 
-	# sets flag based on user's confirmation / denial from popup alert
-	deleteConfirm = request.forms.get("deleteConfirm")
+    #######################################################
 
-	#######################################################
+    if (deleteConfirm == "true") and name:
+        # get records
+        records = Record.parseRecordsFromFile(name, date)
 
-	if (deleteConfirm == "true") and name:
-		
-		# get records
-		records = Record.parseRecordsFromFile(name, date)
-		
-		# get summed duration of records
-		summed_subtotal = Record.countSubtotal(records)
-		
-		# subtract that amount from the subtotal on file
-		Record.subtractFromSubtotal(name, date, summed_subtotal)
+        # get summed duration of records
+        summed_subtotal = Record.countSubtotal(records)
 
-		# delete both of the user's record files
-		Record.deleteRecords(name, date)
+        # subtract that amount from the subtotal on file
+        Record.subtractFromSubtotal(name, date, summed_subtotal)
 
-	#######################################################
+        # delete both of the user's record files
+        Record.deleteRecords(name, date)
 
-	# redirect back to hours page
-	redirect('hours')
+    #######################################################
+
+    # redirect back to hours page
+    redirect('hours')
 
 ########################################################################################################
 ########################################################################################################
@@ -331,35 +332,34 @@ def delete_records():
 ### deletes one record from those currently displayed
 @route('/deleteOne', method="POST")
 def delete_single_record():
+    #######################################################
 
-	#######################################################
-	
-	# get index based on which delete button was clicked / which form was submitted
-	index = int(request.forms.get('index'))
+    # get index based on which delete button was clicked / which form was submitted
+    index = int(request.forms.get('index'))
 
-	# get name and date cookies
-	name, date = getCookies(request)
+    # get name and date cookies
+    name, date = getCookies(request)
 
-	#######################################################
+    #######################################################
 
-	# read and parse records from file
-	records = Record.parseRecordsFromFile(name, date)
+    # read and parse records from file
+    records = Record.parseRecordsFromFile(name, date)
 
-	# get the duration of the record to be deleted
-	deletedRecordDuration = records[index].duration
+    # get the duration of the record to be deleted
+    deletedRecordDuration = records[index].duration
 
-	# subtract that amount from the subtotal on file
-	Record.subtractFromSubtotal(name, date, deletedRecordDuration)
+    # subtract that amount from the subtotal on file
+    Record.subtractFromSubtotal(name, date, deletedRecordDuration)
 
-	# delete record
-	del records[index]
+    # delete record
+    del records[index]
 
-	# write back updated records
-	Record.writeRecords(name, date, records)
+    # write back updated records
+    Record.writeRecords(name, date, records)
 
-	#######################################################
+    #######################################################
 
-	redirect('hours')
+    redirect('hours')
 
 ########################################################################################################
 ########################################################################################################
@@ -368,38 +368,35 @@ def delete_single_record():
 ### updates the notes field of a specific record ; triggered by the save button
 @route('/completeNotes', method="POST")
 def complete_notes():
-	#######################################################
+    #######################################################
 
-	# get index of completed record
-	index = int(request.forms.get("index"))
+    # get index of completed record
+    index = int(request.forms.get("index"))
 
-	notes = request.forms.get("notes")
+    notes = request.forms.get("notes")
 
-	name, date = getCookies(request)
+    name, date = getCookies(request)
 
-	#######################################################
+    #######################################################
 
-	if notes:
-	
-		records = Record.parseRecordsFromFile(name, date)
-		
-		record = records[index]
-		
-		# replace <br> with " " in case of enter button being pressed
-		notes = notes.replace("<br>", " ").strip()
+    if notes:
+        records = Record.parseRecordsFromFile(name, date)
 
-		# TODO: description --> notes
-		record.description = notes
+        record = records[index]
 
-		records[index] = record
+        # replace <br> with " " in case of enter button being pressed
+        notes = notes.replace("<br>", " ").strip()
 
-		Record.writeRecords(name, date, records)
+        # TODO: description --> notes
+        record.description = notes
 
-	#######################################################
+        records[index] = record
 
-	redirect('hours')
+        Record.writeRecords(name, date, records)
 
+    #######################################################
 
+    redirect('hours')
 
 ########################################################################################################
 ########################################################################################################
@@ -407,41 +404,41 @@ def complete_notes():
 
 @route('/completeEndTime', method="POST")
 def complete_end_time():
-	#######################################################
+    #######################################################
 
-	# get index of completed record
-	index = int(request.forms.get('index'))
+    # get index of completed record
+    index = int(request.forms.get('index'))
 
-	# get the submitted end time (which has already been pattern matched) OR get current rounded time
-	end = request.forms.get('completeEnd') or Record.getCurrentRoundedTime()
+    # get the submitted end time (which has already been pattern matched) OR get current rounded time
+    end = request.forms.get('completeEnd') or Record.getCurrentRoundedTime()
 
-	# get name and date cookies
-	name, date = getCookies(request)
+    # get name and date cookies
+    name, date = getCookies(request)
 
-	#######################################################
+    #######################################################
 
-	# get records from file
-	records = Record.parseRecordsFromFile(name, date)
+    # get records from file
+    records = Record.parseRecordsFromFile(name, date)
 
-	# get particular record to complete
-	record = records[index]
+    # get particular record to complete
+    record = records[index]
 
-	# set the end time
-	record.setEnd(end)
+    # set the end time
+    record.setEnd(end)
 
-	# calculate and set duration
-	record.calculateAndSetDuration()
+    # calculate and set duration
+    record.calculateAndSetDuration()
 
-	# add the new duration to the subtotal
-	Record.addToSubtotal(name, date, record.duration)
+    # add the new duration to the subtotal
+    Record.addToSubtotal(name, date, record.duration)
 
-	# write back record
-	records[index] = record
-	Record.writeRecords(name, date, records)
+    # write back record
+    records[index] = record
+    Record.writeRecords(name, date, records)
 
-	#######################################################
+    #######################################################
 
-	redirect('hours')
+    redirect('hours')
 
 ########################################################################################################
 ########################################################################################################
@@ -452,42 +449,41 @@ def complete_end_time():
 ### emails records
 @route('/email', method="POST")
 def email_records():
-	redirect('hours')
+    redirect('hours')
 
-	curTimeLong = time.strftime("%Y %b %d %X")
-	curTimeShort = time.strftime("%m-%d")
-		
-	sender = "root"
-	subject = "Hours " + curTimeShort + " (Subtotal: xx.x)"
-	body =  ""
+    curTimeShort = time.strftime("%m-%d")
 
-	name = request.get_cookie(namer.name()) or ""
+    sender = "root"
+    subject = "Hours " + curTimeShort + " (Subtotal: xx.x)"
+    body = ""
 
-	if name:
-		# try to open file with user's name and retrieve data
-		filePath = Record.hoursDir + "/" + name
+    name = request.get_cookie(namer.name()) or ""
 
-		# for each record, create a new Record object and add to list to pass to template
-		# list of records as [obj]
-		records = Record.parseRecordsFromFile(filePath)
+    if name:
+        # try to open file with user's name and retrieve data
+        filePath = Record.hoursDir + "/" + name
 
-		for r in records:
-			body += r.emailFormat() + "\n"
+        # for each record, create a new Record object and add to list to pass to template
+        # list of records as [obj]
+        records = Record.parseRecordsFromFile(filePath)
 
-		message = "Subject: %s\n\n%s" % (subject, body)
+        for r in records:
+            body += r.emailFormat() + "\n"
 
-		try:
-			mail = smtplib.SMTP("localhost")
-			mail.sendmail(sender, receivers, message)
-			mail.quit()
-			# print("Sender:", sender, "\nReceivers:", receivers)
-			return("<h2>Message sent???</h2>")
+        message = "Subject: %s\n\n%s" % (subject, body)
 
-		except smtplib.SMTPException:
-			return("<h2>Error: could not send email.</h2>")
-	 
-	else:
-		redirect('hours')
+        try:
+            mail = smtplib.SMTP("localhost")
+            mail.sendmail(sender, receivers, message)
+            mail.quit()
+            # print("Sender:", sender, "\nReceivers:", receivers)
+            return "<h2>Message sent???</h2>"
+
+        except smtplib.SMTPException:
+            return "<h2>Error: could not send email.</h2>"
+
+    else:
+        redirect('hours')
 
 ########################################################################################################
 ########################################################################################################
@@ -500,8 +496,3 @@ def email_records():
 ########################################################################################################
 ######################################  	MISC ROUTES END	   ###########################################
 ########################################################################################################
-
-
-
-
-

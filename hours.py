@@ -2,7 +2,9 @@
 
 import argparse
 
-#argparse
+from bottle import run
+
+# argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', help = "Port number", action="store", dest="p", required = True)
 parser.add_argument('-m', help = "Mailing address", action="store", dest="m", required = True)
@@ -23,7 +25,7 @@ labelsInit("labels.txt")
 
 
 if dev == "True":
-	# reloader: restart on module file change
-	run(reloader=True, host='localhost', port=port, debug=True)
+    # reloader: restart on module file change
+    run(reloader=True, host='localhost', port=port, debug=True)
 else:
-	run(host='localhost', port=port, debug=True)
+    run(host='localhost', port=port, debug=True)
