@@ -3,8 +3,12 @@
 	color: red;
 }
 
+div[name="record-display-col"] {
+	margin-left: -10px !important;
+}
+
 [name="recordControls"] {
-	min-width: 90px !important;
+	min-width: 70px !important;
 }
 
 button[name="collapseToggle"], button[name="editButton"], button[name="deleteButton"] {
@@ -28,8 +32,10 @@ input[name="completeEnd"] {
 }
 
 [name="record-display-string"] {
+	margin-left: -20px !important;
 	padding-top: 2px !important;
 	padding-bottom: 2px !important;
+	width: 100%;
 }
 
 input[name="notes"] {
