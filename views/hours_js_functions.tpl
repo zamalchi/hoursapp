@@ -38,7 +38,7 @@ function adjustNextIndex(insertID, recordIndex) {
 
 function openViewer() {
 	var str = document.getElementById("viewRecords").value;
-	OpenWindow=window.open("", "newwin", "width=550, height=750, toolbar=no,scrollbars="+scroll+",menubar=no");
+	OpenWindow=window.open("", "newwin", "width=940, height=750, toolbar=no,scrollbars="+scroll+",menubar=no");
 	OpenWindow.moveTo(0,0);
 	OpenWindow.document.write(`
 	<html>
