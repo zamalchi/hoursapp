@@ -33,7 +33,7 @@
 			% end
 			<div class="btn-group">
 					<div class="form-group">
-						<input id="viewUpdates" name="viewUpdates" type="submit" value="View Updates" class="btn btn-default btn-sm pull-right" onclick="openUpdateViewer(this)" data-updates="{{updates}}" />
+						<a href="/viewUpdates" target="__blank" class="btn btn-default btn-sm pull-right">View Updates</a>
 					</div>
 			</div>
 
