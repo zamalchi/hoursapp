@@ -251,3 +251,8 @@ table tr:nth-child(odd) td {
 .bugfix {
     color: red;
 }
+
+[name="date-title"] {
+    width: 40% !important;
+    min-width: 350px !important;
+}
