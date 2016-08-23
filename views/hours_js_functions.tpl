@@ -60,7 +60,7 @@ function openViewer() {
 	console.log("width: " + contents.offsetWidth + " height: " + contents.offsetHeight)
 	OpenWindow.resizeTo(contents.offsetWidth, contents.offsetHeight);
 	OpenWindow.document.close();
-	self.name="main"
+	self.name="main";
 }
 
 
@@ -171,26 +171,45 @@ function openUpdateViewer(self) {
 </html>
 `);
 	OpenWindow.document.close();
-	self.name="main"
+	self.name="main";
 }
 
 
+// private function
+function setBillableEmergency(index, billable, emergency) {
+	
+	var b = "<strong>" + billable + "</strong>";
+	var e = "<strong>" + emergency + "</strong>";
 
-function setCheckboxes(index, billable, emergency) {
-	if (billable === "Y") {
-		// console.log("SETTING BILLABLE TO TRUE");
-		document.getElementById("billable" + index).checked = true;
-	} else {
-		// console.log("SETTING BILLABLE TO FALSE");
-		document.getElementById("billable" + index).checked = false;
-	}
+	var bill = document.getElementById("billable" + index);
+	var b_span = bill.children[1];
+	var b_hidden = bill.children[2];
 
-	if (emergency === "Y") {
-		// console.log("SETTING EMERGENCY TO TRUE");
-		document.getElementById("emergency" + index).checked = true;
+	b_span.innerHTML = b;
+	b_hidden.value = billable;
+
+	var emer = document.getElementById("emergency" + index);
+	var e_span = emer.children[1];
+	var e_hidden = emer.children[2];
+
+	e_span.innerHTML = e;
+	e_hidden.value = emergency;
+}
+
+
+function toggleBE(self) {
+	
+	var c = self.children;
+
+	var span = c[1];
+	var hidden = c[2];
+
+	if (hidden.value === "Y") {
+		span.innerHTML = "<strong>N</strong>";
+		hidden.value = "N";
 	} else {
-		// console.log("SETTING EMERGENCY TO FALSE");
-		document.getElementById("emergency" + index).checked = false;
+		hidden.value = "Y";
+		span.innerHTML = "<strong>Y</strong>";
 	}
 }
 
@@ -202,7 +221,7 @@ function dropdownChangeSelect(self) {
 	var billable = selected.attributes["data-billable"].value
 	var emergency = selected.attributes["data-emergency"].value
 
-	setCheckboxes(index, billable, emergency);
+	setBillableEmergency(index, billable, emergency);
 
 	// console.log(index, billable, emergency);
 	// console.log(selected);
@@ -228,9 +247,9 @@ function dropdownChangeType(self) {
 	var selected_index = names.indexOf(self.value.toUpperCase());
 
 	if (selected_index >= 0) {
-		setCheckboxes(index, billable[selected_index], emergency[selected_index]);
+		setBillableEmergency(index, billable[selected_index], emergency[selected_index]);
 	} else {
-		setCheckboxes(index, billable[0], emergency[0]);
+		setBillableEmergency(index, billable[0], emergency[0]);
 	}
 
 

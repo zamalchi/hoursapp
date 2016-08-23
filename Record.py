@@ -360,6 +360,7 @@ class Record:
         end = Record.parseTime(request.forms.get('end'))
         ###
         duration = request.forms.get('duration').strip()
+        ### billable/emergency are each either 'Y' or 'N'
         billable = request.forms.get('billable')
         emergency = request.forms.get('emergency')
         ###
@@ -412,18 +413,6 @@ class Record:
         endTime = date + " " + end
 
         #######################################################
-
-        # determine billable checked status
-        if billable:
-            billable = "Y"
-        else:
-            billable = "N"
-
-        # determine emergency checked status
-        if emergency:
-            emergency = "Y"
-        else:
-            emergency = "N"
 
         #######################################################
 

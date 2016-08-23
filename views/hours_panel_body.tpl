@@ -127,16 +127,21 @@
 							<div class="pull-left">
 								<!-- DURATION : TEXT -->
 								<input name={{namer.duration()}} id={{ider.duration()}} type="text" class="form-control quarter-width" placeholder="Duration" />
-								<!-- BILLABLE CHECKBOX -->
-								<div class="billable">
-									<span class="checkboxtext">Billable: </span>
-									<input type="checkbox" name={{namer.billable()}} id={{ider.billable()}} checked />
+								
+								<!-- BILLABLE BUTTON -->
+								<div id="{{ider.billable()}}" class="billable btn btn-default" onclick="toggleBE(this);">
+									<span class="checkboxtext">Billable:</span>
+									<span class="checkboxtext"><strong>Y</strong></span>
+									<input type="hidden" name="{{namer.billable()}}" value="Y" />
 								</div>
-								<!-- EMERGENCY CHECKBOX -->
-								<div class="emergency">
-									<span class="checkboxtext">Emergency: </span>
-									<input type="checkbox" name={{namer.emergency()}} id={{ider.emergency()}} />
+								
+								<!-- EMERGENCY BUTTON -->
+								<div id="{{ider.emergency()}}" class="emergency btn btn-default" onclick="toggleBE(this);">
+									<span class="checkboxtext">Emergency:</span>
+									<span class="checkboxtext"><strong>N</strong></span>
+									<input type="hidden" name="{{namer.emergency()}}" value="N" />
 								</div>
+
 							</div>
 							<!-- RIGHT SIDE -->
 							<div class="pull-right">
