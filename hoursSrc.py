@@ -463,6 +463,57 @@ def view_updates():
 ########################################################################################################
 ########################################################################################################
 
+@route('/toggleBillable', method="POST")
+def toggle_billable():
+
+    name, date = getCookies(request)
+
+    index = int(request.forms.get('index'))
+    billable = request.forms.get('billable')
+
+    records = Record.parseRecordsFromFile(name, date)
+
+    r = records[index]
+
+    if r.billable == "Y":
+        r.billable = "N"
+    else:
+        r.billable = "Y"
+
+    records[index] = r
+
+    Record.writeRecords(name, date, records)
+
+    redirect('hours')
+
+
+@route('/toggleEmergency', method="POST")
+def toggle_emergency():
+
+    name, date = getCookies(request)
+
+    index = int(request.forms.get('index'))
+    emergency = request.forms.get('emergency')
+
+    records = Record.parseRecordsFromFile(name, date)
+
+    r = records[index]
+
+    if r.emergency == "Y":
+        r.emergency = "N"
+    else:
+        r.emergency = "Y"
+
+    records[index] = r
+
+    Record.writeRecords(name, date, records)
+
+    redirect('hours')
+
+
+########################################################################################################
+########################################################################################################
+########################################################################################################
 
 ### emails records
 @route('/email', method="POST")

@@ -179,11 +179,38 @@
 
 							% end
 
-							<!-- LABEL -->
-							| <div name="label" class="record-content">{{r.label}}</div>
+							|
 							
-							<!-- BILLABLE | EMERGENCY -->
-							| {{r.billable}} | {{r.emergency}} |
+							<!-- LABEL -->
+							<div name="label" class="record-content">{{r.label}}</div>
+							
+							|
+							
+							<!-- BILLABLE TOGGLE FORM -->
+							<form action="/toggleBillable" method="post" name="toggleBillable" class="form-inline" enctype="multipart/form-data">
+								<input type="hidden" name="billable" value="{{r.billable}}" />
+								<input type="hidden" name="index" value="{{ider.i}}" />
+								<button type="submit">
+									<span>
+										{{r.billable}}
+									</span>
+								</button>
+							</form>
+
+							| 
+							
+							<!-- EMERGENCY TOGGLE FORM -->
+							<form action="/toggleEmergency" method="post" name="toggleEmergency" class="form-inline" enctype="multipart/form-data">
+								<input type="hidden" name="emergency" value="{{r.emergency}}" />
+								<input type="hidden" name="index" value="{{ider.i}}" />
+								<button type="submit">
+									<span>
+										{{r.emergency}}
+									</span>
+								</button>
+							</form>
+
+							|
 	
 							<br>
 
