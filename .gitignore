@@ -1,3 +1,4 @@
 *.pyc*
 hours/*
 .idea/
+.sass-cache/
