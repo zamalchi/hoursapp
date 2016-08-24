@@ -14,33 +14,37 @@ div#header {
   margin-bottom: 25px !important;
 
 	#subtotalCounter {
-		font-size: 1.5em;
+		font-size: 1.4em;
 	}
 
-	div#dateTitle {
-    width: 40% !important;
-    min-width: 350px !important;
+	#dateTitle {
+		font-size: 1.4em;
 	}
 
 	// CONTROLS : inputs and buttons
 	div#controls {
 
 		vertical-align: center;
-		padding-bottom: 15px;
+		// padding-bottom: 15px;
+
+		.btn-group {
+			padding-bottom: 15px;
+		}
 
 		.control-button {
-			display: inline;
+			font-size: 0.9em;
+			// display: inline;
 
-			margin-left: 10px;
-			maring-right: 10px;
+			// margin-left: 10px;
+			// maring-right: 10px;
 
-			padding-left: 10px;
-			padding-right: 10px;	
+			// padding-left: 10px;
+			// padding-right: 10px;	
 		}
 
 		input#setName {
-			min-width: 108px;
-			max-width: 108px;
+			min-width: 95px;
+			max-width: 95px;
 		}
 
 		input#setDate {

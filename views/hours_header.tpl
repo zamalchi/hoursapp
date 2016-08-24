@@ -1,4 +1,3 @@
-
 <div class="row">
 	<div class="col-md-10">
 		<div class="container-fluid" id="header">
@@ -18,8 +17,10 @@
 							<div class="container-fluid">
 								<div class="row">
 
-									<div class="col-md-6 pull-left" id="dateTitle">
-										<h3>{{date_title}}</h3>
+									<div class="col-md-5">
+										<h3 id="dateTitle">
+											{{date_title}}
+										</h3>
 									</div>
 
 									<div class="col-md-6">
@@ -55,7 +56,8 @@
 											<form action="/setCookies" method="post" class="form-inline" enctype="multipart/form-data">
 												<div class="form-group">
 													
-													<input type="text" id="setName" name="setName" value="{{name}}" class="form-control input-sm third-width" placeholder="Enter name..." required />
+													<input type="text" id="setName" name="setName" value="{{name}}" class="form-control input-sm"
+														placeholder="Enter name..." required />
 													
 													<input type="date" id="setDate" name="setDate" class="form-control input-sm" />
 												</div>
@@ -71,7 +73,7 @@
 									<!-- RIGHT HALF START ####################################-->
 									<div class="col-md-6">
 
-										<div class="btn-group btn-group-sm">
+										<div class="btn-group">
 												
 											<!-- VIEW RECORDS -->
 											<div class="form-group form-inline">
@@ -81,25 +83,18 @@
 											</div>
 									
 											<!-- VIEW UPDATES -->
-											% updates = ""
-											% try:
-												% f = open("UPDATES")
-												% updates = f.read()
-												% f.close()
-											% except IOError:
-												% updates = "Update file not found"
-											% end
-
 											<div class="form-group form-inline">
-												<a href="/viewUpdates" target="__blank" class="control-button btn btn-default">Updates</a>
+												<a href="/viewUpdates" target="__blank" class="control-button btn btn-default btn-sm">Updates</a>
 											</div>
 
 
 											<!-- DELETE RECORDS -->
 											<form action="/delete" method="post" class="form-inline" enctype="multipart/form-data">						
 												<div class="form-group">
-													<input id="delete" name="delete" type="submit" value="Delete" class="control-button btn btn-danger"
+													
+													<input id="delete" name="delete" type="submit" value="Delete" class="control-button btn btn-danger btn-sm"
 														onclick="confirmDelete()" />
+													
 													<input id="deleteConfirm" name="deleteConfirm" type="hidden" value="false" />
 												</div>
 											</form>
@@ -107,8 +102,10 @@
 											<!-- EMAIL RECORDS -->
 											<form action="/email" method="post" class="form-inline" enctype="multipart/form-data">
 												<div class="form-group">						
-													<input id="email" name="email" type="submit" value="Email" class="control-button btn btn-success"
+													
+													<input id="email" name="email" type="submit" value="Email" class="control-button btn btn-success btn-sm"
 														onclick="confirmEmail(this)" data-sender="{{sender}}" data-receivers="{{receivers}}" />
+													
 													<input id="emailConfirm" name="emailConfirm" type="hidden" value="false" />
 												</div>
 											</form>

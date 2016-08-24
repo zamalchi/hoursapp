@@ -55,22 +55,18 @@ div#header {
   background-color: #cccccc;
   margin-bottom: 25px !important; }
   div#header #subtotalCounter {
-    font-size: 1.5em; }
-  div#header div#dateTitle {
-    width: 40% !important;
-    min-width: 350px !important; }
+    font-size: 1.4em; }
+  div#header #dateTitle {
+    font-size: 1.4em; }
   div#header div#controls {
-    vertical-align: center;
-    padding-bottom: 15px; }
+    vertical-align: center; }
+    div#header div#controls .btn-group {
+      padding-bottom: 15px; }
     div#header div#controls .control-button {
-      display: inline;
-      margin-left: 10px;
-      maring-right: 10px;
-      padding-left: 10px;
-      padding-right: 10px; }
+      font-size: 0.9em; }
     div#header div#controls input#setName {
-      min-width: 108px;
-      max-width: 108px; }
+      min-width: 95px;
+      max-width: 95px; }
     div#header div#controls input#setDate {
       min-width: 137px;
       max-width: 137px; }
@@ -209,8 +205,5 @@ h3 {
   position: relative;
   min-width: 400px;
   max-width: 400px; }
-
-div.form-inline div.pull-right {
-  margin-top: 5px; }
 
 /*# sourceMappingURL=hours.css.map */
