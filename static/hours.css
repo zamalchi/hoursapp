@@ -1,34 +1,34 @@
 
 
-body {
+/*body {
     font-family: Droid Sans, Arial;
     background: #aadfeb;
     padding-top: 40px;
-}
+}*/
 
-h1 {
+/*h1 {
     text-align: center;
 }
 
 h3 {
     margin-top: 5px;
     margin-bottom: 5px;
-}
-
+}*/
+/*
 #subtotalCounter {
     font-size: 1.5em;
-}
+}*/
 
 
 
-[name="description"] {
+/*[name="description"] {
     position: relative;
     min-width: 400px;
     max-width: 400px;
 
-}
+}*/
 
-.navbar {
+/*.navbar {
     background-color: #dddddd;
     border-color: #000000;
 }
@@ -41,26 +41,27 @@ h3 {
     display: inline-block;
     font-size: 20px;
     position: relative;
-}
+}*/
 
-.footer {
+/*.footer {
     margin: 30px;
 }
-
+*/
+/*
 div.threeColumn {
-    -webkit-column-count: 3; /* Chrome, Safari, Opera */
-    -moz-column-count: 3; /* Firefox */
+    -webkit-column-count: 3; // Chrome, Safari, Opera
+    -moz-column-count: 3; // Firefox
     column-count: 3;
 }
-
+*/
 
 /********************************************************/
 /********************************************************/
 
-div.records {
+/*div.records {
     margin-top: 0px;
-}
-
+}*/
+/*
 div.labels label {
     padding-right: 120px;
 }
@@ -73,67 +74,67 @@ div.panel-body {
     margin-top: 20px !important;
     border: 2px solid black;
 
-}
-
+}*/
+/*
 fieldset.inputs, div.records, div.labels, div#buttons {
     border: 2px solid black;
     padding: 10px;
     background-color: #cccccc;
     margin-bottom: 25px !important;
 }
-
-.records {
+*/
+/*.records {
     padding-left: 20px !important;
     padding-right: 20px !important;
 }
+*/
 
-
-div.billable, div.emergency {
+/*div.billable, div.emergency {
     display: inline;
     margin-left: 10px;
     margin-right: 10px;
 }
-
-div.form-group {
+*/
+/*div.form-group {
     display: inline;
-}
+}*/
 
-input#setDate {
+/*input#setDate {
     width: 50%;
 }
-
-
+*/
+/*
 div.form-inline div.pull-right {
     margin-top: 5px;
 }
-
-input[type=checkbox] {
-  /* All browsers except webkit*/
+*/
+/*input[type=checkbox] {*/
+  /* All browsers except webkit
   transform: scale(1.5);
 
-  /* Webkit browsers*/
+   Webkit browsers
   -webkit-transform: scale(1.5);
 
   margin: 5px;
 
   vertical-align: middle;
 }
+*/
 
-
-div#buttons {
+/*div#buttons {
     margin-top: 20px;
     margin-bottom: 10px;
     vertical-align: center;
-}
+}*/
 
-div#buttons button {
+/*div#buttons button {
     margin-left: 10px;
     margin-right: 10px;
 }
 
 div#buttons #email, #delete {
     margin-right: 10px;
-}
+}*/
 
 /*div#buttons > .row > div {
     padding-left: 10px;
@@ -141,7 +142,7 @@ div#buttons #email, #delete {
 }*/
 
 
-.x-button {
+/*.x-button {
     background-color: #E54747;
 }
 
@@ -155,34 +156,34 @@ div#buttons #email, #delete {
 
 .x-button:active{
     background-color: red;
-}
+}*/
 
-.glyphicon-remove {
+/*.glyphicon-remove {
     color: white;
-}
+}*/
 
-form.form-inline {
+/*form.form-inline {
     display: inline;
 }
-
+*/
 
 /********************************************************/
-form fieldset.inputs {
+/*form fieldset.inputs {
     margin-top: 20px;
     margin-bottom: 50px;
 }
 
 input#inputs-submit {
     margin-top: 10px;
-}
+}*/
 /********************************************************/
 
-
+/*
 td#up-arrow, td#down-arrow {
     padding: 0px;
 }
-
-.records table tr td{
+*/
+/*.records table tr td{
     padding: 10px;
     font-size: 1.15em;
 }
@@ -192,26 +193,26 @@ td#up-arrow, td#down-arrow {
     padding-left: 20px;
     padding-top: 10px;
 }
+*/
 
-
-table tr:nth-child(even) td {
+/*table tr:nth-child(even) td {
     background-color: #dddddd;
 }
 
 table tr:nth-child(odd) td {
     background-color: #cccccc;
 }
-
+*/
 
 /********************************************************/
 /********************************************************/
-
+/*
 .negative-duration {
     color: red;
     font-weight: bold;
-}
+}*/
 
-.vertical-center {
+/*.vertical-center {
     vertical-align: center!important;
 }
 
@@ -245,14 +246,15 @@ table tr:nth-child(odd) td {
 
 .no-padding {
     padding: 0px;
-}
+}*/
 
-
+/*
 .bugfix {
     color: red;
 }
+*/
 
-[name="date-title"] {
+/*[name="date-title"] {
     width: 40% !important;
     min-width: 350px !important;
-}
+}*/

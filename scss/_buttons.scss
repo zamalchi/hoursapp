@@ -1,0 +1,43 @@
+
+// BUTTONS
+
+#buttons {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	vertical-align: center;
+
+	button {
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+
+	#email, #delete {
+		margin-right: 10px;
+	}
+}
+
+.x-button {
+  background-color: $light_red;
+
+  &:visited {
+  	background-color: $light_red;
+  }
+	&:hover {
+  background-color: $red;
+	}
+	&:active {
+  background-color: $red;
+	}
+}
+
+.glyphicon-remove {
+	color: $white;
+}
+
+button[name="collapseToggle"], button[name="editButton"], button[name="deleteButton"] {
+	display: inline !important;
+}
+
+button[name="deleteButton"]:focus {
+	background-color: red;
+}

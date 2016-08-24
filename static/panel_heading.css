@@ -1,28 +1,28 @@
-
+/*
 .pending-text {
 	color: red;
 }
-
-div[name="record-display-col"] {
+*/
+/*div[name="record-display-col"] {
 	margin-left: -10px !important;
 }
 
 [name="recordControls"] {
 	min-width: 70px !important;
-}
+}*/
 
-button[name="collapseToggle"], button[name="editButton"], button[name="deleteButton"] {
+/*button[name="collapseToggle"], button[name="editButton"], button[name="deleteButton"] {
 	display: inline !important;
-}
+}*/
 
-.record-content {
+/*.record-content {
 	display: inline;
 }
 
 button[name="deleteButton"]:focus {
 	background-color: red;
-}
-
+}*/
+/*
 input[name="completeEnd"] {
 	min-width: 60px;
 	max-width: 60px;
@@ -43,7 +43,4 @@ input[name="notes"] {
 	margin-top: 5px;
 	width: 90%;
 }
-
-.full-width {
-	width: 100%;
-}
+*/
