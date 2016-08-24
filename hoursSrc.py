@@ -81,17 +81,11 @@ def labelsInit(l):
 
 ### STATIC ROUTING ########################################################################################
 
-# for css reading in templates
+# for css and favicon reading in templates
 @route('/static/<filename>', name='static')
 def server_static(filename):
     return static_file(filename, root='static')
 
-# for serving favicon
-@route('/favicon.ico')
-def get_favicon():
-    print("GETTING FAVICON")
-    return static_file('favicon.ico', root='static')
-    #return server_static('favicon.ico')
 
 ### COOKIE GETTERS/SETTERS #############################################################################
 
