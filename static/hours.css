@@ -1,260 +1,230 @@
-
-
-/*body {
-    font-family: Droid Sans, Arial;
-    background: #aadfeb;
-    padding-top: 40px;
-}*/
-
-/*h1 {
-    text-align: center;
-}
-
-h3 {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}*/
-/*
-#subtotalCounter {
-    font-size: 1.5em;
-}*/
-
-
-
-/*[name="description"] {
-    position: relative;
-    min-width: 400px;
-    max-width: 400px;
-
-}*/
-
-/*.navbar {
-    background-color: #dddddd;
-    border-color: #000000;
-}
-
-.navbar ul {
-    text-align: center;
-}
-
-.navbar li {
-    display: inline-block;
-    font-size: 20px;
-    position: relative;
-}*/
-
-/*.footer {
-    margin: 30px;
-}
-*/
-/*
-div.threeColumn {
-    -webkit-column-count: 3; // Chrome, Safari, Opera
-    -moz-column-count: 3; // Firefox
-    column-count: 3;
-}
-*/
-
-/********************************************************/
-/********************************************************/
-
-/*div.records {
-    margin-top: 0px;
-}*/
-/*
-div.labels label {
-    padding-right: 120px;
-}
-
-div.panel-body {
-    padding-bottom: 0px;
-}
-
-.panel {
-    margin-top: 20px !important;
-    border: 2px solid black;
-
-}*/
-/*
-fieldset.inputs, div.records, div.labels, div#buttons {
-    border: 2px solid black;
-    padding: 10px;
-    background-color: #cccccc;
-    margin-bottom: 25px !important;
-}
-*/
-/*.records {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-}
-*/
-
-/*div.billable, div.emergency {
-    display: inline;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-*/
-/*div.form-group {
-    display: inline;
-}*/
-
-/*input#setDate {
-    width: 50%;
-}
-*/
-/*
-div.form-inline div.pull-right {
-    margin-top: 5px;
-}
-*/
-/*input[type=checkbox] {*/
-  /* All browsers except webkit
-  transform: scale(1.5);
-
-   Webkit browsers
-  -webkit-transform: scale(1.5);
-
-  margin: 5px;
-
-  vertical-align: middle;
-}
-*/
-
-/*div#buttons {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    vertical-align: center;
-}*/
-
-/*div#buttons button {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-div#buttons #email, #delete {
-    margin-right: 10px;
-}*/
-
-/*div#buttons > .row > div {
-    padding-left: 10px;
-    padding-right: 10px;
-}*/
-
-
-/*.x-button {
-    background-color: #E54747;
-}
-
-.x-button:visited {
-    background-color: #E54747;    
-}
-
-.x-button:hover{
-    background-color: red;
-}
-
-.x-button:active{
-    background-color: red;
-}*/
-
-/*.glyphicon-remove {
-    color: white;
-}*/
-
-/*form.form-inline {
-    display: inline;
-}
-*/
-
-/********************************************************/
-/*form fieldset.inputs {
-    margin-top: 20px;
-    margin-bottom: 50px;
-}
-
-input#inputs-submit {
-    margin-top: 10px;
-}*/
-/********************************************************/
-
-/*
-td#up-arrow, td#down-arrow {
-    padding: 0px;
-}
-*/
-/*.records table tr td{
-    padding: 10px;
-    font-size: 1.15em;
-}
-
-.records h4 {
-    display: inline;
-    padding-left: 20px;
-    padding-top: 10px;
-}
-*/
-
-/*table tr:nth-child(even) td {
-    background-color: #dddddd;
-}
-
-table tr:nth-child(odd) td {
-    background-color: #cccccc;
-}
-*/
-
-/********************************************************/
-/********************************************************/
-/*
-.negative-duration {
-    color: red;
-    font-weight: bold;
-}*/
-
-/*.vertical-center {
-    vertical-align: center!important;
-}
+.vertical-center {
+  vertical-align: center !important; }
 
 .padded-top {
-    padding-top: 10px;
-}
+  padding-top: 10px; }
 
 .quarter-width {
-    width: 25%!important;
-}
+  width: 25% !important; }
 
 .third-width {
-    width: 33.33%!important;
-}
+  width: 33.33% !important; }
 
 .half-width {
-    width: 50%!important;
-}
+  width: 50% !important; }
 
 .two-thirds-width {
-    width: 66.66%!important;
-}
+  width: 66.66% !important; }
 
 .three-quarters-width {
-    width: 75%!important;
-}
+  width: 75% !important; }
 
 .full-width {
-    width: 100%!important;
-}
+  width: 100% !important; }
 
 .no-padding {
-    padding: 0px;
-}*/
+  padding: 0px; }
 
-/*
 .bugfix {
-    color: red;
-}
-*/
+  color: red; }
 
-/*[name="date-title"] {
-    width: 40% !important;
-    min-width: 350px !important;
-}*/
+.form-inline {
+  display: inline; }
+
+body {
+  font-family: Droid Sans, Arial;
+  background-color: #aadfeb;
+  padding-top: 40px; }
+
+.threeColumn {
+  -webkit-column-count: 3;
+  /* Chrome, Safari, Opera */
+  -moz-column-count: 3;
+  /* Firefox */
+  column-count: 3; }
+
+.footer {
+  margin: 30px; }
+
+#subtotalCounter {
+  font-size: 1.5em; }
+
+#setDate {
+  width: 50%; }
+
+input#setName {
+  min-width: 108px;
+  max-width: 108px; }
+
+input#setDate {
+  min-width: 137px;
+  max-width: 137px; }
+
+input#email {
+  margin: 0px; }
+
+input#delete {
+  margin: 0px; }
+
+.navbar {
+  background-color: #dddddd;
+  border-color: #000000; }
+  .navbar ul {
+    text-align: center; }
+  .navbar li {
+    font-size: 20px;
+    display: inline-block;
+    position: relative; }
+
+[name="date-title"] {
+  width: 40% !important;
+  min-width: 350px !important; }
+
+#buttons {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  vertical-align: center; }
+  #buttons button {
+    margin-left: 10px;
+    margin-right: 10px; }
+  #buttons #email, #buttons #delete {
+    margin-right: 10px; }
+
+.x-button {
+  background-color: #e54747; }
+  .x-button:visited {
+    background-color: #e54747; }
+  .x-button:hover {
+    background-color: red; }
+  .x-button:active {
+    background-color: red; }
+
+.glyphicon-remove {
+  color: white; }
+
+button[name="collapseToggle"], button[name="editButton"], button[name="deleteButton"] {
+  display: inline !important; }
+
+button[name="deleteButton"]:focus {
+  background-color: red; }
+
+.dropdown {
+  position: relative;
+  width: 150px;
+  height: 34px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  margin-right: 155px; }
+
+.dropdownSelect {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 150px;
+  height: 34px;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+  padding-left: 10px; }
+
+.dropdownInput {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 130px;
+  /*#width:180px\9;*/
+  /*#width:180px;*/
+  height: 34px;
+  /*#height:21px\9;*/
+  /*#height:18px;*/
+  /*border:1px solid #556;*/
+  padding-left: 10px; }
+
+.records {
+  maring-top: 0px;
+  padding-left: 20px !important;
+  padding-right: 20px !important; }
+  .records h4 {
+    display: inline;
+    padding-left: 20px;
+    padding-top: 10px; }
+
+.negative-duration {
+  color: red;
+  font-weight: bold; }
+
+div.billable, div.emergency {
+  display: inline;
+  margin-left: 10px;
+  margin-right: 10px; }
+
+div.labels label {
+  padding-right: 120px; }
+
+div.panel-body {
+  padding-bottom: 0px; }
+
+.panel {
+  margin-top: 20px !important;
+  border: 2px solid black; }
+
+.pending-text {
+  color: red; }
+
+div[name="record-display-col"] {
+  margin-left: -10px !important; }
+
+[name="recordControls"] {
+  min-width: 70px !important; }
+
+.record-content {
+  display: inline; }
+
+input[name="completeEnd"] {
+  min-width: 60px;
+  max-width: 60px;
+  font-size: 0.9em;
+  border: 1px solid red;
+  display: inline; }
+
+input[name="completeEnd"] {
+  min-width: 60px;
+  max-width: 60px;
+  font-size: 0.9em;
+  border: 1px solid red;
+  display: inline; }
+
+[name="record-display-string"] {
+  margin-left: -20px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  width: 100%; }
+
+input[name="notes"] {
+  font-weight: bold;
+  margin-top: 5px;
+  width: 90%; }
+
+fieldset.inputs, div.records, div.labels, div#buttons {
+  border: 2px solid black;
+  padding: 10px;
+  background-color: #cccccc;
+  margin-bottom: 25px !important; }
+
+h1 {
+  text-align: center; }
+
+h3 {
+  margin-top: 5px;
+  margin-bottom: 5px; }
+
+[name="description"] {
+  position: relative;
+  min-width: 400px;
+  max-width: 400px; }
+
+div.form-inline div.pull-right {
+  margin-top: 5px; }
+
+/*# sourceMappingURL=hours.css.map */

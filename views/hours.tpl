@@ -3,10 +3,8 @@
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+
  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='hours.css') }}" />
- 	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='control_buttons.css') }}" />
- 	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='panel_heading.css') }}" />
- 	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='dropdown.css') }}" />
  	<link rel="shortcut icon" href="{{ url('static', filename='favicon.ico') }}" />
 </head>
 
@@ -31,42 +29,43 @@
 	<!-- pending_records is for modifying the subtotal with "*" to show there are pending records -->
 	% pending_records = False
 	
+	<!-- ######################################################################################################### -->
+
+	<!-- GET RECORDS AND DAILY SUBTOTAL -->
 	% record_string = ""
 	% for r in records:
+
 		% if r.duration == Record.PENDING_CHAR:
+			
 			% pending_records = True
 		% end
+		
 		% record_string += "<p>" + r.emailFormat() + "</p>"
 	% end
 
 	% daily_subtotal = Record.countSubtotal(records)
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<!-- <h1 id="title">Hours</h1> -->
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6 pull-left" name="date-title">
-				<h3>{{date_title}}</h3>
-			</div>
-			<div class="col-md-6">
-				
-				<h3 id="subtotalCounter">
-				% if pending_records:
-					<span class="pending-text">* </span>
-				% end
-					Subtotal [Today]: <strong>{{daily_subtotal}}</strong> [{{month}}]: <strong>{{subtotal}}</strong>
-				</h3>
+	<!-- ######################################################################################################### -->
+	<!-- ######################################################################################################### -->
+	<!-- ######################################################################################################### -->
 
-			</div>
-		</div>
+	<!-- X -->
+	<!-- X -->
+	<!-- X -->
+
+	<!-- ######################################################################################################### -->
+	<!-- ######################################################################################################### -->
+	<!-- ######################################################################################################### -->
+
+	<div class="container">
+
+	
+
 
 		<!-- ######################################################################################################### -->			
 		<!-- ######################################################################################################### -->
 		<!-- LIST CONTROL BUTTONS START -->
-		% include('hours_control_buttons.tpl', name=name, record_string=record_string, sender=sender, receivers=receivers)
+		% include('hours_header.tpl', name=name, record_string=record_string, sender=sender, receivers=receivers, pending_records=pending_records, date_title=date_title, month=month, subtotal=subtotal, daily_subtotal=daily_subtotal)
 		<!-- LIST CONTROL BUTTONS END -->
 		<!-- ######################################################################################################### -->
 		<!-- ######################################################################################################### -->
@@ -85,7 +84,7 @@
 					<!-- PANEL -->
 					<div class="records">
 						<div class="panel panel-default">
-							% include('hours_panel_body.tpl', labels=labels, prev_start="", prev_end="", i=0, name=name, date=date, is_new_record=False, is_initial_record=True)
+							% include('hours_panel_form.tpl', labels=labels, prev_start="", prev_end="", i=0, name=name, date=date, is_new_record=False, is_initial_record=True)
 						</div>
 					</div>
 				</div>
@@ -121,7 +120,7 @@
 							<div class="panel panel-default">
 								<!-- ######################################################################################################### -->
 								<!-- PANEL HEADING START -->
-			    			% include('hours_panel_heading.tpl', r=None, i=len(records), is_new_record=True)
+			    			% include('hours_panel_display.tpl', r=None, i=len(records), is_new_record=True)
 			    			<!-- PANEL HEADING END -->
 			    			<!-- ######################################################################################################### -->
 
@@ -131,7 +130,7 @@
 			    			% namer = Labeler()
 			    			% ider = Labeler(len(records))
 		    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse in">
-			    				% include('hours_panel_body.tpl', labels=labels, prev_start=records[-1].fend, prev_end="", i=len(records), name=name, date=date, is_new_record=True, is_initial_record=False)
+			    				% include('hours_panel_form.tpl', labels=labels, prev_start=records[-1].fend, prev_end="", i=len(records), name=name, date=date, is_new_record=True, is_initial_record=False)
 			    			</div>
 			    			<!-- PANEL BODY/COLLAPSE END -->
 			    			<!-- ######################################################################################################### -->
@@ -159,14 +158,14 @@
 
 									<!-- ######################################################################################################### -->
 									<!-- PANEL HEADING START -->					    			
-				    			% include('hours_panel_heading.tpl', r=r, i=ider.i, is_new_record=False)
+				    			% include('hours_panel_display.tpl', r=r, i=ider.i, is_new_record=False)
 				    			<!-- PANEL HEADING END -->
 				    			<!-- ######################################################################################################### -->
 
 									<!-- ######################################################################################################### -->
 				    			<!-- PANEL COLLAPSE/BODY START -->
 			    				<div name={{namer.record()}} id={{ider.record()}} class="panel-collapse collapse">
-			    					% include('hours_panel_body.tpl', labels=labels, prev_start="", prev_end=r.fstart, i=ider.i, name=name, date=date, is_new_record=False, is_initial_record=False)
+			    					% include('hours_panel_form.tpl', labels=labels, prev_start="", prev_end=r.fstart, i=ider.i, name=name, date=date, is_new_record=False, is_initial_record=False)
 				    			</div>					    			
 				    			<!-- PANEL BODY/COLLAPSE END -->
 									<!-- ######################################################################################################### -->

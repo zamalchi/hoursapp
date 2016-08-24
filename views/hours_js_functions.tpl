@@ -2,6 +2,8 @@
 
 <script type="text/javascript">
 
+// ####################################################################################################
+// ####################################################################################################
 
 function confirmDelete() {
 	var choice = confirm("Are you sure you want to delete records?");
@@ -22,6 +24,9 @@ function confirmEmail(self) {
 	}
 }
 
+// ####################################################################################################
+// ####################################################################################################
+
 
 // gets element with provided id, sets value to "", and gives focus
 function focusAndClearField(id) {
@@ -34,6 +39,9 @@ function focusAndClearField(id) {
 function adjustNextIndex(insertID, recordIndex) {
 	document.getElementById(insertID).value = recordIndex;
 }
+
+// ####################################################################################################
+// ####################################################################################################
 
 
 function openViewer() {
@@ -69,6 +77,10 @@ function openViewer() {
 	OpenWindow.document.close();
 	self.name="main";
 }
+
+// ####################################################################################################
+// ####################################################################################################
+
 
 // private function
 function setBillableEmergency(index, billable, emergency) {
@@ -107,6 +119,9 @@ function toggleBE(self) {
 		span.innerHTML = "<strong>Y</strong>";
 	}
 }
+
+// ####################################################################################################
+// ####################################################################################################
 
 
 function dropdownChangeSelect(self) {
@@ -153,6 +168,9 @@ function dropdownChangeType(self) {
 
 	value.value = input.value;
 }
+
+// ####################################################################################################
+// ####################################################################################################
 
 
 function submitOnEnterPressed(event, formElem) {
