@@ -61,7 +61,7 @@
 									<!-- VIEW RECORDS -->
 									<div class="btn-group">
 											<div class="form-group">
-												<input id="view" name="view" type="submit" value="Formatted View" class="btn btn-info btn-sm pull-right" onclick="openViewer()" />
+												<input id="view" name="view" type="submit" value="Formatted" class="btn btn-info btn-sm pull-right" onclick="openViewer()" />
 												<input id="viewRecords" name="viewRecords" type="hidden" value="{{!record_string}}" />
 											</div>
 									</div>
@@ -78,7 +78,7 @@
 
 										<div class="btn-group">
 												<div class="form-group">
-													<a href="/viewUpdates" target="__blank" class="btn btn-default btn-sm pull-right">View Updates</a>
+													<a href="/viewUpdates" target="__blank" class="btn btn-default btn-sm pull-right">Updates</a>
 												</div>
 										</div>
 
