@@ -7,6 +7,7 @@
  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='control_buttons.css') }}" />
  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='panel_heading.css') }}" />
  	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='dropdown.css') }}" />
+ 	<link rel="shortcut icon" href="{{ url('static', filename='favicon.ico') }}" />
 </head>
 
 <body>

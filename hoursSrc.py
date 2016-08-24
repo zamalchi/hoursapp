@@ -79,12 +79,19 @@ def labelsInit(l):
     except IOError:
         print("***\nERROR: Labels file not found. Labels will not be populated.\n***")
 
-### CSS ROUTING ########################################################################################
+### STATIC ROUTING ########################################################################################
 
 # for css reading in templates
 @route('/static/<filename>', name='static')
 def server_static(filename):
     return static_file(filename, root='static')
+
+# for serving favicon
+@route('/favicon.ico')
+def get_favicon():
+    print("GETTING FAVICON")
+    return static_file('favicon.ico', root='static')
+    #return server_static('favicon.ico')
 
 ### COOKIE GETTERS/SETTERS #############################################################################
 
