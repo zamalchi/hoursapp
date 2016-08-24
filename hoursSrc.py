@@ -86,7 +86,6 @@ def labelsInit(l):
 def server_static(filename):
     return static_file(filename, root='static')
 
-
 ### COOKIE GETTERS/SETTERS #############################################################################
 
 ### NAME ########################################################

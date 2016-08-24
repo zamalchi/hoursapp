@@ -1,6 +1,8 @@
 
-$bg_color: #cccccc;
+@import 'vars';
 
 body {
+	font-family: $main_font;
 	background-color: $bg_color;
+	padding-top: 40px;
 }
