@@ -59,23 +59,24 @@ div#header {
   div#header div#dateTitle {
     width: 40% !important;
     min-width: 350px !important; }
-  div#header div#controlButtons {
+  div#header div#controls {
     vertical-align: center;
     padding-bottom: 15px; }
-    div#header div#controlButtons .control-button {
+    div#header div#controls .control-button {
+      display: inline;
       margin-left: 10px;
       maring-right: 10px;
       padding-left: 10px;
       padding-right: 10px; }
-    div#header div#controlButtons input#setName {
+    div#header div#controls input#setName {
       min-width: 108px;
       max-width: 108px; }
-    div#header div#controlButtons input#setDate {
+    div#header div#controls input#setDate {
       min-width: 137px;
       max-width: 137px; }
-    div#header div#controlButtons input#email {
+    div#header div#controls input#email {
       margin: 0px; }
-    div#header div#controlButtons input#delete {
+    div#header div#controls input#delete {
       margin: 0px; }
 
 div[name="recordControls"] button[name="collapse"],

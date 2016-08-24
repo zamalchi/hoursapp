@@ -41,53 +41,65 @@
 
 						<!-- ################################################################# -->
 						<!-- START OF PANEL-BODY : control buttons and inputs -->
-						<div class="panel-body" id="controlButtons">
+						<div class="panel-body" id="controls">
 							<div class="container-fluid">
 
 								<div class="row">
-									<div class="col-md-12">
 
-									<!-- SEARCH FOR RECORDS -->
-									<div class="btn-group pull-left">
-										<form action="/setCookies" method="post" class="form-inline" enctype="multipart/form-data">
-											<div class="form-group">
-												<input type="text" id="setName" name="setName" value="{{name}}" class="form-control input-sm third-width" placeholder="Enter name..." required />
-												<input type="date" id="setDate" name="setDate" class="form-control input-sm" />
-											</div>
-											<button type="submit" class="btn btn-primary btn-sm">Pull records</button>
-										</form>
-									</div>
+									<!-- LEFT HALF START #####################################-->
+									<div class="col-md-6">
 
-									<!-- VIEW RECORDS -->
-									<div class="btn-group">
-											<div class="form-group">
-												<input id="view" name="view" type="submit" value="Formatted" class="control-button btn btn-info btn-sm pull-right" onclick="openViewer()" />
-												<input id="viewRecords" name="viewRecords" type="hidden" value="{{!record_string}}" />
-											</div>
-									</div>
-
-										<!-- VIEW UPDATES -->
-										% updates = ""
-										% try:
-											% f = open("UPDATES")
-											% updates = f.read()
-											% f.close()
-										% except IOError:
-											% updates = "Update file not found"
-										% end
-
+										<!-- SEARCH FOR RECORDS -->
 										<div class="btn-group">
+
+											<form action="/setCookies" method="post" class="form-inline" enctype="multipart/form-data">
 												<div class="form-group">
-													<a href="/viewUpdates" target="__blank" class="control-button btn btn-default btn-sm pull-right">Updates</a>
+													
+													<input type="text" id="setName" name="setName" value="{{name}}" class="form-control input-sm third-width" placeholder="Enter name..." required />
+													
+													<input type="date" id="setDate" name="setDate" class="form-control input-sm" />
 												</div>
+												
+												<button type="submit" class="btn btn-primary btn-sm">Pull records</button>
+											</form>
+
 										</div>
 
-										<div class="btn-group pull-right">
-											
+									</div>
+									<!-- LEFT HALF END #######################################-->
+
+									<!-- RIGHT HALF START ####################################-->
+									<div class="col-md-6">
+
+										<div class="btn-group btn-group-sm">
+												
+											<!-- VIEW RECORDS -->
+											<div class="form-group form-inline">
+												<input id="view" name="view" type="submit" value="Formatted" class="control-button btn btn-info btn-sm"
+													onclick="openViewer()" />
+												<input id="viewRecords" name="viewRecords" type="hidden" value="{{!record_string}}" />
+											</div>
+									
+											<!-- VIEW UPDATES -->
+											% updates = ""
+											% try:
+												% f = open("UPDATES")
+												% updates = f.read()
+												% f.close()
+											% except IOError:
+												% updates = "Update file not found"
+											% end
+
+											<div class="form-group form-inline">
+												<a href="/viewUpdates" target="__blank" class="control-button btn btn-default">Updates</a>
+											</div>
+
+
 											<!-- DELETE RECORDS -->
 											<form action="/delete" method="post" class="form-inline" enctype="multipart/form-data">						
 												<div class="form-group">
-													<input id="delete" name="delete" type="submit" value="Delete" class="control-button btn btn-danger btn-sm pull-right" onclick="confirmDelete()" />
+													<input id="delete" name="delete" type="submit" value="Delete" class="control-button btn btn-danger"
+														onclick="confirmDelete()" />
 													<input id="deleteConfirm" name="deleteConfirm" type="hidden" value="false" />
 												</div>
 											</form>
@@ -95,7 +107,8 @@
 											<!-- EMAIL RECORDS -->
 											<form action="/email" method="post" class="form-inline" enctype="multipart/form-data">
 												<div class="form-group">						
-													<input id="email" name="email" type="submit" value="Email" class="control-button btn btn-success btn-sm pull-right" onclick="confirmEmail(this)" data-sender="{{sender}}" data-receivers="{{receivers}}" />
+													<input id="email" name="email" type="submit" value="Email" class="control-button btn btn-success"
+														onclick="confirmEmail(this)" data-sender="{{sender}}" data-receivers="{{receivers}}" />
 													<input id="emailConfirm" name="emailConfirm" type="hidden" value="false" />
 												</div>
 											</form>
@@ -103,6 +116,9 @@
 										</div>
 
 									</div>
+									<!-- RIGHT HALF END ######################################-->
+
+
 								</div>
 
 							</div>
