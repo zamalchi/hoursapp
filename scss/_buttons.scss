@@ -1,22 +1,17 @@
 
 // BUTTONS
 
-#buttons {
-	margin-top: 20px;
-	margin-bottom: 10px;
-	vertical-align: center;
 
-	button {
-		margin-left: 10px;
-		margin-right: 10px;
-	}
+div[name="recordControls"] {
 
-	#email, #delete {
-		margin-right: 10px;
+	button[name="collapse"],
+	button[name="delete"] {
+		display: inline;
 	}
 }
 
-.x-button {
+
+button.x-button {
   background-color: $light_red;
 
   &:visited {
@@ -28,16 +23,8 @@
 	&:active {
   background-color: $red;
 	}
-}
 
-.glyphicon-remove {
-	color: $white;
-}
-
-button[name="collapseToggle"], button[name="editButton"], button[name="deleteButton"] {
-	display: inline !important;
-}
-
-button[name="deleteButton"]:focus {
-	background-color: red;
+	.glyphicon {
+		color: $white;
+	}
 }

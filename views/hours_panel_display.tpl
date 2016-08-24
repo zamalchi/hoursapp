@@ -51,7 +51,7 @@
 
 						<!-- COLLAPSE BUTTON (ALWAYS PRESENT) : toggles (accordion-style) the panel-body elems on the page -->
 						<!-- TODO: needed in button? : data-index="{{ider.i}}" -->
-		  			<button name="collapseToggle" type="button"  
+		  			<button name="collapse" type="button"  
 							class="btn btn-success btn-xs media-object"
 							data-toggle="collapse" data-target="#{{ider.record()}}" data-parent="#accordion">
 		  				
@@ -185,7 +185,7 @@
 							<div name="label" class="record-content">{{r.label}}</div>
 							
 							|
-							
+						
 							<!-- BILLABLE TOGGLE FORM -->
 							<form action="/toggleBillable" method="post" name="toggleBillable" class="form-inline" enctype="multipart/form-data">
 								<input type="hidden" name="billable" value="{{r.billable}}" />

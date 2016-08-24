@@ -1,7 +1,7 @@
 
 <div class="row">
 	<div class="col-md-10">
-		<div class="container-fluid" id="buttons">
+		<div class="container-fluid" id="header">
 
 			<!-- ######################################################################################################### -->
 			<!-- ######################################################################################################### -->
@@ -18,7 +18,7 @@
 							<div class="container-fluid">
 								<div class="row">
 
-									<div class="col-md-6 pull-left" name="date-title">
+									<div class="col-md-6 pull-left" id="dateTitle">
 										<h3>{{date_title}}</h3>
 									</div>
 
@@ -41,7 +41,7 @@
 
 						<!-- ################################################################# -->
 						<!-- START OF PANEL-BODY : control buttons and inputs -->
-						<div class="panel-body">
+						<div class="panel-body" id="controlButtons">
 							<div class="container-fluid">
 
 								<div class="row">
@@ -61,7 +61,7 @@
 									<!-- VIEW RECORDS -->
 									<div class="btn-group">
 											<div class="form-group">
-												<input id="view" name="view" type="submit" value="Formatted" class="btn btn-info btn-sm pull-right" onclick="openViewer()" />
+												<input id="view" name="view" type="submit" value="Formatted" class="control-button btn btn-info btn-sm pull-right" onclick="openViewer()" />
 												<input id="viewRecords" name="viewRecords" type="hidden" value="{{!record_string}}" />
 											</div>
 									</div>
@@ -78,7 +78,7 @@
 
 										<div class="btn-group">
 												<div class="form-group">
-													<a href="/viewUpdates" target="__blank" class="btn btn-default btn-sm pull-right">Updates</a>
+													<a href="/viewUpdates" target="__blank" class="control-button btn btn-default btn-sm pull-right">Updates</a>
 												</div>
 										</div>
 
@@ -87,7 +87,7 @@
 											<!-- DELETE RECORDS -->
 											<form action="/delete" method="post" class="form-inline" enctype="multipart/form-data">						
 												<div class="form-group">
-													<input id="delete" name="delete" type="submit" value="Delete" class="btn btn-danger btn-sm pull-right" onclick="confirmDelete()" />
+													<input id="delete" name="delete" type="submit" value="Delete" class="control-button btn btn-danger btn-sm pull-right" onclick="confirmDelete()" />
 													<input id="deleteConfirm" name="deleteConfirm" type="hidden" value="false" />
 												</div>
 											</form>
@@ -95,7 +95,7 @@
 											<!-- EMAIL RECORDS -->
 											<form action="/email" method="post" class="form-inline" enctype="multipart/form-data">
 												<div class="form-group">						
-													<input id="email" name="email" type="submit" value="Email" class="btn btn-success btn-sm pull-right" onclick="confirmEmail(this)" data-sender="{{sender}}" data-receivers="{{receivers}}" />
+													<input id="email" name="email" type="submit" value="Email" class="control-button btn btn-success btn-sm pull-right" onclick="confirmEmail(this)" data-sender="{{sender}}" data-receivers="{{receivers}}" />
 													<input id="emailConfirm" name="emailConfirm" type="hidden" value="false" />
 												</div>
 											</form>

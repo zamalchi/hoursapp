@@ -1,50 +1,59 @@
 
 // HEADER - date, subtotal, control buttons
 
-#subtotalCounter {
-	font-size: 1.5em;
-}
 
-#setDate {
-    width: 50%;
-}
+div#header {
 
+	margin-top: 20px;
+	margin-bottom: 10px;
+	vertical-align: center;
 
-input#setName {
-	min-width: 108px;
-	max-width: 108px;
-}
+	border: 2px solid black;
+  padding: 10px;
+  background-color: #cccccc;
+  margin-bottom: 25px !important;
 
-input#setDate {
-	min-width: 137px;
-	max-width: 137px; 
-}
-
-input#email {
-	margin: 0px;
-}
-
-input#delete {
-	margin: 0px;
-}
-
-
-.navbar {
-	background-color: $light_grey;
-	border-color: $black;
-
-	ul {
-		// text-align: center;
+	#subtotalCounter {
+		font-size: 1.5em;
 	}
 
-	li {
-		//font-size: 20px;
-		// display: inline-block;
-		// position: relative;
-	}
-}
-
-[name="date-title"] {
+	div#dateTitle {
     width: 40% !important;
     min-width: 350px !important;
+	}
+
+	// CONTROL BUTTONS
+	div#controlButtons {
+
+		vertical-align: center;
+		padding-bottom: 15px;
+
+		.control-button {
+			margin-left: 10px;
+			maring-right: 10px;
+			
+			padding-left: 10px;
+			padding-right: 10px;	
+		}
+
+		input#setName {
+			min-width: 108px;
+			max-width: 108px;
+		}
+
+		input#setDate {
+			min-width: 137px;
+			max-width: 137px; 
+		}
+
+		input#email {
+			margin: 0px;
+		}
+
+		input#delete {
+			margin: 0px;
+		}
+	}
+
+	
 }
