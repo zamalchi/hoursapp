@@ -86,6 +86,16 @@ def labelsInit(l):
 def server_static(filename):
     return static_file(filename, root='static')
 
+# for reading in bootstrap fonts
+@route('/fonts/<filename>', name='fonts')
+def fonts_static(filename):
+    return static_file(filename, root='fonts')
+
+# for reading in bootstrap js
+@route('/js/<filename>', name='js')
+def js_static(filename):
+    return static_file(filename, root='js')
+
 ### COOKIE GETTERS/SETTERS #############################################################################
 
 ### NAME ########################################################
