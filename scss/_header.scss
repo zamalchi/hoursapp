@@ -123,6 +123,10 @@ div#header {
 		// 	max-width: 137px; 
 		// }
 
+		[name="updates"] {
+			background-color: $dark_grey;
+		}
+
 		input#email {
 			margin: 0px;
 		}

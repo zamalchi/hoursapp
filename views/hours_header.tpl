@@ -88,7 +88,7 @@
 									
 											<!-- VIEW UPDATES -->
 											<div class="form-group inline-block button-wrapper">
-												<a href="/viewUpdates" target="__blank" class="control-button btn btn-default btn-sm">Updates</a>
+												<a name="updates" href="/viewUpdates" target="__blank" class="control-button btn btn-default btn-sm">Updates</a>
 											</div>
 
 

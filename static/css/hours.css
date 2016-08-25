@@ -120,6 +120,8 @@ div#header {
       display: inline-block;
       width: 24%;
       min-width: 88px; }
+    div#header div#controls [name="updates"] {
+      background-color: #cccccc; }
     div#header div#controls input#email {
       margin: 0px; }
     div#header div#controls input#delete {
@@ -231,7 +233,8 @@ input[name="completeEnd"] {
 input[name="notes"] {
   font-weight: bold;
   margin-top: 5px;
-  width: 90%; }
+  display: inline-block;
+  width: 100%; }
 
 form fieldset.inputs {
   margin-top: 20px;
@@ -245,6 +248,8 @@ div.form-group {
 
 fieldset[name="inputs"] {
   width: 100%; }
+  fieldset[name="inputs"] input {
+    color: black; }
   fieldset[name="inputs"] div[name="row1"] input {
     display: inline-block; }
   fieldset[name="inputs"] div[name="row1"] input[name="name"] {
