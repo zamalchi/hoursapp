@@ -452,7 +452,7 @@ def view_updates():
     updates = []
 
     try:
-        f = open("UPDATES", 'r')
+        f = open("docs/UPDATES", 'r')
         updates = filter(None, f.read().split("\n"))
         f.close()
     except IOError:
