@@ -21,16 +21,40 @@ div#header {
 		font-size: 1.4em;
 	}
 
+// ###########################################
+// ###########################################
+
+	// TITLES : date and subtotal
+	div#titles {
+
+		text-align: center;
+
+		div[name="left"] {
+			display: inline-block;
+			width: 39%;
+			min-width: 220px;
+		}
+
+// ###########################################
+
+		div[name="right"] {
+			display: inline-block;
+			width: 59%;
+			min-width: 310px;
+		}
+
+	}
+
+// ###########################################
+// ###########################################
+
 	// CONTROLS : inputs and buttons
 	div#controls {
 
 		vertical-align: center;
 
-		.control-button,
-		.form-control {
-			font-size: 0.9em;
-		}
 // ###########################################
+
 		div[name="left"] {
 			form {
 				width: 100%;
