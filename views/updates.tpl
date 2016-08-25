@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
- 	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='hours.css') }}" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+ 	<link rel="stylesheet" type="text/css" href="css/hours.css" />
 </head>
 
 <body>

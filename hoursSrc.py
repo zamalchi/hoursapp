@@ -81,21 +81,30 @@ def labelsInit(l):
 
 ### STATIC ROUTING ########################################################################################
 
-@get('/<filename:re:.*\.js>')
-def javascripts(filename):
-    return static_file(filename, root='static/js')
-
-@get('/<filename:re:.*\.css>')
+# CSS
+@get('/css/<filename:re:.*\.css>')
 def stylesheets(filename):
+    # print("IN STYLESHEETS():", filename)
     return static_file(filename, root='static/css')
 
-@get('/<filename:re:.*\.(jpg|png|gif|ico)>')
+# JAVASCRIPT
+@get('/js/<filename:re:.*\.js>')
+def javascripts(filename):
+    # print("IN JAVASCRIPTS():", filename)
+    return static_file(filename, root='static/js')
+
+# IMAGES
+@get('/img/<filename:re:.*\.(jpg|png|gif|ico)>')
 def images(filename):
+    # print("IN IMAGES():", filename)
     return static_file(filename, root='static/img')
 
-@get('/<filename:re:.*\.(eot|ttf|woff|svg)>')
+# FONTS
+@get('/fonts/<filename:re:.*\.(eot|ttf|woff|woff2|svg)>')
 def fonts(filename):
+    # print("IN FONTS():", filename)
     return static_file(filename, root='static/fonts')
+
 
 ### COOKIE GETTERS/SETTERS #############################################################################
 
