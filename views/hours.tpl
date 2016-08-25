@@ -11,13 +11,13 @@
 
 <body>
 
-	% from Record import Record
+	% from classes.Record import Record
 
 	% import time
 	% date_obj = time.strptime(date, "%Y-%m-%d")
 	% date_title = time.strftime("%a %d %b : %Y-%m-%d", date_obj)
 
-	% from Labeler import Labeler
+	% from classes.Labeler import Labeler
 
 	<!-- ######################################################################################################### -->
 	<!-- SCRIPTS START -->	

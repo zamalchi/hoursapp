@@ -17,12 +17,12 @@ import sys
 
 ### IMPORTS ############################################################################################
 
-from bottle import route, get, post, request, response, template, static_file, redirect, SimpleTemplate, url
+from src.bottle import route, get, post, request, response, template, static_file, redirect, SimpleTemplate, url
 
 # Record class
-from Record import Record
+from classes.Record import Record
 # Labeler class
-from Labeler import Labeler
+from classes.Labeler import Labeler
 
 namer = Labeler()
 

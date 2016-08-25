@@ -13,7 +13,7 @@
 <!-- ######################################################################################################### -->
 
 <!-- TODO: determine if this import is needed -->
-% from Record import Record
+% from classes.Record import Record
 
 
 <!-- times must match 15-minute interval pattern -->

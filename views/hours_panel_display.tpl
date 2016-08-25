@@ -14,7 +14,7 @@
 <!-- ######################################################################################################### -->
 
 <!-- TODO: determine if this import is needed -->
-% from Record import Record
+% from classes.Record import Record
 
 <!-- PROVIDE NAMES AND IDS FOR ELEMENTS (IDS INCLUDE THE INDEX OF THE RECORD) -->
 % namer = Labeler()

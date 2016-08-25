@@ -2,7 +2,7 @@
 
 import argparse
 
-from bottle import run
+from src.bottle import run
 
 # argparse
 parser = argparse.ArgumentParser()
@@ -24,7 +24,7 @@ dev = args.d
 
 smtpInit(mailTo, mailFrom)
 
-labelsInit("labels.txt")
+labelsInit("config/labels.txt")
 
 
 if dev == "True":
