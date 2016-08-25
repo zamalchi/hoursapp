@@ -14,3 +14,63 @@ div.form-group {
     display: inline;
 }
 
+
+fieldset[name="inputs"] {
+	width: 100%;
+
+// #####################################
+
+	div[name="row1"] {
+
+		input { display: inline-block; }
+
+		input[name="name"] {
+			width: 32%;
+		}
+
+		input[name="start"] {
+			width: 32%;
+		}
+
+		input[name="end"] {
+			width: 32%;
+		}
+	}
+
+// #####################################
+
+	div[name="row2"] {
+
+		// display: block;
+		// width: 100%;
+		//white-space: nowrap;
+
+		div[name="dropdown-wrapper"] {
+			display: inline-block;
+			width: 20%;
+			min-width: 160px;
+			
+			@import 'dropdown';
+		}
+
+		div[name="notes-wrapper"] {
+			display: inline-block;
+			width: 70%;
+			min-width: 380px;
+
+			input {
+				display: inline-block;
+				width: 100%;
+			}
+		}
+
+	}
+
+// #####################################
+
+	div[name="row3"] {
+
+	}
+
+// #####################################
+}

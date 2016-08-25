@@ -1,7 +1,7 @@
 <!-- ######################################################################################################### -->
 
 
-<!-- TO BE INSERTED INTO A PANEL ELEMENT (*BEFORE*/AFTER) A PANEL-HEADING -->
+<!-- TO BE INSERTED INTO A PANEL ELEMENT (*BEFORE*/AFTER) A PANEL-DISPLAY -->
 
 <!-- ######################################################################################################### -->
 
@@ -47,27 +47,27 @@
 				<!-- ######################################################################################################### -->
 
 				<form action="/hours" method="post" enctype="multipart/form-data">
-					<fieldset class="inputs form-group">
+					<fieldset class="inputs form-group" name="inputs">
 
 						<!-- ######################################################################################################### -->
 						<!-- SINGLE LINE -->
-						<div class="form-inline">
+						<div class="form-inline" name="row1">
 							<!-- NAME : TEXT -->
-							<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control third-width" placeholder="Name" pattern={{NAME_REGEX}} required value="{{name}}" />
+							<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control" placeholder="Name" pattern={{NAME_REGEX}} required value="{{name}}" />
 
 							<!-- ************************************************************************** -->
 							<!-- START TIME -->
 							% if is_initial_record:
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
+								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
 
 							% elif (is_new_record) and (prev_start != Record.PENDING_CHAR):
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} value="{{prev_start}}" required />
+								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} value="{{prev_start}}" required />
 
 							% elif is_new_record:
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} value="" autofocus required />
+								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} value="" autofocus required />
 
 							% else:
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control quarter-width" placeholder="Start Time" pattern={{TIME_REGEX}} required />
+								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required />
 							% end
 							<!-- ************************************************************************** -->
 
@@ -75,11 +75,11 @@
 							<!-- ************************************************************************** -->
 							<!-- END TIME -->
 							% if is_initial_record:
-								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" />
+								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" />
 							% elif is_new_record:
-								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} autofocus value="" />
+								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} autofocus value="" />
 							% else:
-								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control quarter-width" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" required />
+								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" required />
 							% end
 							<!-- ************************************************************************** -->
 
@@ -89,40 +89,45 @@
 						<hr />
 						<!-- ######################################################################################################### -->
 						<!-- SINGLE LINE -->
-						<div class="form-inline">
+						<div class="form-inline" name="row2">
 							<!-- <input name={{namer.label()}} id={{ider.label()}} type="text" class="form-control quarter-width" placeholder="Label" required/> -->
 							<!-- LABEL : TEXT -->
-							<div class="dropdown form-control">
-								<!-- INITIAL VALUES USED FOR DEFAULT AND INDEX OFFSET -->
-								% ls_name = [""]
-								% ls_billable = ["Y"]
-								% ls_emergency = ["N"]
+							<div name="dropdown-wrapper">
+								<div class="dropdown form-control">
+									<!-- INITIAL VALUES USED FOR DEFAULT AND INDEX OFFSET -->
+									% ls_name = [""]
+									% ls_billable = ["Y"]
+									% ls_emergency = ["N"]
 
-								% for each in labels:
-							   	% l = each.split(" | ")
-							   	% ls_name.append(l[0])
-							   	% ls_billable.append(l[1])
-							   	% ls_emergency.append(l[2])
-								% end
+									% for each in labels:
+								   	% l = each.split(" | ")
+								   	% ls_name.append(l[0])
+								   	% ls_billable.append(l[1])
+								   	% ls_emergency.append(l[2])
+									% end
 
-								<select class="dropdownSelect" data-index="{{ider.i}}" onchange="dropdownChangeSelect(this)">
-								   % for i, each in enumerate(ls_name):
-								   	<option value="{{each}}" data-billable="{{ls_billable[i]}}" data-emergency="{{ls_emergency[i]}}">{{each}}</option>
-								   % end
-								</select>
-								<input class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Label" id="{{ider.dropdown()}}" onfocus="this.select()" type="text" onchange="dropdownChangeType(this)" data-name="{{ls_name}}" data-billable="{{ls_billable}}" data-emergency="{{ls_emergency}}" data-index="{{ider.i}}" required style="text-transform: uppercase;" />
-								<input name="{{namer.label()}}" id="{{ider.label()}}" type="hidden">
+									<select class="dropdownSelect" data-index="{{ider.i}}" onchange="dropdownChangeSelect(this)">
+									   % for i, each in enumerate(ls_name):
+									   	<option value="{{each}}" data-billable="{{ls_billable[i]}}" data-emergency="{{ls_emergency[i]}}">{{each}}</option>
+									   % end
+									</select>
+									<input class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Label" id="{{ider.dropdown()}}" onfocus="this.select()" type="text" onchange="dropdownChangeType(this)" data-name="{{ls_name}}" data-billable="{{ls_billable}}" data-emergency="{{ls_emergency}}" data-index="{{ider.i}}" required style="text-transform: uppercase;" />
+									<input name="{{namer.label()}}" id="{{ider.label()}}" type="hidden">
+								</div>
 							</div>
 							
-							<!-- DESCRIPTION : TEXT // not required (ex. lunch) -->
-							<input  name={{namer.description()}} id={{ider.description()}} type="text" class="form-control" placeholder="Notes" required />
+							<div name="notes-wrapper">
+								<!-- DESCRIPTION : TEXT // not required (ex. lunch) -->
+								<input  name={{namer.description()}} id={{ider.description()}} type="text" class="form-control" placeholder="Notes" required />
+							</div>
+							
 						</div>
 						<!-- END OF SINGLE LINE -->
 						<!-- ######################################################################################################### -->
 						<hr />
 						<!-- ######################################################################################################### -->
 						<!-- SINGLE LINE -->
-						<div class="form-inline padded-top">
+						<div class="form-inline" name="row3">
 							<!-- LEFT SIDE -->
 							<div class="pull-left">
 								<!-- DURATION : TEXT -->

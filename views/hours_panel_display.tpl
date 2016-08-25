@@ -2,7 +2,7 @@
 <!-- ######################################################################################################### -->
 
 <!-- PROVIDES A PANEL HEADING CONTAINING A DISPLAY OF THE RECORD WITH CONTROLS AND SOME MODIFYABLE FIELDS -->
-<!-- TO BE INSERTED INTO A PANEL ELEMENT (BEFORE/*AFTER*) A PANEL-BODY -->
+<!-- TO BE INSERTED INTO A PANEL ELEMENT (BEFORE/*AFTER*) A PANEL-FORM -->
 
 <!-- ######################################################################################################### -->
 
