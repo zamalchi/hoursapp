@@ -29,17 +29,17 @@ div#header {
 
 		.btn-group {
 			padding-bottom: 15px;
+			width: 100%;
 		}
 
-		.control-button {
-			font-size: 0.9em;
-			// display: inline;
+		.button-wrapper {
 
-			// margin-left: 10px;
-			// maring-right: 10px;
-
-			// padding-left: 10px;
-			// padding-right: 10px;	
+			width: 24%;
+			
+			.control-button {
+				font-size: 0.9em;
+				width: 100%;
+			}
 		}
 
 		input#setName {

@@ -31,6 +31,9 @@
 .form-inline {
   display: inline; }
 
+.inline-block {
+  display: inline-block; }
+
 body {
   font-family: Droid Sans, Arial;
   background-color: #476f9e;
@@ -61,9 +64,13 @@ div#header {
   div#header div#controls {
     vertical-align: center; }
     div#header div#controls .btn-group {
-      padding-bottom: 15px; }
-    div#header div#controls .control-button {
-      font-size: 0.9em; }
+      padding-bottom: 15px;
+      width: 100%; }
+    div#header div#controls .button-wrapper {
+      width: 24%; }
+      div#header div#controls .button-wrapper .control-button {
+        font-size: 0.9em;
+        width: 100%; }
     div#header div#controls input#setName {
       min-width: 95px;
       max-width: 95px; }
