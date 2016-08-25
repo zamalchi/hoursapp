@@ -1,0 +1,209 @@
+.vertical-center {
+  vertical-align: center !important; }
+
+.padded-top {
+  padding-top: 10px; }
+
+.quarter-width {
+  width: 25% !important; }
+
+.third-width {
+  width: 33.33% !important; }
+
+.half-width {
+  width: 50% !important; }
+
+.two-thirds-width {
+  width: 66.66% !important; }
+
+.three-quarters-width {
+  width: 75% !important; }
+
+.full-width {
+  width: 100% !important; }
+
+.no-padding {
+  padding: 0px; }
+
+.bugfix {
+  color: red; }
+
+.form-inline {
+  display: inline; }
+
+body {
+  font-family: Droid Sans, Arial;
+  background-color: #476f9e;
+  padding-top: 40px; }
+
+.threeColumn {
+  -webkit-column-count: 3;
+  /* Chrome, Safari, Opera */
+  -moz-column-count: 3;
+  /* Firefox */
+  column-count: 3; }
+
+.footer {
+  margin: 30px; }
+
+div#header {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  vertical-align: center;
+  border: 2px solid black;
+  padding: 10px;
+  background-color: #cccccc;
+  margin-bottom: 25px !important; }
+  div#header #subtotalCounter {
+    font-size: 1.4em; }
+  div#header #dateTitle {
+    font-size: 1.4em; }
+  div#header div#controls {
+    vertical-align: center; }
+    div#header div#controls .btn-group {
+      padding-bottom: 15px; }
+    div#header div#controls .control-button {
+      font-size: 0.9em; }
+    div#header div#controls input#setName {
+      min-width: 95px;
+      max-width: 95px; }
+    div#header div#controls input#setDate {
+      min-width: 137px;
+      max-width: 137px; }
+    div#header div#controls input#email {
+      margin: 0px; }
+    div#header div#controls input#delete {
+      margin: 0px; }
+
+div[name="recordControls"] button[name="collapse"],
+div[name="recordControls"] button[name="delete"] {
+  display: inline; }
+
+button.x-button {
+  background-color: #e54747; }
+  button.x-button:visited {
+    background-color: #e54747; }
+  button.x-button:hover {
+    background-color: red; }
+  button.x-button:active {
+    background-color: red; }
+  button.x-button .glyphicon {
+    color: white; }
+
+.dropdown {
+  position: relative;
+  width: 150px;
+  height: 34px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  margin-right: 155px; }
+
+.dropdownSelect {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 150px;
+  height: 34px;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+  padding-left: 10px; }
+
+.dropdownInput {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 130px;
+  /*#width:180px\9;*/
+  /*#width:180px;*/
+  height: 34px;
+  /*#height:21px\9;*/
+  /*#height:18px;*/
+  /*border:1px solid #556;*/
+  padding-left: 10px; }
+
+.records {
+  maring-top: 0px;
+  padding-left: 20px !important;
+  padding-right: 20px !important; }
+  .records h4 {
+    display: inline;
+    padding-left: 20px;
+    padding-top: 10px; }
+
+.negative-duration {
+  color: red;
+  font-weight: bold; }
+
+div.billable, div.emergency {
+  display: inline;
+  margin-left: 10px;
+  margin-right: 10px; }
+
+div.labels label {
+  padding-right: 120px; }
+
+div.panel-body {
+  padding-bottom: 0px; }
+
+.panel {
+  margin-top: 20px !important;
+  border: 2px solid black; }
+
+.pending-text {
+  color: red; }
+
+div[name="record-display-col"] {
+  margin-left: -10px !important; }
+
+[name="recordControls"] {
+  min-width: 70px !important; }
+
+.record-content {
+  display: inline; }
+
+input[name="completeEnd"] {
+  min-width: 60px;
+  max-width: 60px;
+  font-size: 0.9em;
+  border: 1px solid red;
+  display: inline; }
+
+input[name="completeEnd"] {
+  min-width: 60px;
+  max-width: 60px;
+  font-size: 0.9em;
+  border: 1px solid red;
+  display: inline; }
+
+[name="record-display-string"] {
+  margin-left: -20px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  width: 100%; }
+
+input[name="notes"] {
+  font-weight: bold;
+  margin-top: 5px;
+  width: 90%; }
+
+fieldset.inputs, div.records, div.labels, div#buttons {
+  border: 2px solid black;
+  padding: 10px;
+  background-color: #cccccc;
+  margin-bottom: 25px !important; }
+
+h1 {
+  text-align: center; }
+
+h3 {
+  margin-top: 5px;
+  margin-bottom: 5px; }
+
+[name="description"] {
+  position: relative;
+  min-width: 400px;
+  max-width: 400px; }
+
+/*# sourceMappingURL=hours.css.map */

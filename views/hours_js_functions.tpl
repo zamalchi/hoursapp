@@ -51,9 +51,9 @@ function openViewer() {
 	OpenWindow.document.write(`
 	<html>
 	<head>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
-		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
-	 	<link rel="stylesheet" type="text/css" href="{{ url('static', filename='hours.css') }}" />
+		<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+	 	<link rel="stylesheet" type="text/css" href="hours.css" />
 		<title>Hours</title>
 	</head>
 	<body>

@@ -17,7 +17,7 @@ import sys
 
 ### IMPORTS ############################################################################################
 
-from bottle import route, request, response, template, static_file, redirect, SimpleTemplate, url
+from bottle import route, get, post, request, response, template, static_file, redirect, SimpleTemplate, url
 
 # Record class
 from Record import Record
@@ -81,20 +81,21 @@ def labelsInit(l):
 
 ### STATIC ROUTING ########################################################################################
 
-# for css and favicon reading in templates
-@route('/static/<filename>', name='static')
-def server_static(filename):
-    return static_file(filename, root='static')
+@get('/<filename:re:.*\.js>')
+def javascripts(filename):
+    return static_file(filename, root='static/js')
 
-# for reading in bootstrap fonts
-@route('/fonts/<filename>', name='fonts')
-def fonts_static(filename):
-    return static_file(filename, root='fonts')
+@get('/<filename:re:.*\.css>')
+def stylesheets(filename):
+    return static_file(filename, root='static/css')
 
-# for reading in bootstrap js
-@route('/js/<filename>', name='js')
-def js_static(filename):
-    return static_file(filename, root='js')
+@get('/<filename:re:.*\.(jpg|png|gif|ico)>')
+def images(filename):
+    return static_file(filename, root='static/img')
+
+@get('/<filename:re:.*\.(eot|ttf|woff|svg)>')
+def fonts(filename):
+    return static_file(filename, root='static/fonts')
 
 ### COOKIE GETTERS/SETTERS #############################################################################
 
