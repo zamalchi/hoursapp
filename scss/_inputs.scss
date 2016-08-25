@@ -70,6 +70,34 @@ fieldset[name="inputs"] {
 
 	div[name="row3"] {
 
+		div[name="left"] {
+			display: inline-block;
+			width: 79%;
+
+			div[name="duration-wrapper"] {
+				display: inline-block;
+				width: 30%;
+
+				input {
+					display: inline-block;
+					width: 100%;
+				}
+			}
+
+			div[name="billable"],
+			div[name="emergency"] {
+				margin-left: 10px;
+				display: inline-block;
+				width: 30%;
+			}
+		}
+
+		div[name="right"] {
+			display: inline-block;
+			width: 19%;
+			float: right;
+		}
+
 	}
 
 // #####################################

@@ -186,11 +186,6 @@ button.x-button {
   color: red;
   font-weight: bold; }
 
-div.billable, div.emergency {
-  display: inline;
-  margin-left: 10px;
-  margin-right: 10px; }
-
 div.labels label {
   padding-right: 120px; }
 
@@ -299,5 +294,23 @@ fieldset[name="inputs"] {
     fieldset[name="inputs"] div[name="row2"] div[name="notes-wrapper"] input {
       display: inline-block;
       width: 100%; }
+  fieldset[name="inputs"] div[name="row3"] div[name="left"] {
+    display: inline-block;
+    width: 79%; }
+    fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="duration-wrapper"] {
+      display: inline-block;
+      width: 30%; }
+      fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="duration-wrapper"] input {
+        display: inline-block;
+        width: 100%; }
+    fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="billable"],
+    fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="emergency"] {
+      margin-left: 10px;
+      display: inline-block;
+      width: 30%; }
+  fieldset[name="inputs"] div[name="row3"] div[name="right"] {
+    display: inline-block;
+    width: 19%;
+    float: right; }
 
 /*# sourceMappingURL=hours.css.map */

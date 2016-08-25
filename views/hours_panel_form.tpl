@@ -120,7 +120,7 @@
 								<!-- DESCRIPTION : TEXT // not required (ex. lunch) -->
 								<input  name={{namer.description()}} id={{ider.description()}} type="text" class="form-control" placeholder="Notes" required />
 							</div>
-							
+
 						</div>
 						<!-- END OF SINGLE LINE -->
 						<!-- ######################################################################################################### -->
@@ -128,28 +128,32 @@
 						<!-- ######################################################################################################### -->
 						<!-- SINGLE LINE -->
 						<div class="form-inline" name="row3">
+							
 							<!-- LEFT SIDE -->
-							<div class="pull-left">
+							<div name="left">
 								<!-- DURATION : TEXT -->
-								<input name={{namer.duration()}} id={{ider.duration()}} type="text" class="form-control quarter-width" placeholder="Duration" />
+								<div name="duration-wrapper">
+									<input name={{namer.duration()}} id={{ider.duration()}} type="text" class="form-control" placeholder="Duration" />
+								</div>
 								
 								<!-- BILLABLE BUTTON -->
-								<div id="{{ider.billable()}}" class="billable btn btn-default" onclick="toggleBE(this);">
+								<div name="{{namer.billable()}}" id="{{ider.billable()}}" class="billable btn btn-default" onclick="toggleBE(this);">
 									<span class="checkboxtext">Billable:</span>
 									<span class="checkboxtext"><strong>Y</strong></span>
 									<input type="hidden" name="{{namer.billable()}}" value="Y" />
 								</div>
 								
 								<!-- EMERGENCY BUTTON -->
-								<div id="{{ider.emergency()}}" class="emergency btn btn-default" onclick="toggleBE(this);">
+								<div name="{{namer.emergency()}}" id="{{ider.emergency()}}" class="emergency btn btn-default" onclick="toggleBE(this);">
 									<span class="checkboxtext">Emergency:</span>
 									<span class="checkboxtext"><strong>N</strong></span>
 									<input type="hidden" name="{{namer.emergency()}}" value="N" />
 								</div>
 
 							</div>
+
 							<!-- RIGHT SIDE -->
-							<div class="pull-right">
+							<div name="right">
 								<!-- SUBMIT BUTTON : SUBMIT -->
 								<button type="submit" name={{namer.submit()}} id={{ider.submit()}} class="btn btn-default">Add Record</button>
 								<!-- ######################################################################################################### -->
