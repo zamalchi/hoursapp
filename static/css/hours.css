@@ -63,20 +63,42 @@ div#header {
     font-size: 1.4em; }
   div#header div#controls {
     vertical-align: center; }
-    div#header div#controls .btn-group {
-      padding-bottom: 15px;
+    div#header div#controls .control-button,
+    div#header div#controls .form-control {
+      font-size: 0.9em; }
+    div#header div#controls div[name="left"] form {
+      width: 100%;
+      display: inline-block;
+      padding-bottom: 15px; }
+      div#header div#controls div[name="left"] form div[name="inputs"] {
+        display: inline-block;
+        width: 64%; }
+        div#header div#controls div[name="left"] form div[name="inputs"] input {
+          display: inline-block; }
+        div#header div#controls div[name="left"] form div[name="inputs"] input#setName {
+          width: 44%;
+          min-width: 80px; }
+        div#header div#controls div[name="left"] form div[name="inputs"] input#setDate {
+          width: 54%;
+          min-width: 140px; }
+      div#header div#controls div[name="left"] form div.btn-group[name="submit"] {
+        display: inline-block;
+        width: 33.5%; }
+        div#header div#controls div[name="left"] form div.btn-group[name="submit"] button {
+          width: 100%; }
+    div#header div#controls div[name="right"] .form-control,
+    div#header div#controls div[name="right"] .control-button {
       width: 100%; }
-    div#header div#controls .button-wrapper {
-      width: 24%; }
-      div#header div#controls .button-wrapper .control-button {
-        font-size: 0.9em;
-        width: 100%; }
-    div#header div#controls input#setName {
-      min-width: 95px;
-      max-width: 95px; }
-    div#header div#controls input#setDate {
-      min-width: 137px;
-      max-width: 137px; }
+    div#header div#controls div[name="right"] .btn-group {
+      display: inline-block;
+      width: 100%;
+      min-width: 415px;
+      padding-bottom: 15px; }
+    div#header div#controls div[name="right"] .button-wrapper,
+    div#header div#controls div[name="right"] .input-wrapper {
+      display: inline-block;
+      width: 24%;
+      min-width: 88px; }
     div#header div#controls input#email {
       margin: 0px; }
     div#header div#controls input#delete {

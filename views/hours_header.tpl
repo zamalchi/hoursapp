@@ -48,30 +48,31 @@
 								<div class="row">
 
 									<!-- LEFT HALF START #####################################-->
-									<div class="col-md-6">
+									<div class="col-lg-6 col-md-12" name="left">
 
 										<!-- SEARCH FOR RECORDS -->
-										<div class="btn-group">
-
-											<form action="/setCookies" method="post" class="form-inline" enctype="multipart/form-data">
-												<div class="form-group">
-													
+											<form action="/setCookies" method="post" enctype="multipart/form-data">
+												
+												<div name="inputs">
 													<input type="text" id="setName" name="setName" value="{{name}}" class="form-control input-sm"
 														placeholder="Enter name..." required />
 													
 													<input type="date" id="setDate" name="setDate" class="form-control input-sm" />
 												</div>
 												
-												<button type="submit" class="btn btn-primary btn-sm">Pull records</button>
+												<div name="submit" class="btn-group">
+													<button type="submit" class="btn btn-primary btn-sm control-button">
+														Pull records
+													</button>
+												</div>
+											
 											</form>
-
-										</div>
 
 									</div>
 									<!-- LEFT HALF END #######################################-->
 
 									<!-- RIGHT HALF START ####################################-->
-									<div class="col-md-6">
+									<div class="col-lg-6 col-md-12" name="right">
 
 										<div class="btn-group">
 												

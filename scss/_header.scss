@@ -25,32 +25,79 @@ div#header {
 	div#controls {
 
 		vertical-align: center;
-		// padding-bottom: 15px;
 
-		.btn-group {
-			padding-bottom: 15px;
-			width: 100%;
+		.control-button,
+		.form-control {
+			font-size: 0.9em;
 		}
-
-		.button-wrapper {
-
-			width: 24%;
-			
-			.control-button {
-				font-size: 0.9em;
+// ###########################################
+		div[name="left"] {
+			form {
 				width: 100%;
+				display: inline-block;
+				padding-bottom: 15px;
+				
+				// ######
+				div[name="inputs"] {
+					display: inline-block;
+					width: 64%;
+
+					input {
+						display: inline-block;
+					}
+					input#setName {
+						width: 44%;
+						min-width: 80px;							
+					}
+					input#setDate {
+						width: 54%;
+						min-width: 140px;
+					}
+				}
+				
+				// ######
+				div.btn-group[name="submit"] {
+					display: inline-block;
+					width: 33.5%;
+
+					button {
+						width: 100%;
+					}
+				}
+				// ######
 			}
 		}
+// ###########################################
 
-		input#setName {
-			min-width: 95px;
-			max-width: 95px;
-		}
+		div[name="right"] {
+			.form-control,
+			.control-button {
+				width: 100%;
+			}
 
-		input#setDate {
-			min-width: 137px;
-			max-width: 137px; 
+			.btn-group {
+				display: inline-block;
+				width: 100%;
+				min-width: 415px;
+				padding-bottom: 15px;
+			}
+
+			.button-wrapper,
+			.input-wrapper {
+				display: inline-block;
+				width: 24%;
+				min-width: 88px;
+			}
 		}
+		// input#setName {
+		// 	min-width: 95px;
+		// 	max-width: 95px;
+		// }
+
+		// input#setDate {
+		// 	min-width: 137px;
+		// 	max-width: 137px; 
+		// }
 
 		input#email {
 			margin: 0px;
@@ -60,6 +107,6 @@ div#header {
 			margin: 0px;
 		}
 	}
-
+// ###########################################
 	
 }
