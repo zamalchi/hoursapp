@@ -122,6 +122,9 @@
 							<!-- FORMATTED RECORD TEXT -->
 							<!-- name|date <start>|date <end>|duration|label|billable|emergency|<description> -->
 
+							<!-- anchor tag for adjusting page after editing a record -->
+							<a name="{{ider.i}}"></a>
+
 							<h4 class="panel-title pull-left" name="record-display-string">
 
 							{{r.name}} | {{r.date}}

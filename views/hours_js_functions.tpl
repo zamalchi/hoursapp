@@ -2,6 +2,12 @@
 
 <script type="text/javascript">
 
+// goes to the anchor tag of the just-edited record or the top of page
+$( document ).ready(function() {
+	var i = String(document.body.attributes["data-index"].value);
+	window.location.hash = i;
+});
+
 // ####################################################################################################
 // ####################################################################################################
 
@@ -183,6 +189,5 @@ function submitOnEnterPressed(event, formElem) {
 function setValueFromInnerText(self) {
 	self.value = self.innerText;
 }
-
 
 </script>

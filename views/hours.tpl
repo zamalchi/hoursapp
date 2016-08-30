@@ -7,9 +7,25 @@
  	<link rel="shortcut icon" href="img/favicon.ico" />
 
  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- ######################################################################################################### -->
+	<!-- SCRIPTS START -->	
+
+ 	<!-- jquery must come first and is required by bootstrap -->
+	<script src="js/jquery-3.1.0.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+	% include('hours_js_functions.tpl')
+
+	<!-- SCRIPTS END -->
+	<!-- ######################################################################################################### -->
+
 </head>
 
-<body>
+<body data-index="{{anchor}}">
+
+	<!-- default anchor tag -->
+	<a name="-1"></a>
 
 	% from classes.Record import Record
 
@@ -18,14 +34,6 @@
 	% date_title = time.strftime("%a %d %b : %Y-%m-%d", date_obj)
 
 	% from classes.Labeler import Labeler
-
-	<!-- ######################################################################################################### -->
-	<!-- SCRIPTS START -->	
-
-	% include('hours_js_functions.tpl')
-
-	<!-- SCRIPTS END -->
-	<!-- ######################################################################################################### -->
 
 	<!-- pending_records is for modifying the subtotal with "*" to show there are pending records -->
 	% pending_records = False
@@ -247,10 +255,6 @@
 		<!-- ********************************************************************************************************* -->
 
 	</div> <!-- /.container -->
-
-<!-- jquery must come first and is required by bootstrap -->
-<script src="js/jquery-3.1.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
 
 </body>
 

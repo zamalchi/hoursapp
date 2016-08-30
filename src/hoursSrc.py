@@ -130,6 +130,16 @@ def setCookies(response, name, date):
     setNameCookie(response, name)
     setDateCookie(response, date)
 
+### ANCHOR ######################################################
+def getAnchorCookie(request):
+    return request.get_cookie("anchor") or "-1"
+
+def setAnchorCookie(response, anchor):
+    response.set_cookie("anchor", str(anchor))
+
+def deleteAnchorCookie(response):
+    response.delete_cookie("anchor")
+
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
@@ -162,6 +172,12 @@ def hours():
     # get name and date cookies
     name, date = getCookies(request)
 
+    # get anchor cookie in case record has been just edited
+    anchor = getAnchorCookie(request)
+
+    # set anchor cookie to null after getting it
+    deleteAnchorCookie(response)
+
     # get the month to use for the monthly subtotal
     month = Record.getSubtotalMonth(date)
 
@@ -176,7 +192,7 @@ def hours():
     #######################################################
 
     return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal,
-                    sender=sender, receivers=receivers)
+                    sender=sender, receivers=receivers, anchor=anchor)
 
 
 ########################################################################################################
@@ -195,6 +211,9 @@ def hours_post():
 
     # index for inserting new Record into the list of records
     index = int(request.forms.get(namer.insert()))
+
+    # after posting a new record, delete the anchor cookie to reset it
+    deleteAnchorCookie(response)
 
     #######################################################
 
@@ -384,6 +403,8 @@ def complete_notes():
     # get index of completed record
     index = int(request.forms.get("index"))
 
+    setAnchorCookie(response, index)
+
     notes = request.forms.get("notes")
 
     name, date = getCookies(request)
@@ -419,6 +440,8 @@ def complete_end_time():
 
     # get index of completed record
     index = int(request.forms.get('index'))
+
+    setAnchorCookie(response, index)
 
     # get the submitted end time (which has already been pattern matched) OR get current rounded time
     end = request.forms.get('completeEnd') or Record.getCurrentRoundedTime()
@@ -480,7 +503,8 @@ def toggle_billable():
     name, date = getCookies(request)
 
     index = int(request.forms.get('index'))
-    billable = request.forms.get('billable')
+
+    setAnchorCookie(response, index)
 
     records = Record.parseRecordsFromFile(name, date)
 
@@ -504,7 +528,8 @@ def toggle_emergency():
     name, date = getCookies(request)
 
     index = int(request.forms.get('index'))
-    emergency = request.forms.get('emergency')
+
+    setAnchorCookie(response, index)
 
     records = Record.parseRecordsFromFile(name, date)
 
@@ -546,7 +571,6 @@ def email_records():
 
     curTimeShort = time.strftime("%m/%d")
 
-    sender = "zamalchi@intranet.techsquare.com"
     subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
     body = ""
 
