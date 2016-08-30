@@ -45,7 +45,7 @@ SimpleTemplate.defaults["url"] = url
 ### DIRECTORY ##########################################################################################
 
 # directory for saving hours information
-Record.hoursDir = "hours/"
+Record.hoursDir = "../hours/"
 # if the directory doesn't exist, create it
 if not os.path.exists(Record.hoursDir):
     os.makedirs(Record.hoursDir)
@@ -85,25 +85,25 @@ def labelsInit(l):
 @get('/css/<filename:re:.*\.css>')
 def stylesheets(filename):
     # print("IN STYLESHEETS():", filename)
-    return static_file(filename, root='static/css')
+    return static_file(filename, root='../static/css')
 
 # JAVASCRIPT
 @get('/js/<filename:re:.*\.js>')
 def javascripts(filename):
     # print("IN JAVASCRIPTS():", filename)
-    return static_file(filename, root='static/js')
+    return static_file(filename, root='../static/js')
 
 # IMAGES
 @get('/img/<filename:re:.*\.(jpg|png|gif|ico)>')
 def images(filename):
     # print("IN IMAGES():", filename)
-    return static_file(filename, root='static/img')
+    return static_file(filename, root='../static/img')
 
 # FONTS
 @get('/fonts/<filename:re:.*\.(eot|ttf|woff|woff2|svg)>')
 def fonts(filename):
     # print("IN FONTS():", filename)
-    return static_file(filename, root='static/fonts')
+    return static_file(filename, root='../static/fonts')
 
 
 ### COOKIE GETTERS/SETTERS #############################################################################

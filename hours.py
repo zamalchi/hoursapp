@@ -15,7 +15,7 @@ parser.add_argument('-d', help = "Dev mode", action="store", dest="d", required 
 
 args = parser.parse_args()
 
-from hoursSrc import *
+from src.hoursSrc import *
 
 port = args.p
 mailFrom = args.s
@@ -24,7 +24,7 @@ dev = args.d
 
 smtpInit(mailTo, mailFrom)
 
-labelsInit("config/labels.txt")
+labelsInit("../config/labels.txt")
 
 
 if dev == "True":
