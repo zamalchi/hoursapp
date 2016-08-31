@@ -3,3 +3,5 @@ hours/*
 .idea/
 .sass-cache/
 local*
+*~
+sb_run_hours.sh
