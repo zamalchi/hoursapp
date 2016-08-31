@@ -56,3 +56,10 @@ h3 {
 @import 'records';
 
 @import 'inputs';
+
+
+// for popup window that displays records
+body[name="viewer"] {
+	// monospace
+	font-family: $mono_font;
+}

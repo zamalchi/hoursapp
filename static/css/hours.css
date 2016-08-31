@@ -318,4 +318,7 @@ fieldset[name="inputs"] {
     width: 19%;
     float: right; }
 
+body[name="viewer"] {
+  font-family: Monospace; }
+
 /*# sourceMappingURL=hours.css.map */

@@ -61,7 +61,7 @@ function openViewer() {
 	 	<link rel="stylesheet" type="text/css" href="css/hours.css" />
 		<title>Hours</title>
 	</head>
-	<body>
+	<body name="viewer">
 	<div class="container" id="viewerContents">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
