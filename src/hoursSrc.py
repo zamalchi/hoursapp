@@ -460,11 +460,13 @@ def complete_end_time():
     # set the end time
     record.setEnd(end)
 
-    # calculate and set duration
-    record.calculateAndSetDuration()
+    if not record.durationLocked:
 
-    # add the new duration to the subtotal
-    Record.addToSubtotal(name, date, record.duration)
+        # calculate and set duration
+        record.calculateAndSetDuration()
+
+        # add the new duration to the subtotal
+        Record.addToSubtotal(name, date, record.duration)
 
     # write back record
     records[index] = record

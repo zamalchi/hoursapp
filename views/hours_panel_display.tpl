@@ -138,7 +138,7 @@
 							<!-- ######################################################################################################### -->
 	
 							<!-- IF INCOMPLETE RECORD (END TIME AND DURATION) -->
-							% if (r.duration == Record.PENDING_CHAR):
+							% if (r.fend == Record.PENDING_CHAR):
 								
 								<!-- COMPLETE END TIME FORM -->
 								<form action="/completeEndTime" method="post" class="form-inline" enctype="multipart/form-data" >
