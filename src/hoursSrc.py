@@ -24,6 +24,8 @@ from classes.Record import Record
 # Labeler class
 from classes.Labeler import Labeler
 
+from src.crypto import *
+
 namer = Labeler()
 
 ### APACHE #############################################################################################
@@ -167,6 +169,7 @@ def deleteAnchorCookie(response):
 
 @route('/hours')
 def hours():
+
     #######################################################
 
     # get name and date cookies
@@ -605,6 +608,23 @@ def email_records():
 ########################################################################################################
 ########################################################################################################
 
+@post('/send')
+def send_records():
+
+    # get cookies
+    name, date = getCookies(request)
+
+    # parse records from file
+    records = Record.parseRecordsFromFile(name, date)
+
+    # turn records into a string separated by \n
+    string = "\n".join([(r.emailFormat() + "\n") for r in records])
+
+    # encrypt and encode string
+    b64 = getEncodedString(string)
+
+    # send name, date, and encoded records to receiving server
+    redirect('http://localhost:8081/receive?n={0}&d={1}&r={2}'.format(name, date, b64))
 
 ########################################################################################################
 ######################################  	MISC ROUTES END	   ###########################################

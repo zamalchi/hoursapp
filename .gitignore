@@ -3,3 +3,4 @@ hours/*
 .idea/
 .sass-cache/
 local*
+config/crypto
