@@ -65,6 +65,13 @@ def smtpInit(mailTo='', mailFrom='root'):
     receivers = [mailTo]
     sender = mailFrom
 
+### LOGGING SERVER #####################################################################################
+
+def loggingServerInit(address):
+    global loggingServerAddress
+
+    loggingServerAddress = address
+
 ### LABELS #############################################################################################
 
 # sets labels for populating dropdown list in /hours
@@ -557,49 +564,49 @@ def toggle_emergency():
 ########################################################################################################
 
 ### emails records
-@route('/email', method="POST")
-def email_records():
-
-    #######################################################
-
-    # get name and date cookies
-    name, date = getCookies(request)
-
-    # sets flag based on user's confirmation / denial from popup alert
-    emailConfirm = request.forms.get("emailConfirm")
-
-    #######################################################
-
-    subtotal = Record.readSubtotal(name, date) or '0.0'
-
-    #######################################################
-
-    curTimeShort = time.strftime("%m/%d")
-
-    subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
-    body = ""
-
-    #######################################################
-
-    if (emailConfirm == "true") and name:
-
-        # try to open file with user's name and retrieve data
-        records = Record.parseRecordsFromFile(name, date)
-
-        for r in records:
-            body += r.emailFormat() + "\n"
-
-        message = "Subject: %s\n\n%s" % (subject, body)
-
-        try:
-            mail = smtplib.SMTP("localhost")
-            mail.sendmail(sender, receivers, message)
-            mail.quit()
-
-        except smtplib.SMTPException:
-            pass
-
-    redirect('hours')
+# @route('/email', method="POST")
+# def email_records():
+#
+#     #######################################################
+#
+#     # get name and date cookies
+#     name, date = getCookies(request)
+#
+#     # sets flag based on user's confirmation / denial from popup alert
+#     emailConfirm = request.forms.get("emailConfirm")
+#
+#     #######################################################
+#
+#     subtotal = Record.readSubtotal(name, date) or '0.0'
+#
+#     #######################################################
+#
+#     curTimeShort = time.strftime("%m/%d")
+#
+#     subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
+#     body = ""
+#
+#     #######################################################
+#
+#     if (emailConfirm == "true") and name:
+#
+#         # try to open file with user's name and retrieve data
+#         records = Record.parseRecordsFromFile(name, date)
+#
+#         for r in records:
+#             body += r.emailFormat() + "\n"
+#
+#         message = "Subject: %s\n\n%s" % (subject, body)
+#
+#         try:
+#             mail = smtplib.SMTP("localhost")
+#             mail.sendmail(sender, receivers, message)
+#             mail.quit()
+#
+#         except smtplib.SMTPException:
+#             pass
+#
+#     redirect('hours')
 
 ########################################################################################################
 ########################################################################################################
@@ -614,17 +621,23 @@ def send_records():
     # get cookies
     name, date = getCookies(request)
 
-    # parse records from file
-    records = Record.parseRecordsFromFile(name, date)
+    confirm = request.forms.get('sendConfirm')
 
-    # turn records into a string separated by \n
-    string = "\n".join([(r.emailFormat() + "\n") for r in records])
+    if (confirm == "true") and name:
 
-    # encrypt and encode string
-    b64 = getEncodedString(string)
+        # parse records from file
+        records = Record.parseRecordsFromFile(name, date)
 
-    # send name, date, and encoded records to receiving server
-    redirect('http://localhost:8081/receive?n={0}&d={1}&r={2}'.format(name, date, b64))
+        # turn records into a string separated by \n
+        string = "\n".join([r.emailFormat() for r in records])
+
+        # encrypt and encode string
+        b64 = getEncodedString(string)
+
+        # send name, date, and encoded records to receiving server
+        redirect('http://{0}/receive?n={1}&d={2}&r={3}'.format(loggingServerAddress, name, date, b64))
+
+    redirect('hours')
 
 ########################################################################################################
 ######################################  	MISC ROUTES END	   ###########################################

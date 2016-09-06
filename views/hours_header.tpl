@@ -103,14 +103,14 @@
 												</div>
 											</form>
 
-											<!-- EMAIL RECORDS -->
+											<!-- SEND RECORDS -->
 											<form action="/send" method="post" class="inline-block button-wrapper" enctype="multipart/form-data">
 												<div class="form-group full-width">						
 													
-													<input id="email" name="email" type="submit" value="Send" class="control-button btn btn-success btn-sm"
-														onclick="confirmEmail(this)" data-sender="{{sender}}" data-receivers="{{receivers}}" />
+													<input id="send" name="send" type="submit" value="Send" class="control-button btn btn-success btn-sm"
+														onclick="confirmSend(this)" />
 													
-													<input id="emailConfirm" name="emailConfirm" type="hidden" value="false" />
+													<input id="sendConfirm" name="sendConfirm" type="hidden" value="false" />
 												</div>
 											</form>
 
