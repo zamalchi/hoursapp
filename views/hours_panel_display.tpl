@@ -227,7 +227,7 @@
 									<input name="index" type="hidden" value="{{ider.i}}" />
 
 									<!-- NOTES : submits on (keydown === enter) ; value is passed back via form -->
-									<input name="notes" class="record-content" value="{{r.notes}}" />
+									<input name="notesDisplay" class="record-content" value="{{r.notes}}" />
 
 								</div>
 							</form>

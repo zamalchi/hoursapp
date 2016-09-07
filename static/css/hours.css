@@ -230,7 +230,7 @@ input[name="completeEnd"] {
   padding-bottom: 2px !important;
   width: 100%; }
 
-input[name="notes"] {
+input[name="notesDisplay"] {
   font-weight: bold;
   margin-top: 5px;
   display: inline-block;

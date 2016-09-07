@@ -410,7 +410,7 @@ def complete_notes():
 
     setAnchorCookie(response, index)
 
-    notes = request.forms.get("notes")
+    notes = request.forms.get("notesDisplay")
 
     name, date = getCookies(request)
 
