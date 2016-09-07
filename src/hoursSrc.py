@@ -567,7 +567,7 @@ def send_records():
 
     confirm = request.forms.get('sendConfirm')
 
-    if (confirm == "true") and name:
+    if (confirm == "true") and name and loggingServerAddress:
 
         # parse records from file
         records = Record.parseRecordsFromFile(name, date)
