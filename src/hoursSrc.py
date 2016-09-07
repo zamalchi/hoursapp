@@ -51,8 +51,6 @@ SimpleTemplate.defaults["url"] = url
 
 ### DIRECTORY ##########################################################################################
 
-
-
 # directory for saving hours information - set in Record.py, so this is redundant
 Record.hoursDir = os.path.join(ROOT_DIR, "hours")
 
@@ -108,7 +106,6 @@ def images(filename):
 @get('/fonts/<filename:re:.*\.(eot|ttf|woff|woff2|svg)>')
 def fonts(filename):
     return static_file(filename, root=os.path.join(ROOT_DIR, 'static/fonts'))
-
 
 ### COOKIE GETTERS/SETTERS #############################################################################
 

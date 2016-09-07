@@ -749,57 +749,62 @@ class Record:
     ### DEFAULT CONSTRUCTOR: PARSES PROPERLY FORMATTED STRING INTO RECORD OBJECT ###########################
     def __init__(self, string):
 
-        #######################################################
+        try:
 
-        elems = string.split('|')
-        start_DT = elems[1].split(" ")
-        end_DT = elems[2].split(" ")
+            #######################################################
 
-        #######################################################
+            elems = string.split('|')
+            start_DT = elems[1].split(" ")
+            end_DT = elems[2].split(" ")
 
-        self.name = elems[0]
+            #######################################################
 
-        self.date = start_DT[0]
+            self.name = elems[0]
 
-        #######################################################
+            self.date = start_DT[0]
 
-        # formatted start ("HH:MM")
-        self.fstart = start_DT[1]
+            #######################################################
 
-        # start ("HHMM")
-        self.start = Record.parseTime(self.fstart)
+            # formatted start ("HH:MM")
+            self.fstart = start_DT[1]
 
-        # formatted end ("HH:MM")
-        self.fend = end_DT[1]
+            # start ("HHMM")
+            self.start = Record.parseTime(self.fstart)
 
-        # end ("HHMM")
-        self.end = Record.parseTime(self.fend)
+            # formatted end ("HH:MM")
+            self.fend = end_DT[1]
 
-        #######################################################
+            # end ("HHMM")
+            self.end = Record.parseTime(self.fend)
 
-        self.duration = elems[3]
+            #######################################################
 
-        self.label = elems[4]
+            self.duration = elems[3]
 
-        self.billable = elems[5]
-        self.emergency = elems[6]
+            self.label = elems[4]
 
-        self.description = elems[7]
+            self.billable = elems[5]
+            self.emergency = elems[6]
 
-        #######################################################
+            self.description = elems[7]
 
-        # in the case of trying to construct a record without a durationLocked field (elems[8])
-        if len(elems) < 9:
-            # default to False
-            self.durationLocked = False
+            #######################################################
 
-        else:
-            # if manually entered, the duration will NOT be adjustable
-            # this field is only visible in the Record object or in the hidden version of the file
-            if elems[8] == "True":
-                self.durationLocked = True
-            else:
+            # in the case of trying to construct a record without a durationLocked field (elems[8])
+            if len(elems) < 9:
+                # default to False
                 self.durationLocked = False
+
+            else:
+                # if manually entered, the duration will NOT be adjustable
+                # this field is only visible in the Record object or in the hidden version of the file
+                if elems[8] == "True":
+                    self.durationLocked = True
+                else:
+                    self.durationLocked = False
+
+        except Exception:
+            raise RecordMalformedException("ERROR - INVALID __init__ STRING : " + string)
 
     ########################################################################################################
     ### CONSTRUCTOR END ####################################################################################
@@ -963,3 +968,7 @@ class Record:
 ########################################################################################################
 ####################################### CLASS DEF END ##################################################
 ########################################################################################################
+
+class RecordMalformedException(Exception):
+    pass
+
