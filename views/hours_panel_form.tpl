@@ -111,8 +111,8 @@
 							</div>
 							
 							<div name="notes-wrapper">
-								<!-- DESCRIPTION : TEXT // not required (ex. lunch) -->
-								<input  name={{namer.description()}} id={{ider.description()}} type="text" class="form-control" placeholder="Notes" required />
+								<!-- NOTES : TEXT // not required (ex. lunch) -->
+								<input  name={{namer.notes()}} id={{ider.notes()}} type="text" class="form-control" placeholder="Notes" required />
 							</div>
 
 						</div>

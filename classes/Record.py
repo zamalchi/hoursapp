@@ -369,7 +369,7 @@ class Record:
         emergency = request.forms.get('emergency')
         ###
         label = request.forms.get('label').strip().upper()
-        description = request.forms.get('description').strip().translate(None, '|')
+        notes = request.forms.get('notes').strip().translate(None, '|')
 
         #######################################################
 
@@ -430,7 +430,7 @@ class Record:
             duration,
             label,
             billable, emergency,
-            description,
+            notes,
             durationLocked)
 
         #######################################################
@@ -786,7 +786,7 @@ class Record:
             self.billable = elems[5]
             self.emergency = elems[6]
 
-            self.description = elems[7]
+            self.notes = elems[7]
 
             #######################################################
 
@@ -927,7 +927,7 @@ class Record:
             self.duration,
             self.label,
             self.billable, self.emergency,
-            self.description,
+            self.notes,
             self.durationLocked)
 
     ### SECONDARY TO_STRING TO MATCH CORRECT RECORD STRING FORMAT (FOR PAYROLL) ############################
@@ -940,7 +940,7 @@ class Record:
             self.duration,
             self.label,
             self.billable, self.emergency,
-            self.description)
+            self.notes)
 
     ########################################################################################################
     ### TO_STRING METHODS END ##############################################################################

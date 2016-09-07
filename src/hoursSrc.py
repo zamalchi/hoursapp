@@ -424,8 +424,7 @@ def complete_notes():
         # replace <br> with " " in case of enter button being pressed
         notes = notes.replace("<br>", " ").strip()
 
-        # TODO: description --> notes
-        record.description = notes
+        record.notes = notes
 
         records[index] = record
 

@@ -16,15 +16,14 @@ class Labeler:
 	BILLABLE = "billable"
 	EMERGENCY = "emergency"
 	LABEL = "label"
-	DESCRIPTION = "description"
+	NOTES = "notes"
 	SUBMIT = "submit"
 	INSERT = "insert"
 	DROPDOWN = "dropdown"
 	COMPLETE = "complete"
 	EDIT = "edit"
-	NEW_DESCRIPTION = "newDescription"
+	NEW_NOTES = "newNotes"
 	COMPLETE_END_TIME = "completeEndTime"
-	#DESCRIPTION_BUTTON_DIV = "descriptionButtonDiv"
 
 	def __init__(self, i=None):
 		if i != None:
@@ -91,11 +90,11 @@ class Labeler:
 		else:
 			return Labeler.LABEL
 
-	def description(self):
+	def notes(self):
 		if self.i != None:
-			return Labeler.DESCRIPTION + str(self.i)
+			return Labeler.NOTES + str(self.i)
 		else:
-			return Labeler.DESCRIPTION
+			return Labeler.NOTES
 
 	def submit(self):
 		if self.i != None:
@@ -127,11 +126,11 @@ class Labeler:
 		else:
 			return Labeler.EDIT
 
-	def new_description(self):
+	def new_notes(self):
 		if self.i != None:
-			return Labeler.NEW_DESCRIPTION + str(self.i)
+			return Labeler.NEW_NOTES + str(self.i)
 		else:
-			return Labeler.NEW_DESCRIPTION
+			return Labeler.NEW_NOTES
 
 	def complete_end_time(self):
 		if self.i != None:
@@ -140,9 +139,4 @@ class Labeler:
 			return Labeler.COMPLETE_END_TIME
 
 
-	# def description_button_div(self):
-	# 	if self.i != None:
-	# 		return Labeler.DESCRIPTION_BUTTON_DIV + str(self.i)
-	# 	else:
-	# 		return Labeler.DESCRIPTION_BUTTON_DIV
 	#############################################
