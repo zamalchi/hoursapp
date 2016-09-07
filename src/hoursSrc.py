@@ -1,8 +1,7 @@
 
 # TO RUN FROM WRAPPER CLASSES:
-# - smtpInit(mailTo)
-# - setDevMode(dmode)
-# - labelsInit(labels)
+# - labelsInit(labelsFileName) - required
+# - loggingServerInit(address)
 
 ########################################################################################################
 ########################################################################################################
@@ -12,12 +11,15 @@
 
 import os
 import time
-import smtplib
 import sys
 
 ### IMPORTS ############################################################################################
 
-from src.bottle import route, get, post, request, response, template, static_file, redirect, SimpleTemplate, url
+from src.bottle import \
+    get, post, redirect, \
+    request, response,\
+    template, static_file,\
+    SimpleTemplate, url
 
 # Record class
 from classes.Record import Record
@@ -25,6 +27,9 @@ from classes.Record import Record
 from classes.Labeler import Labeler
 
 from src.crypto import *
+
+# root directory for project
+from config.dirs import ROOT_DIR
 
 namer = Labeler()
 
@@ -46,40 +51,34 @@ SimpleTemplate.defaults["url"] = url
 
 ### DIRECTORY ##########################################################################################
 
-# directory for saving hours information
-Record.hoursDir = "../hours/"
+
+
+# directory for saving hours information - set in Record.py, so this is redundant
+Record.hoursDir = os.path.join(ROOT_DIR, "hours")
+
 # if the directory doesn't exist, create it
 if not os.path.exists(Record.hoursDir):
     os.makedirs(Record.hoursDir)
 
-### SMTP ###############################################################################################
-
-receivers = []
-
-def smtpInit(mailTo='', mailFrom='root'):
-    # this is called from the wrapper file
-    # sets the sender and receiver for emails
-    global receivers
-    global sender
-
-    receivers = [mailTo]
-    sender = mailFrom
-
 ### LOGGING SERVER #####################################################################################
+
+# ip and port as a string
+loggingServerAddress = ""
 
 def loggingServerInit(address):
     global loggingServerAddress
-
     loggingServerAddress = address
 
 ### LABELS #############################################################################################
 
 # sets labels for populating dropdown list in /hours
-def labelsInit(l):
+labels = []
+
+def labelsInit(filename):
     # read labels from labels.txt
     global labels
     try:
-        f = open(l, 'r')
+        f = open(filename, 'r')
 
         # parses into list and filters out any empty lines (ex. trailing \n)
         labels = filter(None, f.read().split("\n"))
@@ -93,61 +92,57 @@ def labelsInit(l):
 # CSS
 @get('/css/<filename:re:.*\.css>')
 def stylesheets(filename):
-    # print("IN STYLESHEETS():", filename)
-    return static_file(filename, root='../static/css')
+    return static_file(filename, root=os.path.join(ROOT_DIR, 'static/css'))
 
 # JAVASCRIPT
 @get('/js/<filename:re:.*\.js>')
 def javascripts(filename):
-    # print("IN JAVASCRIPTS():", filename)
-    return static_file(filename, root='../static/js')
+    return static_file(filename, root=os.path.join(ROOT_DIR, 'static/js'))
 
 # IMAGES
 @get('/img/<filename:re:.*\.(jpg|png|gif|ico)>')
 def images(filename):
-    # print("IN IMAGES():", filename)
-    return static_file(filename, root='../static/img')
+    return static_file(filename, root=os.path.join(ROOT_DIR, 'static/img'))
 
 # FONTS
 @get('/fonts/<filename:re:.*\.(eot|ttf|woff|woff2|svg)>')
 def fonts(filename):
-    # print("IN FONTS():", filename)
-    return static_file(filename, root='../static/fonts')
+    return static_file(filename, root=os.path.join(ROOT_DIR, 'static/fonts'))
 
 
 ### COOKIE GETTERS/SETTERS #############################################################################
 
 ### NAME ########################################################
-def getNameCookie(request):
-    return request.get_cookie("name") or ""
+def getNameCookie(req):
+    return req.get_cookie("name") or ""
 
-def setNameCookie(response, name):
-    response.set_cookie("name", name)
+def setNameCookie(res, name):
+    res.set_cookie("name", name)
 
 ### DATE ########################################################
-def getDateCookie(request):
-    return request.get_cookie("date") or time.strftime("%Y-%m-%d")
+def getDateCookie(req):
+    return req.get_cookie("date") or time.strftime("%Y-%m-%d")
 
-def setDateCookie(response, date):
-    response.set_cookie("date", date)
+def setDateCookie(res, date):
+    res.set_cookie("date", date)
 
 ### CONSOLIDATED ################################################
-def getCookies(request):
-    return getNameCookie(request), getDateCookie(request)
+def getCookies(req):
+    return getNameCookie(req), getDateCookie(req)
 
-def setCookies(response, name, date):
-    setNameCookie(response, name)
-    setDateCookie(response, date)
+def setCookies(res, name, date):
+    setNameCookie(res, name)
+    setDateCookie(res, date)
 
 ### ANCHOR ######################################################
-def getAnchorCookie(request):
-    return request.get_cookie("anchor") or "-1"
+def getAnchorCookie(req):
+    return req.get_cookie("anchor") or "-1"
 
-def setAnchorCookie(response, anchor):
-    response.set_cookie("anchor", str(anchor))
+def setAnchorCookie(res, anchor):
+    res.set_cookie("anchor", str(anchor))
 
-def deleteAnchorCookie(response):
-    response.delete_cookie("anchor")
+def deleteAnchorCookie(res):
+    res.delete_cookie("anchor")
 
 ########################################################################################################
 ########################################################################################################
@@ -174,7 +169,7 @@ def deleteAnchorCookie(response):
 ########################################################################################################
 ########################################################################################################
 
-@route('/hours')
+@get('/hours')
 def hours():
 
     #######################################################
@@ -201,15 +196,18 @@ def hours():
 
     #######################################################
 
-    return template('hours', records=records, labels=labels, name=name, date=date, month=month, subtotal=subtotal,
-                    sender=sender, receivers=receivers, anchor=anchor)
+    return template('hours',
+                    name=name, date=date,
+                    records=records, labels=labels,
+                    month=month, subtotal=subtotal,
+                    anchor=anchor)
 
 
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
 
-@route('/hours', method="POST")
+@post('/hours')
 def hours_post():
     #######################################################
 
@@ -310,7 +308,7 @@ def hours_post():
 ########################################################################################################
 ########################################################################################################
 
-@route('/setCookies', method="POST")
+@post('/setCookies')
 def set_cookies():
     #######################################################
 
@@ -335,7 +333,7 @@ def set_cookies():
 ########################################################################################################
 
 ### deletes records of current user
-@route('/delete', method="POST")
+@post('/delete')
 def delete_records():
     #######################################################
 
@@ -370,7 +368,7 @@ def delete_records():
 ########################################################################################################
 
 ### deletes one record from those currently displayed
-@route('/deleteOne', method="POST")
+@post('/deleteOne')
 def delete_single_record():
     #######################################################
 
@@ -406,7 +404,7 @@ def delete_single_record():
 ########################################################################################################
 
 ### updates the notes field of a specific record ; triggered by the save button
-@route('/completeNotes', method="POST")
+@post('/completeNotes')
 def complete_notes():
     #######################################################
 
@@ -444,7 +442,7 @@ def complete_notes():
 ########################################################################################################
 ########################################################################################################
 
-@route('/completeEndTime', method="POST")
+@post('/completeEndTime')
 def complete_end_time():
     #######################################################
 
@@ -491,13 +489,13 @@ def complete_end_time():
 ########################################################################################################
 
 ### returns a list (read from file) of updates
-@route('/viewUpdates')
+@get('/viewUpdates')
 def view_updates():
 
     updates = []
 
     try:
-        f = open("../docs/UPDATES", 'r')
+        f = open(os.path.join(ROOT_DIR, "docs/UPDATES"), 'r')
         updates = filter(None, f.read().split("\n"))
         f.close()
     except IOError:
@@ -509,7 +507,7 @@ def view_updates():
 ########################################################################################################
 ########################################################################################################
 
-@route('/toggleBillable', method="POST")
+@post('/toggleBillable')
 def toggle_billable():
 
     name, date = getCookies(request)
@@ -534,7 +532,7 @@ def toggle_billable():
     redirect('hours')
 
 
-@route('/toggleEmergency', method="POST")
+@post('/toggleEmergency')
 def toggle_emergency():
 
     name, date = getCookies(request)
@@ -557,56 +555,6 @@ def toggle_emergency():
     Record.writeRecords(name, date, records)
 
     redirect('hours')
-
-
-########################################################################################################
-########################################################################################################
-########################################################################################################
-
-### emails records
-# @route('/email', method="POST")
-# def email_records():
-#
-#     #######################################################
-#
-#     # get name and date cookies
-#     name, date = getCookies(request)
-#
-#     # sets flag based on user's confirmation / denial from popup alert
-#     emailConfirm = request.forms.get("emailConfirm")
-#
-#     #######################################################
-#
-#     subtotal = Record.readSubtotal(name, date) or '0.0'
-#
-#     #######################################################
-#
-#     curTimeShort = time.strftime("%m/%d")
-#
-#     subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
-#     body = ""
-#
-#     #######################################################
-#
-#     if (emailConfirm == "true") and name:
-#
-#         # try to open file with user's name and retrieve data
-#         records = Record.parseRecordsFromFile(name, date)
-#
-#         for r in records:
-#             body += r.emailFormat() + "\n"
-#
-#         message = "Subject: %s\n\n%s" % (subject, body)
-#
-#         try:
-#             mail = smtplib.SMTP("localhost")
-#             mail.sendmail(sender, receivers, message)
-#             mail.quit()
-#
-#         except smtplib.SMTPException:
-#             pass
-#
-#     redirect('hours')
 
 ########################################################################################################
 ########################################################################################################

@@ -4,6 +4,10 @@
 import time
 import os
 
+### IMPORTS ############################################################################################
+
+from config.dirs import ROOT_DIR
+
 ### RUNNING AS MAIN ####################################################################################
 
 if __name__ == "__main__":
@@ -28,7 +32,7 @@ class Record:
 
     ### CLASS VARIABLES ####################################################################################
 
-    hoursDir = "hours/"
+    hoursDir = os.path.join(ROOT_DIR, "hours")
 
     # used as a placeholder for the end time in an ongoing record
     # it is replaced when the next record is created (with the new start time)
@@ -62,7 +66,7 @@ class Record:
         date += "-"
 
         # return filename
-        return Record.hoursDir + date + name
+        return os.path.join(Record.hoursDir, date + name)
 
     ### GENERATE FILE NAME: (.YYYY-MM-DD-NAME) #############################################################
     @staticmethod
@@ -75,7 +79,7 @@ class Record:
         date += "-"
 
         # return filename: uses hidden version of the file, since it contains extra info (durationLocked)
-        return Record.hoursDir + "." + date + name
+        return os.path.join(Record.hoursDir, "." + date + name)
 
     ### GENERATE SUBTOTAL FILENAME: (YYYY-MM-NAME-subtotal) ################################################
     @staticmethod
@@ -106,7 +110,7 @@ class Record:
         date = year + "-" + month + "-"
 
         # ("DIR/.YYYY-MM-subtotal-NAME")
-        return Record.hoursDir + "." + date + "subtotal-" + name
+        return os.path.join(Record.hoursDir, "." + date + "subtotal-" + name)
 
     ########################################################################################################
     ### GENERATOR METHODS END ##############################################################################

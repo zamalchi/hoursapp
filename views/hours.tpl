@@ -88,7 +88,6 @@
 		<!-- HEADER START -->
 		
 		% include('hours_header.tpl', name=name,
-			% sender=sender, receivers=receivers, 
 			% record_string=record_string, 
 			% pending_records=pending_records,
 			% subtotal=subtotal, daily_subtotal=daily_subtotal,
