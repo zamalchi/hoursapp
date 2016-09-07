@@ -87,7 +87,12 @@ def readCrypto():
     try:
         f = open(os.path.join(ROOT_DIR, 'config/crypto'))
 
-        key, iv = f.read().split("\n")
+        data = f.read().split("\n")
+
+        key, iv = data[0], data[1]
+
+        if len(key) != 16 or len(iv) != 16:
+            raise ValueError
 
         f.close()
 
@@ -95,4 +100,7 @@ def readCrypto():
 
     except IOError:
         print("crypto file not found")
+        return None
+    except ValueError:
+        print("invalid crypto file formatting")
         return None
