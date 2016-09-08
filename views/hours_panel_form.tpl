@@ -132,14 +132,14 @@
 								</div>
 								
 								<!-- BILLABLE BUTTON -->
-								<div name="{{namer.billable()}}" id="{{ider.billable()}}" class="billable btn btn-default" onclick="toggleBE(this);" tabindex="8" >
+								<div name="{{namer.billable()}}" id="{{ider.billable()}}" class="billable btn btn-default" onclick="toggleBE(this);" onkeyup="toggleButtonPress(event, this);" tabindex="8" >
 									<span class="checkboxtext">Billable:</span>
 									<span class="checkboxtext"><strong>Y</strong></span>
 									<input type="hidden" name="{{namer.billable()}}" value="Y" />
 								</div>
 								
 								<!-- EMERGENCY BUTTON -->
-								<div name="{{namer.emergency()}}" id="{{ider.emergency()}}" class="emergency btn btn-default" onclick="toggleBE(this);" tabindex="9" >
+								<div name="{{namer.emergency()}}" id="{{ider.emergency()}}" class="emergency btn btn-default" onclick="toggleBE(this);" onkeyup="toggleButtonPress(event, this);" tabindex="9" >
 									<span class="checkboxtext">Emergency:</span>
 									<span class="checkboxtext"><strong>N</strong></span>
 									<input type="hidden" name="{{namer.emergency()}}" value="N" />
