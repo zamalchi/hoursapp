@@ -1,4 +1,14 @@
 
+### INSTRUCTIONS #######################################################################################
+
+# from Record import \
+#   Record
+#   RecordMalformedException (required by Record)
+
+# (optional) after importing, set:
+#   Record.rootDir - default: '.'
+#   Record.hoursDir - default: './hours'
+
 ### PACKAGES ###########################################################################################
 
 import time
@@ -6,12 +16,10 @@ import os
 
 ### IMPORTS ############################################################################################
 
-from config.dirs import ROOT_DIR
-
 ### RUNNING AS MAIN ####################################################################################
 
 if __name__ == "__main__":
-    print("Import class: from Record import *")
+    print("Import class: from Record import Record, RecordMalformedException")
     print("Exiting...")
     exit()
 
@@ -32,7 +40,9 @@ class Record:
 
     ### CLASS VARIABLES ####################################################################################
 
-    hoursDir = os.path.join(ROOT_DIR, "hours")
+    # default values : set after importing class
+    rootDir = "."
+    hoursDir = os.path.join(rootDir, "hours")
 
     # used as a placeholder for the end time in an ongoing record
     # it is replaced when the next record is created (with the new start time)

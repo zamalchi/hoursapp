@@ -51,7 +51,8 @@ SimpleTemplate.defaults["url"] = url
 
 ### DIRECTORY ##########################################################################################
 
-# directory for saving hours information - set in Record.py, so this is redundant
+# project root and directory for saving hours information : overwrites default values in class
+Record.rootDir = ROOT_DIR
 Record.hoursDir = os.path.join(ROOT_DIR, "hours")
 
 # if the directory doesn't exist, create it
