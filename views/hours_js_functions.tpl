@@ -129,6 +129,7 @@ function toggleBE(self) {
 
 // for billable/emergency toggling
 function toggleButtonPress(event, self) {
+	event.preventDefault();
 	// if enter or space button was pressed, toggle the billable/emergency element
 	if (event.keyCode === 13 || event.keyCode === 32) {
 		toggleBE(self);

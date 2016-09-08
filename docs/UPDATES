@@ -1,3 +1,4 @@
+Billable/Emergency elements can now be focused and toggled with space/enter
 Each record now has an anchor tag : editing a record will reload the page anchored at the record
 Updates now open in a new tab (easier to do) and are read from 'UPDATES' file
 Billable/Emergency checkboxes --> toggle buttons
