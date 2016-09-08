@@ -47,21 +47,21 @@
 						<!-- SINGLE LINE -->
 						<div class="form-inline" name="row1">
 							<!-- NAME : TEXT -->
-							<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control" placeholder="Name" pattern={{NAME_REGEX}} required value="{{name}}" />
+							<input name={{namer.name()}} id={{ider.name()}} type="text" class="form-control" placeholder="Name" pattern={{NAME_REGEX}} required value="{{name}}" tabindex="1" />
 
 							<!-- ************************************************************************** -->
 							<!-- START TIME -->
 							% if is_initial_record:
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus />
+								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus tabindex="2" />
 
 							% elif (is_new_record) and (prev_start != Record.PENDING_CHAR):
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} value="{{prev_start}}" required />
+								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} value="{{prev_start}}" required tabindex="2" />
 
 							% elif is_new_record:
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} value="" autofocus required />
+								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} value="" autofocus required tabindex="2" />
 
 							% else:
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required />
+								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required tabindex="2" />
 							% end
 							<!-- ************************************************************************** -->
 
@@ -69,11 +69,11 @@
 							<!-- ************************************************************************** -->
 							<!-- END TIME -->
 							% if is_initial_record:
-								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" />
+								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" tabindex="3" />
 							% elif is_new_record:
-								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} autofocus value="" />
+								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} autofocus value="" tabindex="3" />
 							% else:
-								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" required />
+								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" required tabindex="3" />
 							% end
 							<!-- ************************************************************************** -->
 
@@ -100,19 +100,19 @@
 								   	% ls_emergency.append(l[2])
 									% end
 
-									<select class="dropdownSelect" data-index="{{ider.i}}" onchange="dropdownChangeSelect(this)">
+									<select class="dropdownSelect" data-index="{{ider.i}}" onchange="dropdownChangeSelect(this)" tabindex="4">
 									   % for i, each in enumerate(ls_name):
 									   	<option value="{{each}}" data-billable="{{ls_billable[i]}}" data-emergency="{{ls_emergency[i]}}">{{each}}</option>
 									   % end
 									</select>
-									<input class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Label" id="{{ider.dropdown()}}" onfocus="this.select()" type="text" onchange="dropdownChangeType(this)" data-name="{{ls_name}}" data-billable="{{ls_billable}}" data-emergency="{{ls_emergency}}" data-index="{{ider.i}}" required style="text-transform: uppercase;" />
+									<input class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Label" id="{{ider.dropdown()}}" onfocus="this.select()" type="text" onchange="dropdownChangeType(this)" data-name="{{ls_name}}" data-billable="{{ls_billable}}" data-emergency="{{ls_emergency}}" data-index="{{ider.i}}" required style="text-transform: uppercase;" tabindex="5" />
 									<input name="{{namer.label()}}" id="{{ider.label()}}" type="hidden">
 								</div>
 							</div>
 							
 							<div name="notes-wrapper">
 								<!-- NOTES : TEXT // not required (ex. lunch) -->
-								<input  name={{namer.notes()}} id={{ider.notes()}} type="text" class="form-control" placeholder="Notes" required />
+								<input  name={{namer.notes()}} id={{ider.notes()}} type="text" class="form-control" placeholder="Notes" required tabindex="6" />
 							</div>
 
 						</div>
@@ -128,18 +128,18 @@
 								<!-- DURATION : TEXT -->
 								<div name="duration-wrapper">
 									<input type="text" name={{namer.duration()}} id={{ider.duration()}}
-										class="form-control" placeholder="Duration" pattern="{{FLOAT_REGEX}}" />
+										class="form-control" placeholder="Duration" pattern="{{FLOAT_REGEX}}" tabindex="7" />
 								</div>
 								
 								<!-- BILLABLE BUTTON -->
-								<div name="{{namer.billable()}}" id="{{ider.billable()}}" class="billable btn btn-default" onclick="toggleBE(this);">
+								<div name="{{namer.billable()}}" id="{{ider.billable()}}" class="billable btn btn-default" onclick="toggleBE(this);" tabindex="8" >
 									<span class="checkboxtext">Billable:</span>
 									<span class="checkboxtext"><strong>Y</strong></span>
 									<input type="hidden" name="{{namer.billable()}}" value="Y" />
 								</div>
 								
 								<!-- EMERGENCY BUTTON -->
-								<div name="{{namer.emergency()}}" id="{{ider.emergency()}}" class="emergency btn btn-default" onclick="toggleBE(this);">
+								<div name="{{namer.emergency()}}" id="{{ider.emergency()}}" class="emergency btn btn-default" onclick="toggleBE(this);" tabindex="9" >
 									<span class="checkboxtext">Emergency:</span>
 									<span class="checkboxtext"><strong>N</strong></span>
 									<input type="hidden" name="{{namer.emergency()}}" value="N" />
@@ -150,7 +150,7 @@
 							<!-- RIGHT SIDE -->
 							<div name="right">
 								<!-- SUBMIT BUTTON : SUBMIT -->
-								<button type="submit" name={{namer.submit()}} id={{ider.submit()}} class="btn btn-default">Add Record</button>
+								<button type="submit" name={{namer.submit()}} id={{ider.submit()}} class="btn btn-default" tabindex="10" >Add Record</button>
 								<!-- ######################################################################################################### -->
 							</div>
 						</div>
