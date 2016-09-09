@@ -585,6 +585,8 @@ def toggle_emergency():
 @post('/email')
 def email_records():
 
+    global sender, receivers
+
     #######################################################
 
     # get name and date cookies
@@ -601,13 +603,15 @@ def email_records():
 
     curTimeShort = time.strftime("%m/%d")
 
-    sender = "zamalchi@intranet.techsquare.com"
+    s = sender
+    r = receivers
+
     subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
     body = ""
 
     #######################################################
 
-    if (emailConfirm == "true") and name:
+    if (emailConfirm == "true") and name and s and r:
 
         # try to open file with user's name and retrieve data
         records = Record.parseRecordsFromFile(name, date)
@@ -619,7 +623,7 @@ def email_records():
 
         try:
             mail = smtplib.SMTP("localhost")
-            mail.sendmail(sender, receivers, message)
+            mail.sendmail(s, r, message)
             mail.quit()
 
         except smtplib.SMTPException:
