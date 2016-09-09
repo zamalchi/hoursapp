@@ -42,7 +42,7 @@ h3 {
     margin-bottom: 5px;
 }
 
-// [name="description"] {
+// [name="notes"] {
 //     position: relative;
 //     min-width: 400px;
 //     max-width: 400px;
@@ -56,3 +56,10 @@ h3 {
 @import 'records';
 
 @import 'inputs';
+
+
+// for popup window that displays records
+body[name="viewer"] {
+	// monospace
+	font-family: $mono_font;
+}

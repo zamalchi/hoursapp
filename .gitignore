@@ -1,7 +1,9 @@
 *.pyc*
-hours/*
+hours/
 .idea/
 .sass-cache/
 local*
 *~
 sb_run_hours.sh
+config/crypto
+*.*~

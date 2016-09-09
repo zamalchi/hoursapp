@@ -18,15 +18,17 @@ function confirmDelete() {
 	}
 }
 
-function confirmEmail(self) {
-	var sender = self.attributes['data-sender'].value;
-	var receivers = self.attributes['data-receivers'].value;
+function confirmSend(self) {
+	// var sender = self.attributes['data-sender'].value;
+	// var receivers = self.attributes['data-receivers'].value;
 
-	var choice = confirm("Sender: " + sender + "\n" + 
-		"Receivers: " + receivers + "\n\n" +
-		"Are you sure you want to email records?");
+	// var choice = confirm("Sender: " + sender + "\n" + 
+		// "Receivers: " + receivers + "\n\n" +
+		// "Are you sure you want to email records?");
+	var choice = confirm("Are you sure you want to send records?")
+
 	if (choice) {
-		document.getElementById("emailConfirm").value = "true";
+		document.getElementById("sendConfirm").value = "true";
 	}
 }
 
@@ -61,7 +63,7 @@ function openViewer() {
 	 	<link rel="stylesheet" type="text/css" href="css/hours.css" />
 		<title>Hours</title>
 	</head>
-	<body>
+	<body name="viewer">
 	<div class="container" id="viewerContents">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
@@ -122,6 +124,15 @@ function toggleBE(self) {
 	} else {
 		hidden.value = "Y";
 		span.innerHTML = "<strong>Y</strong>";
+	}
+}
+
+// for billable/emergency toggling
+function toggleButtonPress(event, self) {
+	event.preventDefault();
+	// if enter or space button was pressed, toggle the billable/emergency element
+	if (event.keyCode === 13 || event.keyCode === 32) {
+		toggleBE(self);
 	}
 }
 

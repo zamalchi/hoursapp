@@ -120,7 +120,7 @@
 							<!-- ********************************************************************************************************* -->
 							<!-- ######################################################################################################### -->
 							<!-- FORMATTED RECORD TEXT -->
-							<!-- name|date <start>|date <end>|duration|label|billable|emergency|<description> -->
+							<!-- name|date <start>|date <end>|duration|label|billable|emergency|<notes> -->
 
 							<!-- anchor tag for adjusting page after editing a record -->
 							<a name="{{ider.i}}"></a>
@@ -138,7 +138,7 @@
 							<!-- ######################################################################################################### -->
 	
 							<!-- IF INCOMPLETE RECORD (END TIME AND DURATION) -->
-							% if (r.duration == Record.PENDING_CHAR):
+							% if (r.fend == Record.PENDING_CHAR):
 								
 								<!-- COMPLETE END TIME FORM -->
 								<form action="/completeEndTime" method="post" class="form-inline" enctype="multipart/form-data" >
@@ -227,7 +227,7 @@
 									<input name="index" type="hidden" value="{{ider.i}}" />
 
 									<!-- NOTES : submits on (keydown === enter) ; value is passed back via form -->
-									<input name="notes" class="record-content" value="{{r.description}}" />
+									<input name="notesDisplay" class="record-content" value="{{r.notes}}" />
 
 								</div>
 							</form>

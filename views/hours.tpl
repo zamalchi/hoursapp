@@ -24,6 +24,19 @@
 
 <body data-index="{{anchor}}">
 
+	<!-- ######################################################################################################### -->
+	<!-- REGEX -->
+
+	<!-- times must match 15-minute interval pattern -->
+	% TIME_REGEX = "(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))"
+
+	% NAME_REGEX = "[a-zA-Z]{2,}"
+
+	<!-- used for duration field -->
+	% FLOAT_REGEX = "(0|[1-9]{1,})(\.(0|25|5|75))?"
+
+	<!-- ######################################################################################################### -->
+
 	<!-- default anchor tag -->
 	<a name="-1"></a>
 
@@ -75,7 +88,6 @@
 		<!-- HEADER START -->
 		
 		% include('hours_header.tpl', name=name,
-			% sender=sender, receivers=receivers, 
 			% record_string=record_string, 
 			% pending_records=pending_records,
 			% subtotal=subtotal, daily_subtotal=daily_subtotal,
