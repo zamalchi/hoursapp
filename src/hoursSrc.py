@@ -603,15 +603,15 @@ def email_records():
 
     curTimeShort = time.strftime("%m/%d")
 
-    s = sender
-    r = receivers
+    sen = sender
+    rec = receivers
 
     subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
     body = ""
 
     #######################################################
 
-    if (emailConfirm == "true") and name and s and r:
+    if (emailConfirm == "true") and name and sen and rec:
 
         # try to open file with user's name and retrieve data
         records = Record.parseRecordsFromFile(name, date)
@@ -623,7 +623,7 @@ def email_records():
 
         try:
             mail = smtplib.SMTP("localhost")
-            mail.sendmail(s, r, message)
+            mail.sendmail(sen, rec, message)
             mail.quit()
 
         except smtplib.SMTPException:
