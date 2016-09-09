@@ -633,12 +633,19 @@ def email_records():
 @post('/send')
 def send_records():
 
+    global loggingServerAddress, loggingServerPort
+
     # get cookies
     name, date = getCookies(request)
 
-    confirm = request.forms.get('sendConfirm')
+    confirm = request.forms.get('confirm')
 
-    if (confirm == "true") and name and loggingServerAddress and loggingServerPort:
+    address = request.forms.get('address') or loggingServerAddress
+    port = request.forms.get('port') or loggingServerPort
+
+    if (confirm == "true") and name and address and port:
+
+        print("SENDING TO: {0}:{1}".format(address, port))
 
         # parse records from file
         records = Record.parseRecordsFromFile(name, date)
@@ -650,8 +657,7 @@ def send_records():
         b64 = getEncodedString(string)
 
         # send name, date, and encoded records to receiving server
-        redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}'.format(loggingServerAddress, loggingServerPort,
-                                                                   name, date, b64))
+        redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}'.format(address, port, name, date, b64))
 
     redirect('hours')
 

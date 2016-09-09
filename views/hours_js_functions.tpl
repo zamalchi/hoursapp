@@ -6,6 +6,10 @@
 $( document ).ready(function() {
 	var i = String(document.body.attributes["data-index"].value);
 	window.location.hash = i;
+
+	// to prevent old values from being retained (ex submitting and then hitting back in the browser)
+	document.getElementById("emailConfirm").value = "false";
+	document.getElementById("sendConfirm").value = "false";
 });
 
 // ####################################################################################################
