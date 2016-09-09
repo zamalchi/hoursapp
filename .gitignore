@@ -4,4 +4,6 @@ hours/
 .sass-cache/
 local*
 config/crypto
+config/settings
 *.*~
+
