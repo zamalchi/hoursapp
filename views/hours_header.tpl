@@ -108,7 +108,7 @@
 												<div class="form-group full-width">						
 													
 													<input id="email" name="email" type="submit" value="Email" class="control-button btn btn-success btn-sm"
-														onclick="confirmEmail(this)" />
+														onclick="confirmEmail(this)" data-sender="{{sender}}" data-receivers="{{receivers}}" />
 													
 													<input id="emailConfirm" name="emailConfirm" type="hidden" value="false" />
 												</div>
@@ -130,9 +130,9 @@
 											<form action="/send" method="post" class="inline-block button-wrapper" enctype="multipart/form-data">
 												<div class="form-group full-width">						
 													
-													<input type="text" id="serverAddress" name="address" placeholder="Logging Server Address" class="form-control input-sm" />
+													<input type="text" id="serverAddress" name="address" value="{{loggingServerAddress}}" placeholder="Logging Server Address" class="form-control input-sm" />
 													<strong>:</strong>
-													<input type="text" id="serverPort" name="port" placeholder="Port" class="form-control input-sm">
+													<input type="text" id="serverPort" name="port" value="{{loggingServerPort}}" placeholder="Port" class="form-control input-sm">
 
 													<input id="send" name="send" type="submit" value="Send" class="control-button btn btn-success btn-sm"
 														onclick="confirmSend(this)" />

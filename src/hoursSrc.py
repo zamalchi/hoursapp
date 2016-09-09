@@ -11,6 +11,7 @@
 
 import os
 import time
+import smtplib
 import sys
 
 ### IMPORTS ############################################################################################
@@ -63,10 +64,31 @@ if not os.path.exists(Record.hoursDir):
 
 # ip and port as a string
 loggingServerAddress = ""
+loggingServerPort = ""
 
-def loggingServerInit(address):
+def loggingServerInit(address, port):
     global loggingServerAddress
+    global loggingServerPort
+
     loggingServerAddress = address
+    loggingServerPort = port
+
+    print("SERVER: {0}:{1}".format(loggingServerAddress, loggingServerPort))
+
+### SMTP ###############################################################################################
+
+sender = ""
+receivers = ""
+def smtpInit(mailTo=[], mailFrom='root'):
+    # this is called from the wrapper file
+    # sets the sender and receiver for emails
+    global receivers
+    global sender
+
+    receivers = mailTo
+    sender = mailFrom
+
+    print("SMTP: {0} -> {1}".format(sender, receivers))
 
 ### LABELS #############################################################################################
 
@@ -198,7 +220,9 @@ def hours():
                     name=name, date=date,
                     records=records, labels=labels,
                     month=month, subtotal=subtotal,
-                    anchor=anchor)
+                    anchor=anchor,
+                    sender=sender, receivers=receivers,
+                    loggingServerAddress=loggingServerAddress, loggingServerPort=loggingServerPort)
 
 
 ########################################################################################################
@@ -556,7 +580,53 @@ def toggle_emergency():
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
-########################################################################################################
+
+### emails records
+@post('/email')
+def email_records():
+
+    #######################################################
+
+    # get name and date cookies
+    name, date = getCookies(request)
+
+    # sets flag based on user's confirmation / denial from popup alert
+    emailConfirm = request.forms.get("emailConfirm")
+
+    #######################################################
+
+    subtotal = Record.readSubtotal(name, date) or '0.0'
+
+    #######################################################
+
+    curTimeShort = time.strftime("%m/%d")
+
+    sender = "zamalchi@intranet.techsquare.com"
+    subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
+    body = ""
+
+    #######################################################
+
+    if (emailConfirm == "true") and name:
+
+        # try to open file with user's name and retrieve data
+        records = Record.parseRecordsFromFile(name, date)
+
+        for r in records:
+            body += r.emailFormat() + "\n"
+
+        message = "Subject: %s\n\n%s" % (subject, body)
+
+        try:
+            mail = smtplib.SMTP("localhost")
+            mail.sendmail(sender, receivers, message)
+            mail.quit()
+
+        except smtplib.SMTPException:
+            pass
+
+    redirect('hours')
+
 ########################################################################################################
 ########################################################################################################
 
@@ -568,7 +638,7 @@ def send_records():
 
     confirm = request.forms.get('sendConfirm')
 
-    if (confirm == "true") and name and loggingServerAddress:
+    if (confirm == "true") and name and loggingServerAddress and loggingServerPort:
 
         # parse records from file
         records = Record.parseRecordsFromFile(name, date)
@@ -580,7 +650,8 @@ def send_records():
         b64 = getEncodedString(string)
 
         # send name, date, and encoded records to receiving server
-        redirect('http://{0}/receive?n={1}&d={2}&r={3}'.format(loggingServerAddress, name, date, b64))
+        redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}'.format(loggingServerAddress, loggingServerPort,
+                                                                   name, date, b64))
 
     redirect('hours')
 
