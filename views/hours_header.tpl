@@ -48,7 +48,7 @@
 						<div class="panel-body" id="controls">
 							<div class="container-fluid">
 
-								<div class="row">
+								<div class="row" name="row1">
 
 									<!-- LEFT HALF START #####################################-->
 									<div class="col-lg-6 col-md-12" name="left">
@@ -104,13 +104,13 @@
 											</form>
 
 											<!-- SEND RECORDS -->
-											<form action="/send" method="post" class="inline-block button-wrapper" enctype="multipart/form-data">
+											<form action="/email" method="post" class="inline-block button-wrapper" enctype="multipart/form-data">
 												<div class="form-group full-width">						
 													
-													<input id="send" name="send" type="submit" value="Send" class="control-button btn btn-success btn-sm"
-														onclick="confirmSend(this)" />
+													<input id="email" name="email" type="submit" value="Email" class="control-button btn btn-success btn-sm"
+														onclick="confirmEmail(this)" />
 													
-													<input id="sendConfirm" name="sendConfirm" type="hidden" value="false" />
+													<input id="emailConfirm" name="emailConfirm" type="hidden" value="false" />
 												</div>
 											</form>
 
@@ -118,9 +118,32 @@
 
 									</div>
 									<!-- RIGHT HALF END ######################################-->
-
-
 								</div>
+								<!-- end of row1 -->
+
+								<!-- ^ ROW 1 : ROW 2 v -->
+
+								<div class="row" name="row2">
+									<div class="col-md-12">
+
+											<!-- SEND RECORDS -->
+											<form action="/send" method="post" class="inline-block button-wrapper" enctype="multipart/form-data">
+												<div class="form-group full-width">						
+													
+													<input type="text" id="serverAddress" name="address" placeholder="Logging Server Address" class="form-control input-sm" />
+													<strong>:</strong>
+													<input type="text" id="serverPort" name="port" placeholder="Port" class="form-control input-sm">
+
+													<input id="send" name="send" type="submit" value="Send" class="control-button btn btn-success btn-sm"
+														onclick="confirmSend(this)" />
+													
+													<input id="sendConfirm" name="sendConfirm" type="hidden" value="false" />
+												</div>
+											</form>
+
+									</div>
+								</div>
+								<!-- end of row2 -->
 
 							</div>
 						</div>
