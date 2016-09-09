@@ -35,6 +35,9 @@
 	<!-- used for duration field -->
 	% FLOAT_REGEX = "(0|[1-9]{1,})(\.(0|25|5|75))?"
 
+	<!-- only labels from the list can be entered -->
+	% LABEL_REGEX = "({0})".format( "|".join( [l.split(" | ")[0] for l in labels] ) )
+
 	<!-- ######################################################################################################### -->
 
 	<!-- default anchor tag -->
