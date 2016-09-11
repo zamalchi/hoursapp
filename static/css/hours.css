@@ -1,3 +1,15 @@
+.gradient {
+  background: #476f9e;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(#476f9e, #090F16);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#476f9e, #090F16);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#476f9e, #090F16);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#476f9e, #090F16);
+  /* Standard syntax */ }
+
 .vertical-center {
   vertical-align: center !important; }
 
@@ -113,8 +125,7 @@ div#header {
     div#header div#controls div[name="right"] .btn-group {
       display: inline-block;
       width: 100%;
-      min-width: 415px;
-      padding-bottom: 15px; }
+      min-width: 415px; }
     div#header div#controls div[name="right"] .button-wrapper,
     div#header div#controls div[name="right"] .input-wrapper {
       display: inline-block;
@@ -126,6 +137,22 @@ div#header {
       margin: 0px; }
     div#header div#controls input#delete {
       margin: 0px; }
+  div#header form[action="/send"] {
+    width: 100%;
+    padding-bottom: 15px; }
+    div#header form[action="/send"] input {
+      display: inline-block; }
+    div#header form[action="/send"] input#serverAddress {
+      width: 40%;
+      margin-right: 5px;
+      font-size: 1em; }
+    div#header form[action="/send"] input#serverPort {
+      width: 25%;
+      margin-left: 5px;
+      font-size: 1em; }
+    div#header form[action="/send"] input#send {
+      width: 24%;
+      margin-left: 30px; }
 
 div[name="recordControls"] button[name="collapse"],
 div[name="recordControls"] button[name="delete"] {

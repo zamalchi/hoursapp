@@ -103,7 +103,6 @@ div#header {
 				display: inline-block;
 				width: 100%;
 				min-width: 415px;
-				padding-bottom: 15px;
 			}
 
 			.button-wrapper,
@@ -136,5 +135,32 @@ div#header {
 		}
 	}
 // ###########################################
+
+
+	form[action="/send"] {
+		width: 100%;
+		padding-bottom: 15px;
+
+		input {
+			display: inline-block;
+		}
+
+		input#serverAddress {
+			width: 40%;
+			margin-right: 5px;
+			font-size: 1em;
+		}
+
+		input#serverPort {
+			width: 25%;
+			margin-left: 5px;
+			font-size: 1em;
+		}
+
+		input#send {
+			width: 24%;
+			margin-left: 30px;
+		}
+	}
 	
 }
