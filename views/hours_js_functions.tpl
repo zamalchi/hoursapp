@@ -1,6 +1,6 @@
 
 
-<script type="text/javascript">
+<script>
 
 // goes to the anchor tag of the just-edited record or the top of page
 $( document ).ready(function() {
@@ -10,6 +10,20 @@ $( document ).ready(function() {
 	// to prevent old values from being retained (ex submitting and then hitting back in the browser)
 	document.getElementById("emailConfirm").value = "false";
 	document.getElementById("sendConfirm").value = "false";
+
+	var counter = $("#num-records").val();
+
+	var name = $("#name" + counter);
+	var start = $("#start" + counter);
+	var end = $("#end" + counter);
+
+	if (name.val() == false) {
+		name.focus();
+	} else if (start.val() == false) {
+		start.focus();
+	} else if (end.val() == false) {
+		end.focus();
+	}
 });
 
 // ####################################################################################################

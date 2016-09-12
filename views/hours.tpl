@@ -43,6 +43,8 @@
 	<!-- default anchor tag -->
 	<a name="-1"></a>
 
+	<input type="hidden" id="num-records" value="{{len(records)}}" />
+
 	% from classes.Record import Record
 
 	% import time
@@ -121,7 +123,7 @@
 							% include('hours_panel_form.tpl',
 								% name=name, date=date,
 								% labels=labels, i=0,
-								% prev_start="", prev_end="",
+								% start="", end="",
 								% is_new_record=False, is_initial_record=True)
 						
 						</div>
@@ -178,10 +180,16 @@
 			    			% ider = Labeler(len(records))
 		    				<div class="panel-collapse collapse in" name={{namer.record()}} id={{ider.record()}} >
 			    				
+			    				% form_start = ""
+			    				% prev_record = Record.getPrevRecord(records, ider.i)
+			    				% if prev_record:
+			    					% form_start = prev_record.fend
+			    				% end
+
 			    				% include('hours_panel_form.tpl',
 			    					% name=name, date=date,
 			    					% labels=labels, i=len(records),
-			    					% prev_start=records[-1].fend, prev_end="",
+			    					% start=form_start, end="",
 			    					% is_new_record=True, is_initial_record=False)
 			    			
 			    			</div>
@@ -227,10 +235,21 @@
 				    			<!-- PANEL COLLAPSE/BODY START -->
 			    				<div class="panel-collapse collapse" name={{namer.record()}} id={{ider.record()}} >
 			    					
+			    					<!-- form_start = prev_record.fend -->
+			    					<!-- form_end =  r.fstart -->
+
+				    				% form_start = ""
+				    				% prev_record = Record.getPrevRecord(records, ider.i)
+				    				% if prev_record:
+				    					% form_start = prev_record.fend
+				    				% end
+
+				    				% form_end = r.fstart
+
 			    					% include('hours_panel_form.tpl',
 			    						% name=name, date=date,
 			    						% labels=labels, i=ider.i,
-			    						% prev_start="", prev_end=r.fstart,
+			    						% start=form_start, end=form_end,
 			    						% is_new_record=False, is_initial_record=False)
 				    			
 				    			</div>					    			

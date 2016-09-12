@@ -51,30 +51,22 @@
 
 							<!-- ************************************************************************** -->
 							<!-- START TIME -->
-							% if is_initial_record:
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required autofocus tabindex="2" />
 
-							% elif (is_new_record) and (prev_start != Record.PENDING_CHAR):
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} value="{{prev_start}}" required tabindex="2" />
+							<input type="text" name={{namer.start()}} id={{ider.start()}}
+								class="form-control" pattern={{TIME_REGEX}}
+								value="{{start}}" placeholder="Start Time"
+								required tabindex="2" />
 
-							% elif is_new_record:
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} value="" autofocus required tabindex="2" />
-
-							% else:
-								<input name={{namer.start()}} id={{ider.start()}} type="text" class="form-control" placeholder="Start Time" pattern={{TIME_REGEX}} required tabindex="2" />
-							% end
 							<!-- ************************************************************************** -->
 
 
 							<!-- ************************************************************************** -->
 							<!-- END TIME -->
-							% if is_initial_record:
-								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" tabindex="3" />
-							% elif is_new_record:
-								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} autofocus value="" tabindex="3" />
-							% else:
-								<input name={{namer.end()}} id={{ider.end()}} type="text" class="form-control" placeholder="End Time" pattern={{TIME_REGEX}} value="{{prev_end}}" required tabindex="3" />
-							% end
+
+							<input type="text" name={{namer.end()}} id={{ider.end()}}
+								class="form-control" pattern={{TIME_REGEX}}
+								value="{{end}}" placeholder="End Time" tabindex="3" />
+							
 							<!-- ************************************************************************** -->
 
 						</div>
