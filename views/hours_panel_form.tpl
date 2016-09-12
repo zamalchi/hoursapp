@@ -54,8 +54,9 @@
 
 							<input type="text" name={{namer.start()}} id={{ider.start()}}
 								class="form-control" pattern={{TIME_REGEX}}
-								value="{{start}}" placeholder="Start Time"
-								required tabindex="2" />
+								value="{{start}}" data-min="{{start}}" data-max="{{end}}"
+								placeholder="Start Time" required tabindex="2"
+								onblur="checkTime(this);" />
 
 							<!-- ************************************************************************** -->
 
@@ -65,8 +66,10 @@
 
 							<input type="text" name={{namer.end()}} id={{ider.end()}}
 								class="form-control" pattern={{TIME_REGEX}}
-								value="{{end}}" placeholder="End Time" tabindex="3" />
-							
+								value="{{end}}" data-min="{{start}}" data-max="{{end}}"
+								placeholder="End Time" tabindex="3" 
+								onblur="checkTime(this);" />
+
 							<!-- ************************************************************************** -->
 
 						</div>
@@ -109,7 +112,7 @@
 							
 							<div name="notes-wrapper">
 								<!-- NOTES : TEXT // not required (ex. lunch) -->
-								<input  name={{namer.notes()}} id={{ider.notes()}} type="text" class="form-control" placeholder="Notes" required tabindex="6" />
+								<input  name={{namer.notes()}} id={{ider.notes()}} type="text" value="{{notes}}" class="form-control" placeholder="Notes" required tabindex="6" />
 							</div>
 
 						</div>

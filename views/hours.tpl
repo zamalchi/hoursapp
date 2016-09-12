@@ -24,6 +24,8 @@
 
 <body data-index="{{anchor}}">
 
+<input type="hidden" id="foobar" value="17:45" pattern="(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))" data-min="1345" data-max="1730">
+
 	<!-- ######################################################################################################### -->
 	<!-- ######################################################################################################### -->
 	<!-- ######################################################################################################### -->
@@ -142,7 +144,7 @@
 						<div class="panel panel-default">
 							
 							% include('hours_panel_form.tpl',
-								% name=name, date=date,
+								% name=name, date=date, notes=notes,
 								% labels=labels, i=0,
 								% start="", end="",
 								% is_new_record=False, is_initial_record=True)
@@ -210,7 +212,7 @@
 			    				% end
 
 			    				% include('hours_panel_form.tpl',
-			    					% name=name, date=date,
+			    					% name=name, date=date, notes=notes,
 			    					% labels=labels, i=len(records),
 			    					% start=form_start, end="",
 			    					% is_new_record=True, is_initial_record=False)
@@ -270,7 +272,7 @@
 				    				% form_end = r.fstart
 
 			    					% include('hours_panel_form.tpl',
-			    						% name=name, date=date,
+			    						% name=name, date=date, notes="",
 			    						% labels=labels, i=ider.i,
 			    						% start=form_start, end=form_end,
 			    						% is_new_record=False, is_initial_record=False)

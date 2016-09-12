@@ -727,6 +727,37 @@ class Record:
                 # modify next_start time by subtracting overlap duration
                 next_record.modifyStart(overlap)
 
+
+
+    ### CHECKS IF A NEW RECORD IS TEMPORALLY SOUND ITSELF AND IN RELATION TO ADJACENT RECORDS ##############
+    @staticmethod
+    def checkIfValid(records, record, index):
+
+        # the start time must come before the end time
+        if record.end and (record.start > record.end):
+            print("RETURN FALSE 1")
+            print("END: " + record.end)
+            return False
+
+        if records:
+            prev = Record.getPrevRecord(records, index)
+            next = Record.getNextRecord(records, index)
+
+            # if there is no next record, the new record is permitted to not have an end time
+            if (not next and not record.end):
+                print("RETURN TRUE 1")
+                return True
+
+            # if the end time is less than the previous start --> invalid (covers the previous record)
+            # if the start time is greater than the next end --> invalid (covers the next record)
+            if (prev and record.end < prev.start) or (next and record.start > next.end):
+                print("RETURN FALSE 2")
+                return False
+
+        # else True (also if no records, and the new record is valid within itself, then True)
+        print("RETURN TRUE 2")
+        return True
+
     ########################################################################################################
     ### RECORD METHODS END #################################################################################
 

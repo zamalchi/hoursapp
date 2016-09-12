@@ -1,3 +1,4 @@
+Deleting a record will copy its notes into the new record form (useful for adjusting an existing record) (will later change to copy to specific, corresponding form)
 Pattern regex added for labels (only labels in the list can be used)
 New file [config/settings] : newline-separated fields in the format [name=value]
 Changeable server address:port fields added (sources address:port from [config/settings] : [loggingServerAddress=0.0.0.0] and [loggingServerPort=1234])

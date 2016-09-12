@@ -226,4 +226,60 @@ function setValueFromInnerText(self) {
 	self.value = self.innerText;
 }
 
+// function modifyTimePattern(self) {
+// 	minTime = self.attributes["data-min"].value;
+// 	maxTime = self.attributes["data-max"].value;
+// 	default_pattern = "(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))";
+// 	console.log(default_pattern);
+
+// 	pattern="(\s*|(";
+
+// 	if (minTime.substr(0,2) < 10) {
+// 		pattern += "0?";
+// 		pattern += "[" + minTime.substr(1,1) + "-";
+
+// 		if (maxTime.substr(0,2) < 10) {
+// 			pattern += maxTime.substr(1,1);
+// 		} else {
+// 			pattern += "9";
+// 		}
+// 		pattern += "]";
+// 	}
+// 	else if (minTime.substr(0,2) >= 10 && minTime.substr(0,2) < 20) {
+// 		pattern += "1[" + minTime.substr(1,1) + "-";
+
+// 		if (maxTime.substr(0,2) >= 10 && maxTime.substr(0,2) < 20) {
+// 			pattern += maxTime.substr(1,1);
+// 		} else {
+// 			pattern += "9";
+// 		}
+// 		pattern += "]";
+// 	}
+// 	else if (minTime.substr(0,2) >= 20) {
+// 		pattern += "|2[" + minTime.substr(1,1) + "-" + maxTime.substr(1,1);
+// 	}
+	
+// 	pattern += "):?(";
+
+// 	minuteArray = ["00", "15", "30", "45"];
+
+// 	var minIndex = minuteArray.indexOf(minTime.substr(2,2));
+// 	var maxIndex = minuteArray.indexOf(maxTime.substr(2,2));
+
+// 	pattern += minuteArray.slice(minIndex, maxIndex+1).join("|") + "))";
+
+// 	console.log(pattern);
+// }
+
+function checkTime(self) {
+	var time = self.value.replace(":","");
+	var min = self.attributes["data-min"].value.replace(":","") || "0000";
+	var max = self.attributes["data-max"].value.replace(":","") || "2345";
+
+	if ((time != "") && (time < min || time > max)) {
+		alert("Invalid time! Time (" + time + ") should be : " + min + "-" + max + "\nTime must be at a quarter-hour interval");
+	}
+
+}
+
 </script>
