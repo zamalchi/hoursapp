@@ -13,9 +13,15 @@ $( document ).ready(function() {
 
 	var counter = $("#num-records").val();
 
-	var name = $("#name" + counter);
-	var start = $("#start" + counter);
-	var end = $("#end" + counter);
+	// if -1 (default value) --> open new record form
+	if (i == "-1") { i = counter; }
+
+	// // open the collapse form of the record corresponding to the anchor index	
+	$("#record" + i).addClass("in");
+
+	var name = $("#name" + i);
+	var start = $("#start" + i);
+	var end = $("#end" + i);
 
 	if (name.val() == false) {
 		name.focus();
@@ -24,6 +30,8 @@ $( document ).ready(function() {
 	} else if (end.val() == false) {
 		end.focus();
 	}
+
+
 });
 
 // ####################################################################################################

@@ -445,6 +445,10 @@ def delete_single_record():
     # write back updated records
     Record.writeRecords(name, date, records)
 
+    # upon redirect, anchor to where the record was deleted
+    # open that form and insert notes, etc. from the deleted record
+    setAnchorCookie(response, index)
+
     #######################################################
 
     redirect('hours')

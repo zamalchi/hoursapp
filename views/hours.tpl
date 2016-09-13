@@ -203,7 +203,7 @@
 			    			
 			    			% namer = Labeler()
 			    			% ider = Labeler(len(records))
-		    				<div class="panel-collapse collapse in" name={{namer.record()}} id={{ider.record()}} >
+		    				<div class="panel-collapse collapse" name={{namer.record()}} id={{ider.record()}} >
 			    				
 			    				% form_start = ""
 
@@ -220,8 +220,13 @@
 			    					% min = prev_record.start 
 			    				% end
 
+			    				% form_notes = ""
+			    				% if anchor == "-1":
+			    					% form_notes = notes
+			    				% end
+
 			    				% include('hours_panel_form.tpl',
-			    					% name=name, date=date, notes=notes,
+			    					% name=name, date=date, notes=form_notes,
 			    					% labels=labels, i=len(records),
 			    					% form_start=form_start, form_end="", min=min, max=max,
 			    					% is_new_record=True, is_initial_record=False)
@@ -291,8 +296,13 @@
 				    					% min = prev_record.start 
 				    				% end
 
+			    					% form_notes = ""
+			    					% if anchor == str(ider.i):
+			    						% form_notes = notes
+			    					% end
+
 			    					% include('hours_panel_form.tpl',
-			    						% name=name, date=date, notes="",
+			    						% name=name, date=date, notes=form_notes,
 			    						% labels=labels, i=ider.i,
 			    						% form_start=form_start, form_end=form_end, min=min, max=max,
 			    						% is_new_record=False, is_initial_record=False)
