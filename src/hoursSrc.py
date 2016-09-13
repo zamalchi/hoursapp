@@ -164,6 +164,17 @@ def setAnchorCookie(res, anchor):
 def deleteAnchorCookie(res):
     res.delete_cookie("anchor")
 
+### NOTES #######################################################
+
+def getNotesCookie(req):
+    return req.get_cookie("notes") or ""
+
+def setNotesCookie(res, notes):
+    res.set_cookie("notes", notes)
+
+def deleteNotesCookie(res):
+    res.delete_cookie("notes")
+
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
@@ -203,6 +214,10 @@ def hours():
     # set anchor cookie to null after getting it
     deleteAnchorCookie(response)
 
+    notes = getNotesCookie(request)
+
+    deleteNotesCookie(response)
+
     # get the month to use for the monthly subtotal
     month = Record.getSubtotalMonth(date)
 
@@ -220,7 +235,7 @@ def hours():
                     name=name, date=date,
                     records=records, labels=labels,
                     month=month, subtotal=subtotal,
-                    anchor=anchor,
+                    anchor=anchor, notes=notes,
                     sender=sender, receivers=receivers,
                     loggingServerAddress=loggingServerAddress, loggingServerPort=loggingServerPort)
 
@@ -264,29 +279,39 @@ def hours_post():
     # if there are no existing files, the cookie will be null
     records_pulled = getNameCookie(request)
 
-    if records and not records_pulled:
-        # append to the end of unpulled existing records
-        # prevents adding to the beginning of an unexpected list
-        records.append(new_record)
+    # checks if new_record.start < new_record.end
+    # and that new_record doesn't exceed the outer limits of adjacent records
+    if Record.checkIfValid(records, new_record, index):
+
+        if records and not records_pulled:
+            # append to the end of unpulled existing records
+            # prevents adding to the beginning of an unexpected list
+            records.append(new_record)
+        else:
+            # insert new record at index provided from template form
+            records.insert(index, new_record)
+
+            # adjust timings of adjacent records in case of overlap
+            Record.adjustAdjacentRecords(records, index)
+
+            # after adjusting the durations, recount total duration for the day
+            new_local_subtotal = Record.countSubtotal(records)
+
+            # add the difference in summed durations back to the file
+            # when inserting between two records (whose durations are not locked)
+            # (i.e. splicing a record in), the subtotal should not change
+            Record.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
+
+        #######################################################
+
+        # write back updated list
+        Record.writeRecords(name, date, records)
+
+        deleteNotesCookie(response)
+
     else:
-        # insert new record at index provided from template form
-        records.insert(index, new_record)
 
-        # adjust timings of adjacent records in case of overlap
-        Record.adjustAdjacentRecords(records, index)
-
-        # after adjusting the durations, recount total duration for the day
-        new_local_subtotal = Record.countSubtotal(records)
-
-        # add the difference in summed durations back to the file
-        # when inserting between two records (whose durations are not locked)
-        # (i.e. splicing a record in), the subtotal should not change
-        Record.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
-
-    #######################################################
-
-    # write back updated list
-    Record.writeRecords(name, date, records)
+        setNotesCookie(response, new_record.notes)
 
     #######################################################
 
@@ -405,6 +430,9 @@ def delete_single_record():
     # read and parse records from file
     records = Record.parseRecordsFromFile(name, date)
 
+    # set the notes to be in the form
+    setNotesCookie(response, records[index].notes)
+
     # get the duration of the record to be deleted
     deletedRecordDuration = records[index].duration
 
@@ -416,6 +444,10 @@ def delete_single_record():
 
     # write back updated records
     Record.writeRecords(name, date, records)
+
+    # upon redirect, anchor to where the record was deleted
+    # open that form and insert notes, etc. from the deleted record
+    setAnchorCookie(response, index)
 
     #######################################################
 
@@ -473,7 +505,7 @@ def complete_end_time():
     setAnchorCookie(response, index)
 
     # get the submitted end time (which has already been pattern matched) OR get current rounded time
-    end = request.forms.get('completeEnd') or Record.getCurrentRoundedTime()
+    end = Record.parseTime(request.forms.get('completeEnd')) or Record.getCurrentRoundedTime()
 
     # get name and date cookies
     name, date = getCookies(request)
@@ -488,6 +520,10 @@ def complete_end_time():
 
     # set the end time
     record.setEnd(end)
+
+    # don't accept an invalid or invalidly placed record
+    if not Record.checkIfValid(records, record, index):
+        redirect('hours')
 
     if not record.durationLocked:
 

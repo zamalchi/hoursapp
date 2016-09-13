@@ -443,6 +443,11 @@ class Record:
             notes,
             durationLocked)
 
+        print("GOT RECORD FROM HTML")
+        print("RECORD: " + record_string)
+        print("END TIME: " + Record(record_string).end)
+        print("PENDING CHAR: " + Record.PENDING_CHAR)
+
         #######################################################
 
         return Record(record_string)
@@ -461,6 +466,10 @@ class Record:
     def parseTime(time):
 
         if time:
+            # return if pending
+            if time == Record.PENDING_CHAR:
+                return time
+
             # removes colon and adds leading '0' if missing
             return str(time.strip()).translate(None, ':').zfill(4)
 
@@ -726,6 +735,108 @@ class Record:
 
                 # modify next_start time by subtracting overlap duration
                 next_record.modifyStart(overlap)
+
+
+
+    ### CHECKS IF A NEW RECORD IS TEMPORALLY SOUND ITSELF AND IN RELATION TO ADJACENT RECORDS ##############
+    @staticmethod
+    def checkIfValid(records, record, index):
+
+        ################################################
+
+        # get records to check positioning of the new record
+        prev = next = None
+
+        # for checking the relationship with the adjacent records
+        prevValid = nextValid = False
+
+        ################################################
+        ################################################
+
+        if records:
+            print("RECORDS!")
+            prev = Record.getPrevRecord(records, index)
+            next = Record.getNextRecord(records, index)
+        else:
+            print("PREV: {0}".format(prev))
+            print("NEXT: {0}".format(next))
+
+        ################################################
+
+        # either there is no previous record or the new start is greater than the previous start
+        if (not prev) or (prev and (record.start > prev.start)):
+            prevValid = True
+            print("PREV VALID CHECK: {0}".format(prevValid))
+
+        # either there is no next record or the new end is less than the next end
+        if (not next) or (next and (record.end < next.end)):
+            nextValid = True
+            print("NEXT VALID CHECK: {0}".format(nextValid))
+
+        ################################################
+
+        # END != PENDING
+        if record.end != Record.PENDING_CHAR:
+
+            print("START < END CHECK: {0}".format(record.start < record.end))
+            return record.start < record.end
+
+        ################################################
+        ################################################
+
+        # END == PENDING
+        else:
+            print("END == PENDING")
+            # cannot have a pending end time within the list (must be at the end)
+            if next:
+                print("NEXT, returning False")
+                return False
+
+            ################################################
+
+            # can't compare pending end time to record.start
+            # so return whether or not both adjacency checks were passed
+            else:
+                print("PREV AND NEXT CHECK: {0}".format(prevValid and nextValid))
+                return prevValid and nextValid
+
+        ################################################
+        ################################################
+
+                #
+        #         # if end time == pending
+        #     # if next
+        #         # return false (can't have a missing end time in the middle of the list)
+        #     # else
+        #         # if start < prev end
+        #
+        # # else actual end time
+        #     # if start >= end
+        #         # return false (can't have non-positive duration)
+        #     # else return true
+        #
+        # # the start time must come before the end time
+        # if record.end and (record.end != Record.PENDING_CHAR) and (record.start > record.end):
+        #     print("RETURN FALSE 1")
+        #     print("END: " + record.end)
+        #     return False
+        #
+        #
+        #
+        #     # if there is no next record, the new record is permitted to not have an end time
+        #     if not next and not record.end:
+        #         print("RETURN TRUE 1")
+        #         return True
+        #
+        #     # if the end time is less than the previous start --> invalid (covers the previous record)
+        #     # if the start time is greater than the next end --> invalid (covers the next record)
+        #     if (prev and record.end < prev.start) or (next and record.start > next.end):
+        #         print("RETURN FALSE 2")
+        #         return False
+        #
+        # # else True (also if no records, and the new record is valid within itself, then True)
+        # print("RETURN TRUE 2")
+        # return True
 
     ########################################################################################################
     ### RECORD METHODS END #################################################################################

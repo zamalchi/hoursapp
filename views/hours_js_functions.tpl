@@ -1,6 +1,6 @@
 
 
-<script type="text/javascript">
+<script>
 
 // goes to the anchor tag of the just-edited record or the top of page
 $( document ).ready(function() {
@@ -10,6 +10,28 @@ $( document ).ready(function() {
 	// to prevent old values from being retained (ex submitting and then hitting back in the browser)
 	document.getElementById("emailConfirm").value = "false";
 	document.getElementById("sendConfirm").value = "false";
+
+	var counter = $("#num-records").val();
+
+	// if -1 (default value) --> open new record form
+	if (i == "-1") { i = counter; }
+
+	// // open the collapse form of the record corresponding to the anchor index	
+	$("#record" + i).addClass("in");
+
+	var name = $("#name" + i);
+	var start = $("#start" + i);
+	var end = $("#end" + i);
+
+	if (name.val() == false) {
+		name.focus();
+	} else if (start.val() == false) {
+		start.focus();
+	} else if (end.val() == false) {
+		end.focus();
+	}
+
+
 });
 
 // ####################################################################################################
@@ -210,6 +232,62 @@ function submitOnEnterPressed(event, formElem) {
 
 function setValueFromInnerText(self) {
 	self.value = self.innerText;
+}
+
+// function modifyTimePattern(self) {
+// 	minTime = self.attributes["data-min"].value;
+// 	maxTime = self.attributes["data-max"].value;
+// 	default_pattern = "(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))";
+// 	console.log(default_pattern);
+
+// 	pattern="(\s*|(";
+
+// 	if (minTime.substr(0,2) < 10) {
+// 		pattern += "0?";
+// 		pattern += "[" + minTime.substr(1,1) + "-";
+
+// 		if (maxTime.substr(0,2) < 10) {
+// 			pattern += maxTime.substr(1,1);
+// 		} else {
+// 			pattern += "9";
+// 		}
+// 		pattern += "]";
+// 	}
+// 	else if (minTime.substr(0,2) >= 10 && minTime.substr(0,2) < 20) {
+// 		pattern += "1[" + minTime.substr(1,1) + "-";
+
+// 		if (maxTime.substr(0,2) >= 10 && maxTime.substr(0,2) < 20) {
+// 			pattern += maxTime.substr(1,1);
+// 		} else {
+// 			pattern += "9";
+// 		}
+// 		pattern += "]";
+// 	}
+// 	else if (minTime.substr(0,2) >= 20) {
+// 		pattern += "|2[" + minTime.substr(1,1) + "-" + maxTime.substr(1,1);
+// 	}
+	
+// 	pattern += "):?(";
+
+// 	minuteArray = ["00", "15", "30", "45"];
+
+// 	var minIndex = minuteArray.indexOf(minTime.substr(2,2));
+// 	var maxIndex = minuteArray.indexOf(maxTime.substr(2,2));
+
+// 	pattern += minuteArray.slice(minIndex, maxIndex+1).join("|") + "))";
+
+// 	console.log(pattern);
+// }
+
+function checkTime(self) {
+	var time = self.value.replace(":","");
+	var min = self.attributes["data-min"].value.replace(":","") || "0000";
+	var max = self.attributes["data-max"].value.replace(":","") || "2345";
+
+	if ((time != "") && (time <= min || time >= max)) {
+		alert("Invalid time!\nTime (" + time + ") should be within the range: " + min + "-" + max + "\nTime must be at a quarter-hour interval");
+	}
+
 }
 
 </script>
