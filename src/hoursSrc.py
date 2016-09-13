@@ -501,7 +501,7 @@ def complete_end_time():
     setAnchorCookie(response, index)
 
     # get the submitted end time (which has already been pattern matched) OR get current rounded time
-    end = request.forms.get('completeEnd') or Record.getCurrentRoundedTime()
+    end = Record.parseTime(request.forms.get('completeEnd')) or Record.getCurrentRoundedTime()
 
     # get name and date cookies
     name, date = getCookies(request)
@@ -516,6 +516,10 @@ def complete_end_time():
 
     # set the end time
     record.setEnd(end)
+
+    # don't accept an invalid or invalidly placed record
+    if not Record.checkIfValid(records, record, index):
+        redirect('hours')
 
     if not record.durationLocked:
 

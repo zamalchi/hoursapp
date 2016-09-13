@@ -207,7 +207,8 @@
 			    				
 			    				% form_start = ""
 			    				% prev_record = Record.getPrevRecord(records, ider.i)
-			    				% if prev_record:
+
+			    				% if prev_record and (prev_record.end != Record.PENDING_CHAR):
 			    					% form_start = prev_record.fend
 			    				% end
 
@@ -264,12 +265,13 @@
 			    					<!-- form_end =  r.fstart -->
 
 				    				% form_start = ""
+				    				% form_end = r.fstart
+
 				    				% prev_record = Record.getPrevRecord(records, ider.i)
-				    				% if prev_record:
+				    				
+				    				% if prev_record and (prev_record.end != Record.PENDING_CHAR):
 				    					% form_start = prev_record.fend
 				    				% end
-
-				    				% form_end = r.fstart
 
 			    					% include('hours_panel_form.tpl',
 			    						% name=name, date=date, notes="",
