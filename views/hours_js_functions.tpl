@@ -276,8 +276,8 @@ function checkTime(self) {
 	var min = self.attributes["data-min"].value.replace(":","") || "0000";
 	var max = self.attributes["data-max"].value.replace(":","") || "2345";
 
-	if ((time != "") && (time < min || time > max)) {
-		alert("Invalid time! Time (" + time + ") should be : " + min + "-" + max + "\nTime must be at a quarter-hour interval");
+	if ((time != "") && (time <= min || time >= max)) {
+		alert("Invalid time!\nTime (" + time + ") should be within the range: " + min + "-" + max + "\nTime must be at a quarter-hour interval");
 	}
 
 }

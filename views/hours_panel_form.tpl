@@ -54,7 +54,7 @@
 
 							<input type="text" name={{namer.start()}} id={{ider.start()}}
 								class="form-control" pattern={{TIME_REGEX}}
-								value="{{start}}" data-min="{{start}}" data-max="{{end}}"
+								value="{{form_start}}" data-min="{{min}}" data-max="{{max}}"
 								placeholder="Start Time" required tabindex="2"
 								onblur="checkTime(this);" />
 
@@ -66,7 +66,7 @@
 
 							<input type="text" name={{namer.end()}} id={{ider.end()}}
 								class="form-control" pattern={{TIME_REGEX}}
-								value="{{end}}" data-min="{{start}}" data-max="{{end}}"
+								value="{{form_end}}" data-min="{{min}}" data-max="{{max}}"
 								placeholder="End Time" tabindex="3" 
 								onblur="checkTime(this);" />
 

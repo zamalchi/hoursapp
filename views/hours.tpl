@@ -146,7 +146,7 @@
 							% include('hours_panel_form.tpl',
 								% name=name, date=date, notes=notes,
 								% labels=labels, i=0,
-								% start="", end="",
+								% form_start="", form_end="", min="0000", max="2345",
 								% is_new_record=False, is_initial_record=True)
 						
 						</div>
@@ -206,16 +206,24 @@
 		    				<div class="panel-collapse collapse in" name={{namer.record()}} id={{ider.record()}} >
 			    				
 			    				% form_start = ""
-			    				% prev_record = Record.getPrevRecord(records, ider.i)
 
-			    				% if prev_record and (prev_record.end != Record.PENDING_CHAR):
-			    					% form_start = prev_record.fend
+			    				% min = "0000"
+			    				% max = "2345"
+
+			    				% prev_record = Record.getPrevRecord(records, ider.i)
+				    				
+			    				% if prev_record:
+			    					% if (prev_record.end != Record.PENDING_CHAR):
+			    						% form_start = prev_record.fend
+			    					% end
+
+			    					% min = prev_record.start 
 			    				% end
 
 			    				% include('hours_panel_form.tpl',
 			    					% name=name, date=date, notes=notes,
 			    					% labels=labels, i=len(records),
-			    					% start=form_start, end="",
+			    					% form_start=form_start, form_end="", min=min, max=max,
 			    					% is_new_record=True, is_initial_record=False)
 			    			
 			    			</div>
@@ -267,16 +275,26 @@
 				    				% form_start = ""
 				    				% form_end = r.fstart
 
+				    				% min = "0000"
+				    				% max = "2345"
+				    				% if (r.end != Record.PENDING_CHAR):
+				    					% max = r.end
+				    				% end
+
 				    				% prev_record = Record.getPrevRecord(records, ider.i)
 				    				
-				    				% if prev_record and (prev_record.end != Record.PENDING_CHAR):
-				    					% form_start = prev_record.fend
+				    				% if prev_record:
+				    					% if (prev_record.end != Record.PENDING_CHAR):
+				    						% form_start = prev_record.fend
+				    					% end
+
+				    					% min = prev_record.start 
 				    				% end
 
 			    					% include('hours_panel_form.tpl',
 			    						% name=name, date=date, notes="",
 			    						% labels=labels, i=ider.i,
-			    						% start=form_start, end=form_end,
+			    						% form_start=form_start, form_end=form_end, min=min, max=max,
 			    						% is_new_record=False, is_initial_record=False)
 				    			
 				    			</div>					    			
