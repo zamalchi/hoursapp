@@ -318,8 +318,6 @@
 								
 								<!-- Increment counter after -->
 								% ider.dec()
-								<!-- set the current end time to prev_start for possible use in the next_record -->
-								% prev_start = r.fend
 
 							% end # end for each record
 
