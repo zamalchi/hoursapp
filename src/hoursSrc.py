@@ -257,9 +257,6 @@ def hours_post():
     # index for inserting new Record into the list of records
     index = int(request.forms.get(namer.insert()))
 
-    # after posting a new record, delete the anchor cookie to reset it
-    deleteAnchorCookie(response)
-
     #######################################################
 
     # parses form data and returns a Record obj
@@ -306,6 +303,9 @@ def hours_post():
 
         # write back updated list
         Record.writeRecords(name, date, records)
+
+        # after posting a new record, delete the anchor cookie to reset it
+        deleteAnchorCookie(response)
 
         deleteNotesCookie(response)
 
