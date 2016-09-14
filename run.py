@@ -9,6 +9,7 @@ from src.hoursSrc import *
 
 from config.dirs import ROOT_DIR
 
+ROOT_DIR = os.path.dirname(os.path.abspath('.'))
 # argparse
 parser = argparse.ArgumentParser()
 
