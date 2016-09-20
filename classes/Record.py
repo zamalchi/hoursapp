@@ -70,7 +70,7 @@ class Record:
     def getFileName(name, date):
 
         # get current date if supplied date is ""
-        date = date or time.strftime("%Y-%m-%d")
+        date = Record.validateDate(date)
 
         # "-" between date and name in filename
         date += "-"
@@ -83,7 +83,7 @@ class Record:
     def getHiddenFileName(name, date):
 
         # get current date if supplied date is ""
-        date = date or time.strftime("%Y-%m-%d")
+        date = Record.validateDate(date)
 
         # "-" between date and name in filename
         date += "-"
@@ -97,22 +97,19 @@ class Record:
 
         #######################################################
 
-        if not date:
-            # if not supplied, get current date
-            date = date or time.strftime("%Y-%m")
+        date = Record.validateDate(date)
 
-        else:
-            # turn date into date object
-            date_obj = time.strptime(date, "%Y-%m-%d")
+        # turn date into date object
+        date_obj = time.strptime(date, "%Y-%m-%d")
 
-            # get year from date object
-            year = time.strftime("%Y", date_obj)
+        # get year from date object
+        year = time.strftime("%Y", date_obj)
 
-            # get adjusted month from date
-            month_int = Record.getSubtotalMonthInt(date)
+        # get adjusted month from date
+        month_int = Record.getSubtotalMonthInt(date)
 
-            # format month int into string
-            month = str(month_int).zfill(2)
+        # format month int into string
+        month = str(month_int).zfill(2)
 
         #######################################################
 
@@ -280,8 +277,12 @@ class Record:
     @staticmethod
     def getSubtotalMonthInt(date):
 
+        format = "%Y-%m-%d"
+
+        #date = Record.validateDate(date)
+
         # convert string to date object
-        date_obj = time.strptime(date, "%Y-%m-%d")
+        date_obj = time.strptime(date, format)
 
         # get the integer of the day
         day_int = int(time.strftime("%d", date_obj))
@@ -299,6 +300,9 @@ class Record:
     ### GET SUBTOTAL MONTH STRING ##########################################################################
     @staticmethod
     def getSubtotalMonth(date):
+
+        #date = Record.validateDate(date)
+
         # defines the pay period ; used for labeling the subtotal counter
 
         # get integer of month
@@ -785,6 +789,24 @@ class Record:
 
         ################################################
         ################################################
+
+    ### EITHER RETURNS A VALIDATED DATE BASED ON SUPPLIED DATE, OR RETURNS THE CURRENT DATE ################
+    @staticmethod
+    def validateDate(date):
+        format = "%Y-%m-%d"
+        try:
+            # check if the cookie is a valid time
+
+            nullobj = time.strptime(date, format)
+            nullstr = time.strftime(format, nullobj)
+
+            # print("FROM TRY: " + date)
+            return date
+
+        except (TypeError, ValueError):
+            # print("FROM EXCEPT: " + date + " -> " + time.strftime(format))
+            # if invalid date supplied, return current date
+            return time.strftime(format)
 
     ########################################################################################################
     ### RECORD METHODS END #################################################################################

@@ -141,10 +141,10 @@ def setNameCookie(res, name):
 
 ### DATE ########################################################
 def getDateCookie(req):
-    return req.get_cookie("date") or time.strftime("%Y-%m-%d")
+    return req.get_cookie("date")
 
 def setDateCookie(res, date):
-    res.set_cookie("date", date)
+    res.set_cookie("date", Record.validateDate(date))
 
 ### CONSOLIDATED ################################################
 def getCookies(req):
@@ -363,7 +363,7 @@ def set_cookies():
     name = request.forms.get("setName") or ""
 
     # get date: either set manually or defaults to current day
-    date = request.forms.get("setDate") or time.strftime("%Y-%m-%d")
+    date = Record.validateDate(request.forms.get("setDate"))
 
     #######################################################
 
