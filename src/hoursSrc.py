@@ -579,6 +579,7 @@ def toggle_billable():
 
     index = int(request.forms.get('index'))
 
+    # don't delete on task completion (stay anchored to edited record to easily view the change)
     setAnchorCookie(response, index)
 
     records = Record.parseRecordsFromFile(name, date)
@@ -604,6 +605,7 @@ def toggle_emergency():
 
     index = int(request.forms.get('index'))
 
+    # don't delete on task completion (stay anchored to edited record to easily view the change)
     setAnchorCookie(response, index)
 
     records = Record.parseRecordsFromFile(name, date)
