@@ -487,6 +487,9 @@ def complete_notes():
 
         Record.writeRecords(name, date, records)
 
+        # delete cookie if task completed
+        deleteAnchorCookie(response)
+
     #######################################################
 
     redirect('hours')
@@ -518,24 +521,29 @@ def complete_end_time():
     # get particular record to complete
     record = records[index]
 
-    # set the end time
+    # set the end time - THEN check if it is valid
     record.setEnd(end)
 
     # don't accept an invalid or invalidly placed record
     if not Record.checkIfValid(records, record, index):
         redirect('hours')
 
-    if not record.durationLocked:
+    # else block for clarity
+    else:
+        if not record.durationLocked:
 
-        # calculate and set duration
-        record.calculateAndSetDuration()
+            # calculate and set duration
+            record.calculateAndSetDuration()
 
-        # add the new duration to the subtotal
-        Record.addToSubtotal(name, date, record.duration)
+            # add the new duration to the subtotal
+            Record.addToSubtotal(name, date, record.duration)
 
-    # write back record
-    records[index] = record
-    Record.writeRecords(name, date, records)
+        # write back record
+        records[index] = record
+        Record.writeRecords(name, date, records)
+
+        # delete cookie if task completed
+        deleteAnchorCookie(response)
 
     #######################################################
 
