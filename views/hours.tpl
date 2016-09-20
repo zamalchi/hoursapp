@@ -15,6 +15,8 @@
 	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 
+	% print("MSG: " + msg)
+
 	% include('hours_js_functions.tpl')
 
 	<!-- SCRIPTS END -->

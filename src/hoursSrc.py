@@ -205,6 +205,12 @@ def hours():
 
     #######################################################
 
+    msg = ""
+    try:
+        msg = request.query['msg']
+    except KeyError:
+        pass
+
     # get name and date cookies
     name, date = getCookies(request)
 
@@ -237,7 +243,8 @@ def hours():
                     month=month, subtotal=subtotal,
                     anchor=anchor, notes=notes,
                     sender=sender, receivers=receivers,
-                    loggingServerAddress=loggingServerAddress, loggingServerPort=loggingServerPort)
+                    loggingServerAddress=loggingServerAddress, loggingServerPort=loggingServerPort,
+                    msg=msg)
 
 
 ########################################################################################################
@@ -704,12 +711,24 @@ def send_records():
         string = "\n".join([r.emailFormat() for r in records])
 
         # encrypt and encode string
-        b64 = getEncodedString(string)
+        records_encrypted = getEncodedString(string)
+
+        addr = "/".join(request.url.split("/")[:-1]) + "/ack"
+
+        # encrypts and encodes host address for rerouting back to hours
+        addr_encrypted = getEncodedString(addr)
 
         # send name, date, and encoded records to receiving server
-        redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}'.format(address, port, name, date, b64))
+        redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}&a={5}'.format(address, port, name, date, records_encrypted, addr_encrypted))
 
     redirect('hours')
+
+@get('/ack')
+def ack_sent_records():
+
+    msg = request.query['msg'] or ''
+
+    redirect('hours?msg={0}'.format(msg))
 
 ########################################################################################################
 ######################################  	MISC ROUTES END	   ###########################################
