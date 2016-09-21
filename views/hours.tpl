@@ -60,9 +60,9 @@
 
 		% from classes.Record import Record
 
-		% import time
-		% date_obj = time.strptime(date, "%Y-%m-%d")
-		% date_title = time.strftime("%a %d %b : %Y-%m-%d", date_obj)
+		% import datetime as dt
+
+		% date_title = date.strftime("%a %d %b : %Y-%m-%d")
 
 		% from classes.Labeler import Labeler
 
@@ -118,7 +118,7 @@
 			% record_string=record_string, 
 			% pending_records=pending_records,
 			% subtotal=subtotal, daily_subtotal=daily_subtotal,
-			% date_title=date_title, month=month)
+			% date_title=date_title, month=Record.getSubtotalMonth(date))
 		
 		<!-- ######################################################################################################### -->
 		<!-- ######################################################################################################### -->
