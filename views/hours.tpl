@@ -15,8 +15,6 @@
 	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 
-	% print("MSG: " + msg)
-
 	% include('hours_js_functions.tpl')
 
 	<!-- SCRIPTS END -->
@@ -24,7 +22,7 @@
 
 </head>
 
-<body data-index="{{anchor}}">
+<body data-index="{{anchor}}" data-server-response="{{msg}}">
 
 <input type="hidden" id="foobar" value="17:45" pattern="(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))" data-min="1345" data-max="1730">
 
