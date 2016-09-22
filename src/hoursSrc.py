@@ -731,16 +731,21 @@ def send_records():
         # turn records into a string separated by \n
         string = "\n".join([r.emailFormat() for r in records])
 
-        # encrypt and encode string
-        records_encrypted = getEncodedString(string)
+        try:
+            # encrypt and encode string
+            records_encrypted = getEncodedString(string)
 
-        addr = "/".join(request.url.split("/")[:-1]) + "/ack"
+            addr = "/".join(request.url.split("/")[:-1]) + "/ack"
 
-        # encrypts and encodes host address for rerouting back to hours
-        addr_encrypted = getEncodedString(addr)
+            # encrypts and encodes host address for rerouting back to hours
+            addr_encrypted = getEncodedString(addr)
 
-        # send name, date, and encoded records to receiving server
-        redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}&a={5}'.format(address, port, name, date, records_encrypted, addr_encrypted))
+            # send name, date, and encoded records to receiving server
+            redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}&a={5}'.format(address, port, name, date, records_encrypted, addr_encrypted))
+
+        # thrown if config/crypto not found
+        except TypeError:
+            print("Couldn't send to server because config/crypto is missing.")
 
     redirect('hours')
 

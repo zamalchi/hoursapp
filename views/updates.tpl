@@ -10,24 +10,27 @@
 
  	<script>
  		$( document ).ready(function() {
- 			var target = document.getElementById("target");
+ 			var heading = document.getElementById("target-heading");
+ 			var body = document.getElementById("target-body")
 
- 			var readme = target.attributes["data-readme"].value;
- 			var updates = target.attributes["data-updates"].value;
+ 			var readme = heading.attributes["data-readme"].value;
+ 			var updates = body.attributes["data-updates"].value;
 
- 			target.innerHTML = readme + updates;
+ 			heading.innerHTML = readme;
+ 			body.innerHTML = updates;
  		});
  	</script>
 </head>
 
 <body>
 	
-<div class="container" id="viewerContents">
+<div class="container-fluid" id="viewerContents">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="panel">
-				<div class="panel-heading" id="target" data-readme="{{readme}}" data-updates="{{updates}}">
-				</div>
+			<div class="panel" id="help">
+				<div class="panel-heading" id="target-heading" data-readme="{{readme}}"></div>
+				<hr>
+				<div class="panel-body" id="target-body" data-updates="{{updates}}"></div>
 			</div>
 		</div>
 	</div>
