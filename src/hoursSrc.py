@@ -23,6 +23,9 @@ from src.bottle import \
     template, static_file,\
     SimpleTemplate, url
 
+# for help button which displays README.md and UPDATES.md
+from markdown import markdown
+
 # Record class
 from classes.Record import Record
 # Labeler class
@@ -208,7 +211,7 @@ def hours():
 
     msg = ""
     try:
-        msg = request.query['msg']
+        msg = getDecodedString(request.query['msg'])
     except KeyError:
         pass
 
@@ -565,16 +568,33 @@ def complete_end_time():
 @get('/viewUpdates')
 def view_updates():
 
-    updates = []
+    readme = updates = ""
 
     try:
-        f = open(os.path.join(ROOT_DIR, "docs/UPDATES"), 'r')
-        updates = filter(None, f.read().split("\n"))
+        f = open(os.path.join(ROOT_DIR, 'README.md'), 'r')
+        raw = f.read()
         f.close()
-    except IOError:
-        updates = "Updates not found."
 
-    return template('updates', updates=updates)
+        readme = markdown(raw)
+
+    except IOError:
+        readme = "<h2>Readme not found.</h2>"
+
+    ##############################################
+
+    try:
+        f = open(os.path.join(ROOT_DIR, "docs/UPDATES.md"), 'r')
+        raw = f.read()
+        f.close()
+
+        updates = markdown(raw)
+
+    except IOError:
+        updates = "<h2>Updates not found.</h2>"
+
+    ##############################################
+
+    return template('updates', readme=readme, updates=updates)
 
 ########################################################################################################
 ########################################################################################################
@@ -711,16 +731,21 @@ def send_records():
         # turn records into a string separated by \n
         string = "\n".join([r.emailFormat() for r in records])
 
-        # encrypt and encode string
-        records_encrypted = getEncodedString(string)
+        try:
+            # encrypt and encode string
+            records_encrypted = getEncodedString(string)
 
-        addr = "/".join(request.url.split("/")[:-1]) + "/ack"
+            addr = "/".join(request.url.split("/")[:-1]) + "/ack"
 
-        # encrypts and encodes host address for rerouting back to hours
-        addr_encrypted = getEncodedString(addr)
+            # encrypts and encodes host address for rerouting back to hours
+            addr_encrypted = getEncodedString(addr)
 
-        # send name, date, and encoded records to receiving server
-        redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}&a={5}'.format(address, port, name, date, records_encrypted, addr_encrypted))
+            # send name, date, and encoded records to receiving server
+            redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}&a={5}'.format(address, port, name, date, records_encrypted, addr_encrypted))
+
+        # thrown if config/crypto not found
+        except TypeError:
+            print("Couldn't send to server because config/crypto is missing.")
 
     redirect('hours')
 

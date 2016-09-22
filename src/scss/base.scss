@@ -57,9 +57,10 @@ h3 {
 
 @import 'inputs';
 
-
 // for popup window that displays records
 body[name="viewer"] {
 	// monospace
 	font-family: $mono_font;
 }
+
+@import 'help';
