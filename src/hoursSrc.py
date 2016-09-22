@@ -571,14 +571,14 @@ def view_updates():
     readme = updates = ""
 
     try:
-        f = open('README.md', 'r')
+        f = open(os.path.join(ROOT_DIR, 'README.md'), 'r')
         raw = f.read()
         f.close()
 
         readme = markdown(raw)
 
     except IOError:
-        readme = "Readme not found."
+        readme = "<h2>Readme not found.</h2>"
 
     ##############################################
 
@@ -590,7 +590,7 @@ def view_updates():
         updates = markdown(raw)
 
     except IOError:
-        updates = "Updates not found."
+        updates = "<h2>Updates not found.</h2>"
 
     ##############################################
 
