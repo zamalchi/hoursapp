@@ -23,6 +23,9 @@ from src.bottle import \
     template, static_file,\
     SimpleTemplate, url
 
+# for help button which displays README.md and UPDATES.md
+from markdown import markdown
+
 # Record class
 from classes.Record import Record
 # Labeler class
@@ -208,7 +211,7 @@ def hours():
 
     msg = ""
     try:
-        msg = request.query['msg']
+        msg = getDecodedString(request.query['msg'])
     except KeyError:
         pass
 
@@ -565,16 +568,33 @@ def complete_end_time():
 @get('/viewUpdates')
 def view_updates():
 
-    updates = []
+    readme = updates = ""
 
     try:
-        f = open(os.path.join(ROOT_DIR, "docs/UPDATES"), 'r')
-        updates = filter(None, f.read().split("\n"))
+        f = open('README.md', 'r')
+        raw = f.read()
         f.close()
+
+        readme = markdown(raw)
+
+    except IOError:
+        readme = "Readme not found."
+
+    ##############################################
+
+    try:
+        f = open(os.path.join(ROOT_DIR, "docs/UPDATES.md"), 'r')
+        raw = f.read()
+        f.close()
+
+        updates = markdown(raw)
+
     except IOError:
         updates = "Updates not found."
 
-    return template('updates', updates=updates)
+    ##############################################
+
+    return template('updates', readme=readme, updates=updates)
 
 ########################################################################################################
 ########################################################################################################
