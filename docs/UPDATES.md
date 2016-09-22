@@ -8,3 +8,4 @@
 - New file `config/settings`
 - Billable/Emergency elements can now be focused and toggled with space/enter
 - Each record now has an anchor tag : editing a record will reload the page anchored at the record
+

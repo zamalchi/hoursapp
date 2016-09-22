@@ -74,8 +74,8 @@ def loggingServerInit(address, port):
     global loggingServerAddress
     global loggingServerPort
 
-    loggingServerAddress = address
-    loggingServerPort = port
+    loggingServerAddress = address.strip()
+    loggingServerPort = port.strip()
 
     print("SERVER: {0}:{1}".format(loggingServerAddress, loggingServerPort))
 
@@ -718,8 +718,8 @@ def send_records():
 
     confirm = request.forms.get('confirm')
 
-    address = request.forms.get('address') or loggingServerAddress
-    port = request.forms.get('port') or loggingServerPort
+    address = request.forms.get('address').strip() or loggingServerAddress
+    port = request.forms.get('port').strip() or loggingServerPort
 
     if (confirm == "true") and name and address and port:
 
