@@ -7,6 +7,10 @@ $( document ).ready(function() {
 	var i = String(document.body.attributes["data-index"].value);
 	window.location.hash = i;
 
+	var msg = String(document.body.attributes["data-server-response"].value);
+
+	if (msg != "") { alert(msg); }
+
 	// to prevent old values from being retained (ex submitting and then hitting back in the browser)
 	document.getElementById("emailConfirm").value = "false";
 	document.getElementById("sendConfirm").value = "false";
@@ -30,7 +34,6 @@ $( document ).ready(function() {
 	} else if (end.val() == false) {
 		end.focus();
 	}
-
 
 });
 
@@ -281,6 +284,8 @@ function setValueFromInnerText(self) {
 
 function checkTime(self) {
 	var time = self.value.replace(":","");
+	// pad with a leading 0, if missing
+	if (time.length == 3) { time = '0' + time }
 	var min = self.attributes["data-min"].value.replace(":","") || "0000";
 	var max = self.attributes["data-max"].value.replace(":","") || "2345";
 

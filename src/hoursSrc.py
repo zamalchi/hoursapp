@@ -13,6 +13,7 @@ import os
 import time
 import smtplib
 import sys
+import datetime as dt
 
 ### IMPORTS ############################################################################################
 
@@ -141,10 +142,10 @@ def setNameCookie(res, name):
 
 ### DATE ########################################################
 def getDateCookie(req):
-    return req.get_cookie("date")
+    return Record.validateDate(req.get_cookie("date") or dt.date.today())
 
 def setDateCookie(res, date):
-    res.set_cookie("date", Record.validateDate(date))
+    res.set_cookie("date", str(Record.validateDate(date)))
 
 ### CONSOLIDATED ################################################
 def getCookies(req):
@@ -225,7 +226,7 @@ def hours():
     deleteNotesCookie(response)
 
     # get the month to use for the monthly subtotal
-    month = Record.getSubtotalMonth(date)
+    month = date.month
 
     subtotal = Record.readSubtotal(name, date)
     #######################################################
@@ -370,7 +371,7 @@ def set_cookies():
     name = request.forms.get("setName") or ""
 
     # get date: either set manually or defaults to current day
-    date = Record.validateDate(request.forms.get("setDate"))
+    date = Record.validateDate(request.forms.get("setDate") or dt.date.today())
 
     #######################################################
 
