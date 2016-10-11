@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import os
+import sys
 import argparse
 
 from src.bottle import run
@@ -10,6 +11,10 @@ from src.hoursSrc import *
 from config.dirs import ROOT_DIR
 
 ROOT_DIR = os.path.dirname(os.path.abspath('.'))
+
+print("############################################")
+print(sys.version)
+
 # argparse
 parser = argparse.ArgumentParser()
 
@@ -53,5 +58,7 @@ except IOError:
 
 
 labelsInit(os.path.join(ROOT_DIR, "config/labels.txt"))
+
+print("############################################")
 
 run(host='localhost', port=port, debug=True)

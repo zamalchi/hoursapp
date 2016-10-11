@@ -13,6 +13,7 @@
 
 import time
 import os
+import datetime as dt
 
 ### IMPORTS ############################################################################################
 
@@ -70,26 +71,26 @@ class Record:
     def getFileName(name, date):
 
         # get current date if supplied date is ""
-        date = date or time.strftime("%Y-%m-%d")
+        date = Record.validateDate(date)
 
         # "-" between date and name in filename
-        date += "-"
+        filename = "{0}-{1}".format(str(date), name)
 
         # return filename
-        return os.path.join(Record.hoursDir, date + name)
+        return os.path.join(Record.hoursDir, filename)
 
     ### GENERATE FILE NAME: (.YYYY-MM-DD-NAME) #############################################################
     @staticmethod
     def getHiddenFileName(name, date):
 
         # get current date if supplied date is ""
-        date = date or time.strftime("%Y-%m-%d")
+        date = Record.validateDate(date)
 
-        # "-" between date and name in filename
-        date += "-"
+        # "." prepended and "-" between date and name in filename
+        filename = ".{0}-{1}".format(str(date), name)
 
         # return filename: uses hidden version of the file, since it contains extra info (durationLocked)
-        return os.path.join(Record.hoursDir, "." + date + name)
+        return os.path.join(Record.hoursDir, filename)
 
     ### GENERATE SUBTOTAL FILENAME: (YYYY-MM-NAME-subtotal) ################################################
     @staticmethod
@@ -97,30 +98,24 @@ class Record:
 
         #######################################################
 
-        if not date:
-            # if not supplied, get current date
-            date = date or time.strftime("%Y-%m")
+        date = Record.validateDate(date)
 
-        else:
-            # turn date into date object
-            date_obj = time.strptime(date, "%Y-%m-%d")
+        month = date.month
 
-            # get year from date object
-            year = time.strftime("%Y", date_obj)
+        # adjust for pay period which ends on the 25th
+        if date.day > 25:
+            month += 1
 
-            # get adjusted month from date
-            month_int = Record.getSubtotalMonthInt(date)
-
-            # format month int into string
-            month = str(month_int).zfill(2)
+        # add leading 0 if < 10 ; also convert to str
+        month = str(month).zfill(2)
 
         #######################################################
 
         # ("YYYY-MM-")
-        date = year + "-" + month + "-"
+        filename = ".{0}-{1}-subtotal-{2}".format(date.year, month, name)
 
         # ("DIR/.YYYY-MM-subtotal-NAME")
-        return os.path.join(Record.hoursDir, "." + date + "subtotal-" + name)
+        return os.path.join(Record.hoursDir, filename)
 
     ########################################################################################################
     ### GENERATOR METHODS END ##############################################################################
@@ -280,14 +275,13 @@ class Record:
     @staticmethod
     def getSubtotalMonthInt(date):
 
-        # convert string to date object
-        date_obj = time.strptime(date, "%Y-%m-%d")
+        date = Record.validateDate(date)
 
         # get the integer of the day
-        day_int = int(time.strftime("%d", date_obj))
+        day_int = date.day
 
         # get the integer of the month
-        month_int = int(time.strftime("%m", date_obj))
+        month_int = date.month
 
         # if the day is past the 25th, increase the month by 1
         # this is when the pay period switches over to the next month
@@ -299,18 +293,15 @@ class Record:
     ### GET SUBTOTAL MONTH STRING ##########################################################################
     @staticmethod
     def getSubtotalMonth(date):
-        # defines the pay period ; used for labeling the subtotal counter
 
-        # get integer of month
+        # get updated month ; defines the pay period ; used for labeling the subtotal counter
         month_int = Record.getSubtotalMonthInt(date)
 
-        # convert to date object
-        month_obj = time.strptime(str(month_int), "%m")
+        # replace month with the one used for the subtotal
+        date = date.replace(date.year, month_int, date.day)
 
-        # conver to month string
-        month = time.strftime("%b", month_obj)
-
-        return month
+        # get the str name for the month
+        return date.strftime("%b")
 
     ### GET SUBTOTAL COUNT #################################################################################
     @staticmethod
@@ -417,16 +408,8 @@ class Record:
 
         #######################################################
 
-        # get the date cookie or default to current date
-        date = request.get_cookie("date") or time.strftime("%Y-%m-%d")
-
-        # set start datetime
-        startTime = date + " " + start
-
-        # set end datetime
-        endTime = date + " " + end
-
-        #######################################################
+        # get the date cookie or default to current date ; save as str
+        date = str(Record.validateDate(request.get_cookie("date")))
 
         #######################################################
 
@@ -532,17 +515,30 @@ class Record:
     @staticmethod
     def roundTime(t):
 
+        hours = minutes = 0
+
         #######################################################
 
-        # ensure the time is parsed correctly
-        time = Record.parseTime(t)
+        if type(t) is dt.time:
 
-        # parse the hours
-        hours = int(time[:2])
+            hours = t.hour
+            minutes = t.minute
 
-        # parse the minutes
-        minutes = int(time[2:])
+        #######################################################
 
+        else:
+            return ""
+
+        # else:
+        #     # ensure the time is parsed correctly
+        #     time = Record.parseTime(t)
+        #
+        #     # parse the hours
+        #     hours = int(time[:2])
+        #
+        #     # parse the minutes
+        #     minutes = int(time[2:])
+        #
         #######################################################
 
         # calculate the number of quarter-hour units (rounded down) the minutes equal
@@ -571,11 +567,8 @@ class Record:
     @staticmethod
     def getCurrentRoundedTime():
 
-        # get current time
-        t = time.strftime("%H%M")
-
-        # round it to 15-minute mark
-        return Record.roundTime(t)
+        # get current time ; round it to 15-minute mark
+        return Record.roundTime(dt.datetime.now().time())
 
     ########################################################################################################
     ### TIME METHODS END ###################################################################################
@@ -729,7 +722,7 @@ class Record:
             if overlap < 0:
 
                 # modify next_start time by subtracting overlap duration
-                next_record.modifyStart(overlap)
+                next_record.modifyStart(-overlap)
 
 
 
@@ -786,6 +779,30 @@ class Record:
         ################################################
         ################################################
 
+    ### EITHER RETURNS A VALIDATED DATETIME.DATE OBJECT BASED ON SUPPLIED DATE, OR RETURNS THE CURRENT DATE
+    @staticmethod
+    def validateDate(d):
+
+        # if datetime.date
+        if type(d) is dt.date:
+            return d
+
+        # if str and not ''
+        elif (type(d) is str) and d:
+            try:
+                # could throw ValueError
+                # could throw a TypeError
+                year, month, day = [ int(x) for x in d.split("-") ]
+
+                return dt.date(year, month, day)
+
+            except (ValueError, TypeError):
+                # if invalid date supplied, return current date
+                return dt.date.today()
+
+        else:
+            return dt.date.today()
+
     ########################################################################################################
     ### RECORD METHODS END #################################################################################
 
@@ -830,7 +847,7 @@ class Record:
 
             self.name = elems[0]
 
-            self.date = start_DT[0]
+            self.date = Record.validateDate(start_DT[0])
 
             #######################################################
 

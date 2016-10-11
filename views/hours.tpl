@@ -22,7 +22,7 @@
 
 </head>
 
-<body data-index="{{anchor}}">
+<body data-index="{{anchor}}" data-server-response="{{msg}}">
 
 <input type="hidden" id="foobar" value="17:45" pattern="(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))" data-min="1345" data-max="1730">
 
@@ -58,9 +58,9 @@
 
 		% from classes.Record import Record
 
-		% import time
-		% date_obj = time.strptime(date, "%Y-%m-%d")
-		% date_title = time.strftime("%a %d %b : %Y-%m-%d", date_obj)
+		% import datetime as dt
+
+		% date_title = date.strftime("%a %d %b : %Y-%m-%d")
 
 		% from classes.Labeler import Labeler
 
@@ -116,7 +116,7 @@
 			% record_string=record_string, 
 			% pending_records=pending_records,
 			% subtotal=subtotal, daily_subtotal=daily_subtotal,
-			% date_title=date_title, month=month)
+			% date_title=date_title, month=Record.getSubtotalMonth(date))
 		
 		<!-- ######################################################################################################### -->
 		<!-- ######################################################################################################### -->

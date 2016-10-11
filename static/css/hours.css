@@ -348,4 +348,19 @@ fieldset[name="inputs"] {
 body[name="viewer"] {
   font-family: Monospace; }
 
+div#help {
+  background-color: #cccccc;
+  padding: 20px; }
+  div#help div {
+    background-color: white;
+    border: 2px solid #000000; }
+  div#help hr {
+    border-top: 1px solid #cccccc;
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  div#help h2 {
+    margin-top: 0px; }
+  div#help div#target-body {
+    padding-bottom: 10px; }
+
 /*# sourceMappingURL=hours.css.map */

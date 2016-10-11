@@ -79,16 +79,16 @@
 
 										<div class="btn-group">
 												
-											<!-- VIEW FORMATTED RECORDS -->
+											<!-- VIEW RAW RECORDS -->
 											<div class="form-group inline-block button-wrapper">
-												<input id="view" name="view" type="submit" value="Formatted" class="control-button btn btn-info btn-sm"
+												<input id="view" name="view" type="submit" value="Raw" class="control-button btn btn-info btn-sm"
 													onclick="openViewer()" />
 												<input id="viewRecords" name="viewRecords" type="hidden" value="{{!record_string}}" />
 											</div>
 									
-											<!-- VIEW UPDATES -->
+											<!-- VIEW README/UPDATES -->
 											<div class="form-group inline-block button-wrapper">
-												<a name="updates" href="/viewUpdates" target="__blank" class="control-button btn btn-default btn-sm">Updates</a>
+												<a name="updates" href="/viewUpdates" target="__blank" class="control-button btn btn-default btn-sm">Help / Updates</a>
 											</div>
 
 

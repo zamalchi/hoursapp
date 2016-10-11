@@ -13,6 +13,7 @@ import os
 import time
 import smtplib
 import sys
+import datetime as dt
 
 ### IMPORTS ############################################################################################
 
@@ -21,6 +22,9 @@ from src.bottle import \
     request, response,\
     template, static_file,\
     SimpleTemplate, url
+
+# for help button which displays README.md and UPDATES.md
+from markdown import markdown
 
 # Record class
 from classes.Record import Record
@@ -70,8 +74,8 @@ def loggingServerInit(address, port):
     global loggingServerAddress
     global loggingServerPort
 
-    loggingServerAddress = address
-    loggingServerPort = port
+    loggingServerAddress = address.strip()
+    loggingServerPort = port.strip()
 
     print("SERVER: {0}:{1}".format(loggingServerAddress, loggingServerPort))
 
@@ -141,10 +145,10 @@ def setNameCookie(res, name):
 
 ### DATE ########################################################
 def getDateCookie(req):
-    return req.get_cookie("date") or time.strftime("%Y-%m-%d")
+    return Record.validateDate(req.get_cookie("date") or dt.date.today())
 
 def setDateCookie(res, date):
-    res.set_cookie("date", date)
+    res.set_cookie("date", str(Record.validateDate(date)))
 
 ### CONSOLIDATED ################################################
 def getCookies(req):
@@ -205,6 +209,12 @@ def hours():
 
     #######################################################
 
+    msg = ""
+    try:
+        msg = getDecodedString(request.query['msg'])
+    except KeyError:
+        pass
+
     # get name and date cookies
     name, date = getCookies(request)
 
@@ -219,7 +229,7 @@ def hours():
     deleteNotesCookie(response)
 
     # get the month to use for the monthly subtotal
-    month = Record.getSubtotalMonth(date)
+    month = date.month
 
     subtotal = Record.readSubtotal(name, date)
     #######################################################
@@ -237,7 +247,8 @@ def hours():
                     month=month, subtotal=subtotal,
                     anchor=anchor, notes=notes,
                     sender=sender, receivers=receivers,
-                    loggingServerAddress=loggingServerAddress, loggingServerPort=loggingServerPort)
+                    loggingServerAddress=loggingServerAddress, loggingServerPort=loggingServerPort,
+                    msg=msg)
 
 
 ########################################################################################################
@@ -363,7 +374,7 @@ def set_cookies():
     name = request.forms.get("setName") or ""
 
     # get date: either set manually or defaults to current day
-    date = request.forms.get("setDate") or time.strftime("%Y-%m-%d")
+    date = Record.validateDate(request.forms.get("setDate") or dt.date.today())
 
     #######################################################
 
@@ -557,16 +568,33 @@ def complete_end_time():
 @get('/viewUpdates')
 def view_updates():
 
-    updates = []
+    readme = updates = ""
 
     try:
-        f = open(os.path.join(ROOT_DIR, "docs/UPDATES"), 'r')
-        updates = filter(None, f.read().split("\n"))
+        f = open(os.path.join(ROOT_DIR, 'README.md'), 'r')
+        raw = f.read()
         f.close()
-    except IOError:
-        updates = "Updates not found."
 
-    return template('updates', updates=updates)
+        readme = markdown(raw)
+
+    except IOError:
+        readme = "<h2>Readme not found.</h2>"
+
+    ##############################################
+
+    try:
+        f = open(os.path.join(ROOT_DIR, "docs/UPDATES.md"), 'r')
+        raw = f.read()
+        f.close()
+
+        updates = markdown(raw)
+
+    except IOError:
+        updates = "<h2>Updates not found.</h2>"
+
+    ##############################################
+
+    return template('updates', readme=readme, updates=updates)
 
 ########################################################################################################
 ########################################################################################################
@@ -690,8 +718,8 @@ def send_records():
 
     confirm = request.forms.get('confirm')
 
-    address = request.forms.get('address') or loggingServerAddress
-    port = request.forms.get('port') or loggingServerPort
+    address = request.forms.get('address').strip() or loggingServerAddress
+    port = request.forms.get('port').strip() or loggingServerPort
 
     if (confirm == "true") and name and address and port:
 
@@ -703,13 +731,30 @@ def send_records():
         # turn records into a string separated by \n
         string = "\n".join([r.emailFormat() for r in records])
 
-        # encrypt and encode string
-        b64 = getEncodedString(string)
+        try:
+            # encrypt and encode string
+            records_encrypted = getEncodedString(string)
 
-        # send name, date, and encoded records to receiving server
-        redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}'.format(address, port, name, date, b64))
+            addr = "/".join(request.url.split("/")[:-1]) + "/ack"
+
+            # encrypts and encodes host address for rerouting back to hours
+            addr_encrypted = getEncodedString(addr)
+
+            # send name, date, and encoded records to receiving server
+            redirect('http://{0}:{1}/receive?n={2}&d={3}&r={4}&a={5}'.format(address, port, name, date, records_encrypted, addr_encrypted))
+
+        # thrown if config/crypto not found
+        except TypeError:
+            print("Couldn't send to server because config/crypto is missing.")
 
     redirect('hours')
+
+@get('/ack')
+def ack_sent_records():
+
+    msg = request.query['msg'] or ''
+
+    redirect('hours?msg={0}'.format(msg))
 
 ########################################################################################################
 ######################################  	MISC ROUTES END	   ###########################################
