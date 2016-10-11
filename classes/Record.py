@@ -722,7 +722,7 @@ class Record:
             if overlap < 0:
 
                 # modify next_start time by subtracting overlap duration
-                next_record.modifyStart(overlap)
+                next_record.modifyStart(-overlap)
 
 
 
