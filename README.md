@@ -25,4 +25,5 @@
 - configure : `config/settings`
     - example : `config/settings_example`
 - configure : `config/crypto` (optional)
+- run with `./launcher.sh` or `python2.7 run.py -p <port>`
 
