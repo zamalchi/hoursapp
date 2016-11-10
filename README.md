@@ -21,7 +21,8 @@
 - install and run with `python2.7`
     - Centos version : `cat /etc/redhat-release`
     - [Centos 6.3 install](https://github.com/h2oai/h2o-2/wiki/installing-python-2.7-on-centos-6.3.-follow-this-sequence-exactly-for-centos-machine-only)
-    - [Centos 6.8 install](https://gist.github.com/xuelangZF/570caf66cd1f204f98905e35336c9fc0)
+    - [Centos 6.8 install](https://gist.github.com/xuelangZF/570caf66cd1f204f98905e35336c9fc0) or use `sudo ./installers/centos6-8_install_python2-7.sh`
+    - [Centos 6/7 install](http://tecadmin.net/install-python-2-7-on-centos-rhel/)
 - configure : `config/settings`
     - example : `config/settings_example`
 - configure : `config/crypto` (optional)

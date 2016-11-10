@@ -6,7 +6,7 @@ if __name__ == '__main__':
 ######################################################
 ######################################################
 
-from src.packages.Crypto.Cipher import AES
+from Crypto.Cipher import AES
 
 from config.dirs import ROOT_DIR
 
