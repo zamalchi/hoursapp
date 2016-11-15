@@ -22,7 +22,7 @@
  	</script>
 </head>
 
-<body>
+<body name="top">
 	
 <div class="container-fluid" id="viewerContents">
 	<div class="row">
