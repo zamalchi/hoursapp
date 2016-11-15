@@ -21,7 +21,7 @@
 - CentOS version : `cat /etc/redhat-release`
 - **CentOS 7** :
     - make sure wget is installed : `rpm -qa wget` ? : `sudo yum install wget`
-    - get the installer file : `wget https://raw.githubusercontent.com/zamalchi/installers/master/hoursapp/centos7-installer.sh ; chmod +x centos7-hoursapp-installer.sh`
+    - get the installer file : `wget https://raw.githubusercontent.com/zamalchi/installers/master/hoursapp/centos7-hoursapp-installer.sh ; chmod +x centos7-hoursapp-installer.sh`
     - run : `./centos7-hoursapp-installer.sh ~/path/to/install` (example path: `~/apps/hours`)
 - **CentOS 6.8** (wip) :
     - run : `sudo yum install epel-release`
