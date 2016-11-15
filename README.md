@@ -61,6 +61,8 @@
 - run the server
 - go to : `localhost:<port>/hours` in the browser (`<port>` preset is 8080)
 - top controls :
+    - subtotals : pay period ends on the 25th of the month (and running subtotal is reset)
+        - running subtotal saved under `hours/` in the format `YY-MM-subtotal-name`
     - pull records :
         - sets the date used for recording the hours (defaults to the current date)
         - if a file with the name and date exists, it will pull it up from `hours/`
@@ -68,6 +70,7 @@
     - delete : deletes all records for the current date
     - email : emails records for the current date
         - uses sender/receivers information pulled from `config/settings`
+        - sends subject line in format : `Hours MM-DD (Subtotal: XX.XX)`
     - send : sends the records for the current date to a remote host
         - address and host are pulled from `config/settings` if present
         - address and port can be manually changed
