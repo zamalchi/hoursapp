@@ -11,4 +11,4 @@ sudo yum install pycrypto
 # git clone https://www.github.com/zamalchi/hoursapp.git
 
 # cd hoursapp
-../launcher.sh
+#../launcher.sh
