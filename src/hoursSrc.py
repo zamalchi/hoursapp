@@ -24,7 +24,7 @@ from src.bottle import \
     SimpleTemplate, url
 
 # for help button which displays README.md and UPDATES.md
-from src.packages.markdown import markdown
+from markdown import markdown
 
 # Record class
 from classes.Record import Record
