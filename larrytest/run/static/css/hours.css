@@ -1,0 +1,366 @@
+.gradient {
+  background: #476f9e;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(#476f9e, #090F16);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#476f9e, #090F16);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#476f9e, #090F16);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#476f9e, #090F16);
+  /* Standard syntax */ }
+
+.vertical-center {
+  vertical-align: center !important; }
+
+.padded-top {
+  padding-top: 10px; }
+
+.quarter-width {
+  width: 25% !important; }
+
+.third-width {
+  width: 33.33% !important; }
+
+.half-width {
+  width: 50% !important; }
+
+.two-thirds-width {
+  width: 66.66% !important; }
+
+.three-quarters-width {
+  width: 75% !important; }
+
+.full-width {
+  width: 100% !important; }
+
+.no-padding {
+  padding: 0px; }
+
+.bugfix {
+  color: red; }
+
+.form-inline {
+  display: inline; }
+
+.inline-block {
+  display: inline-block; }
+
+body {
+  font-family: Droid Sans, Arial;
+  background-color: #476f9e;
+  padding-top: 5px;
+  min-width: 800px; }
+
+.threeColumn {
+  -webkit-column-count: 3;
+  /* Chrome, Safari, Opera */
+  -moz-column-count: 3;
+  /* Firefox */
+  column-count: 3; }
+
+.footer {
+  margin: 30px; }
+
+fieldset.inputs, div.records, div.labels, div#buttons {
+  border: 2px solid black;
+  padding: 10px;
+  background-color: #cccccc;
+  margin-bottom: 25px !important; }
+
+h1 {
+  text-align: center; }
+
+h3 {
+  margin-top: 5px;
+  margin-bottom: 5px; }
+
+div#header {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  vertical-align: center;
+  border: 2px solid black;
+  padding: 10px;
+  background-color: #cccccc;
+  margin-bottom: 25px !important; }
+  div#header #subtotalCounter {
+    font-size: 1.4em; }
+  div#header #dateTitle {
+    font-size: 1.4em; }
+  div#header div#titles {
+    text-align: center; }
+    div#header div#titles div[name="left"] {
+      display: inline-block;
+      width: 39%;
+      min-width: 220px; }
+    div#header div#titles div[name="right"] {
+      display: inline-block;
+      width: 59%;
+      min-width: 310px; }
+  div#header div#controls {
+    vertical-align: center; }
+    div#header div#controls div[name="left"] form {
+      width: 100%;
+      display: inline-block;
+      padding-bottom: 15px; }
+      div#header div#controls div[name="left"] form div[name="inputs"] {
+        display: inline-block;
+        width: 64%; }
+        div#header div#controls div[name="left"] form div[name="inputs"] input {
+          display: inline-block; }
+        div#header div#controls div[name="left"] form div[name="inputs"] input#setName {
+          width: 44%;
+          min-width: 80px; }
+        div#header div#controls div[name="left"] form div[name="inputs"] input#setDate {
+          width: 54%;
+          min-width: 140px; }
+      div#header div#controls div[name="left"] form div.btn-group[name="submit"] {
+        display: inline-block;
+        width: 33.5%; }
+        div#header div#controls div[name="left"] form div.btn-group[name="submit"] button {
+          width: 100%; }
+    div#header div#controls div[name="right"] .form-control,
+    div#header div#controls div[name="right"] .control-button {
+      width: 100%; }
+    div#header div#controls div[name="right"] .btn-group {
+      display: inline-block;
+      width: 100%;
+      min-width: 415px; }
+    div#header div#controls div[name="right"] .button-wrapper,
+    div#header div#controls div[name="right"] .input-wrapper {
+      display: inline-block;
+      width: 24%;
+      min-width: 88px; }
+    div#header div#controls [name="updates"] {
+      background-color: #cccccc; }
+    div#header div#controls input#email {
+      margin: 0px; }
+    div#header div#controls input#delete {
+      margin: 0px; }
+  div#header form[action="/send"] {
+    width: 100%;
+    padding-bottom: 15px; }
+    div#header form[action="/send"] input {
+      display: inline-block; }
+    div#header form[action="/send"] input#serverAddress {
+      width: 40%;
+      margin-right: 5px;
+      font-size: 1em; }
+    div#header form[action="/send"] input#serverPort {
+      width: 25%;
+      margin-left: 5px;
+      font-size: 1em; }
+    div#header form[action="/send"] input#send {
+      width: 24%;
+      margin-left: 30px; }
+
+div[name="recordControls"] button[name="collapse"],
+div[name="recordControls"] button[name="delete"] {
+  display: inline; }
+
+button.x-button {
+  background-color: #e54747; }
+  button.x-button:visited {
+    background-color: #e54747; }
+  button.x-button:hover {
+    background-color: red; }
+  button.x-button:active {
+    background-color: red; }
+  button.x-button .glyphicon {
+    color: white; }
+
+.dropdown {
+  position: relative;
+  width: 150px;
+  height: 34px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  margin-right: 155px; }
+
+.dropdownSelect {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 150px;
+  height: 34px;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+  padding-left: 10px; }
+
+.dropdownInput {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 130px;
+  /*#width:180px\9;*/
+  /*#width:180px;*/
+  height: 34px;
+  /*#height:21px\9;*/
+  /*#height:18px;*/
+  /*border:1px solid #556;*/
+  padding-left: 10px; }
+
+.records {
+  maring-top: 0px;
+  padding-left: 20px !important;
+  padding-right: 20px !important; }
+  .records h4 {
+    display: inline;
+    padding-left: 20px;
+    padding-top: 10px; }
+
+.negative-duration {
+  color: red;
+  font-weight: bold; }
+
+div.labels label {
+  padding-right: 120px; }
+
+div.panel-body {
+  padding-bottom: 0px; }
+
+.panel {
+  margin-top: 20px !important;
+  border: 2px solid black; }
+
+.pending-text {
+  color: red; }
+
+div[name="record-display-col"] {
+  margin-left: -10px !important; }
+
+[name="recordControls"] {
+  min-width: 70px !important; }
+
+.record-content {
+  display: inline; }
+
+input[name="completeEnd"] {
+  min-width: 60px;
+  max-width: 60px;
+  font-size: 0.9em;
+  border: 1px solid red;
+  display: inline; }
+
+input[name="completeEnd"] {
+  min-width: 60px;
+  max-width: 60px;
+  font-size: 0.9em;
+  border: 1px solid red;
+  display: inline; }
+
+[name="record-display-string"] {
+  margin-left: -20px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  width: 100%; }
+
+input[name="notesDisplay"] {
+  font-weight: bold;
+  margin-top: 5px;
+  display: inline-block;
+  width: 100%; }
+
+form fieldset.inputs {
+  margin-top: 20px;
+  margin-bottom: 50px; }
+
+#inputs-submit {
+  margin-top: 10px; }
+
+div.form-group {
+  display: inline; }
+
+fieldset[name="inputs"] {
+  width: 100%; }
+  fieldset[name="inputs"] input {
+    color: black; }
+  fieldset[name="inputs"] div[name="row1"] input {
+    display: inline-block; }
+  fieldset[name="inputs"] div[name="row1"] input[name="name"] {
+    width: 32%; }
+  fieldset[name="inputs"] div[name="row1"] input[name="start"] {
+    width: 32%; }
+  fieldset[name="inputs"] div[name="row1"] input[name="end"] {
+    width: 32%; }
+  fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] {
+    display: inline-block;
+    width: 20%;
+    min-width: 160px; }
+    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdown {
+      position: relative;
+      width: 150px;
+      height: 34px;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      margin-right: 155px; }
+    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdownSelect {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 150px;
+      height: 34px;
+      line-height: 20px;
+      margin: 0;
+      padding: 0;
+      padding-left: 10px; }
+    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdownInput {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 130px;
+      /*#width:180px\9;*/
+      /*#width:180px;*/
+      height: 34px;
+      /*#height:21px\9;*/
+      /*#height:18px;*/
+      /*border:1px solid #556;*/
+      padding-left: 10px; }
+  fieldset[name="inputs"] div[name="row2"] div[name="notes-wrapper"] {
+    display: inline-block;
+    width: 70%;
+    min-width: 380px; }
+    fieldset[name="inputs"] div[name="row2"] div[name="notes-wrapper"] input {
+      display: inline-block;
+      width: 100%; }
+  fieldset[name="inputs"] div[name="row3"] div[name="left"] {
+    display: inline-block;
+    width: 79%; }
+    fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="duration-wrapper"] {
+      display: inline-block;
+      width: 30%; }
+      fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="duration-wrapper"] input {
+        display: inline-block;
+        width: 100%; }
+    fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="billable"],
+    fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="emergency"] {
+      margin-left: 10px;
+      display: inline-block;
+      width: 30%; }
+  fieldset[name="inputs"] div[name="row3"] div[name="right"] {
+    display: inline-block;
+    width: 19%;
+    float: right; }
+
+body[name="viewer"] {
+  font-family: Monospace; }
+
+div#help {
+  background-color: #cccccc;
+  padding: 20px; }
+  div#help div {
+    background-color: white;
+    border: 2px solid #000000; }
+  div#help hr {
+    border-top: 1px solid #cccccc;
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  div#help h2 {
+    margin-top: 0px; }
+  div#help div#target-body {
+    padding-bottom: 10px; }
+
+/*# sourceMappingURL=hours.css.map */

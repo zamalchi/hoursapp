@@ -1,0 +1,73 @@
+for Wednesday/Thursday:
+
+account app:
+	[done] beta route --> alpha
+	[done] groups:
+		generator script
+		sort alphabetically
+		`getent group | grep sched`
+
+
+sinfo:
+	sort by times?
+
+
+hours app:
+	refactor for organization (take some time to do it)
+		 hours_panel_heading : pretty much done
+		 hours_panel_body : need to do
+		 hours_js_functions : continue refining
+		 css pages : organize during and after the templates
+	ideas
+		clicking on the completed end time resets to a pending duration
+		email (to sb) for interns (which supplies subtotal subject line)
+	sb
+		change billable/emergency to be onclick toggles that change ('Y'/'N') spans
+
+
+
+hoursapp:
+	add crypto hash generation
+	[done] replace email button with post button
+		posts to separate bottle server
+		      each user runs their own crypto bottle server on a specific port (on the hosting server) ?? ask sb if still confused
+		      authenticates hash and receives records
+
+	things to figure out:
+	       python version 2.6 vs 2.7
+	       using modules on the cluster
+	       which python hashing module to use
+	       sending data from one app (localhost) to another (cluster)
+	       
+	[done] fix bug where duration is inputed as a non-number and crashes the server
+
+	[done] make program conscious of project root directory (may be worth putting in the template)
+
+	clean up after messing with crypto
+	      remove old code
+	      [done] make sure gitignore files are set
+
+	show progress to sb
+
+	[done] change location of address:port for crypto server
+	       move from flag in launcher.sh/run.py
+	       make inputs in the hours app header (next to send button)
+
+	[done] allow billable/emergency to be focused and toggled via space
+
+	merge sb's changes on master at some point
+	      read his updates? wherever they are
+	      get new labels.txt
+
+	add some sort of check that a new record doesn't start before the start of the previous one
+	    or (if inserting into the list somewhere) that it doesn't end after the end of the next one
+	    - match against default pattern
+	    - then, onchange, check if it exeeds data-min or data-max
+	    - check for in backend
+	    - add a note-index or retry-index cookie or something
+	      - use it to 1) open the collapse panel on document ready
+	      - and 2) place the notes (upon failed record submission) into the correct form's notes field
+	    - figure out why an empty end time is being received as "0***" (where is the 0 coming from and where does it set the pending char '***')
+
+
+	[done] labels regex based on labels file

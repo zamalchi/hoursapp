@@ -1,0 +1,46 @@
+DONE:
+	$ posting to hours should refresh the page with the updated information
+	$ generate current date and duration
+	maybe have the time be a time selection module if it exists
+	$ ability to remove a record
+	$ reusing the name if the record table exists
+	$ add Y/N checkboxes for emergency, remote 
+
+	NEXT THING:
+	$ add up/down arrows to records
+	$ learn to make dynamic dropdown fieldset for adding records in specific places
+	$ automatically adjust times in subsequent records
+	$ http://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_navbar_collapse&stacked=h
+
+	NEXT:
+	$ finish passing parsedRecords into template
+	$ wire template to access parsedRecords for filling in start/end times
+	$ wire submit buttons to properly pass information back (figuring out how to insert a record in the middle of the list)
+	plan:
+		$ add current record to a list of records (split up into fields)
+			$ the addition is based on which record's buttons were clicked on
+		$ shift the time of everything after that point in the list by the duration amount of the new record
+		$ ex: records = [[1, 10:00, 11:00, 1.0], [2, 11:00, 12:15, 1.25]]
+			$ click on 1's down arrow...
+			$ add [3, 11:00, 12:00, 1.0] // figure out ids or something
+			$ records = [[1, 10:00, 11:00, 1.0], [3, 11:00, 12:00, 1.0], [2, 12:00, 13:15, 1.25]]
+
+			
+	$ maybe: field for retrieving existing record log (in case of browser closing, for example)
+		$ may just require setting the name cookie and refreshing page (also hiding that field if successful)
+
+	$ maybe fix accordion animation (now that it uses a custom js function for opening and closing)
+
+	$ add time checks for splicing in a record
+		$ if start time is before previous record's, then take time from previous
+		$ if end time is after next record's, then take time from next
+
+	$ move billable/emergency to the bottom of the form, since they are rarely changed
+
+	$ might need to create functions:
+		$ modifyStartTime
+		$ modifyEndTime
+			$ these can call modifyDuration or something
+
+
+	$ migrate to using Record class in src, template, etc.

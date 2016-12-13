@@ -1,0 +1,4 @@
+sender=you@intranet.techsquare.com
+receivers=you@techsquare.com,sb@techsquare.com
+loggingServerAddress=0.0.0.0
+loggingServerPort=1234
