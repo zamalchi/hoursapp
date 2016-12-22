@@ -1,0 +1,27 @@
+
+// VARIABLES
+
+// $bg_color: #aadfeb;
+$bg_color: #476f9e;
+$bg_color_darker: #090F16;
+$light_grey: #dddddd;
+$dark_grey: #cccccc;
+$black: #000000;
+$light_red: #e54747;
+$red: red;
+$white: white;
+
+$main_font: Droid Sans, Arial;
+
+$mono_font: Monospace;
+
+.gradient {
+  background: $bg_color; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient($bg_color, $bg_color_darker); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient($bg_color, $bg_color_darker); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient($bg_color, $bg_color_darker); /* For Firefox 3.6 to 15 */
+  background: linear-gradient($bg_color, $bg_color_darker); /* Standard syntax */
+  // -webkit-backface-visibility: hidden;
+  // -webkit-transform: translate3D(0, 0, 0);
+  // -webkit-transform-style: preserve-3d;
+}

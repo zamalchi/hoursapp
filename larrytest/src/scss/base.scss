@@ -1,0 +1,66 @@
+
+@import 'vars';
+
+@import 'misc';
+
+body {
+	font-family: $main_font;
+	background-color: $bg_color;
+	padding-top: 5px;
+	min-width: 800px;
+}
+
+div.container[name="main"] {}
+
+.threeColumn {
+	-webkit-column-count: 3; /* Chrome, Safari, Opera */
+	-moz-column-count: 3; /* Firefox */
+	column-count: 3;
+}
+
+.footer {
+	margin: 30px;
+}
+
+
+
+
+
+fieldset.inputs, div.records, div.labels, div#buttons {
+    border: 2px solid black;
+    padding: 10px;
+    background-color: #cccccc;
+    margin-bottom: 25px !important;
+}
+
+h1 {
+    text-align: center;
+}
+
+h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+// [name="notes"] {
+//     position: relative;
+//     min-width: 400px;
+//     max-width: 400px;
+
+// }
+
+@import 'header';
+
+@import 'buttons';
+
+@import 'records';
+
+@import 'inputs';
+
+// for popup window that displays records
+body[name="viewer"] {
+	// monospace
+	font-family: $mono_font;
+}
+
+@import 'help';

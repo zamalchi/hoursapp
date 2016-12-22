@@ -1,0 +1,50 @@
+
+// MISC CLASSES
+
+.vertical-center {
+    vertical-align: center!important;
+}
+
+.padded-top {
+    padding-top: 10px;
+}
+
+.quarter-width {
+    width: 25%!important;
+}
+
+.third-width {
+    width: 33.33%!important;
+}
+
+.half-width {
+    width: 50%!important;
+}
+
+.two-thirds-width {
+    width: 66.66%!important;
+}
+
+.three-quarters-width {
+    width: 75%!important;
+}
+
+.full-width {
+    width: 100%!important;
+}
+
+.no-padding {
+    padding: 0px;
+}
+
+.bugfix {
+    color: $red;
+}
+
+.form-inline {
+	display: inline;
+}
+
+.inline-block {
+    display: inline-block;
+}

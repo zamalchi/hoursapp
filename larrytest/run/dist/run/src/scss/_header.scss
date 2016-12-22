@@ -1,0 +1,166 @@
+
+// HEADER - date, subtotal, control buttons
+
+
+div#header {
+
+	margin-top: 20px;
+	margin-bottom: 10px;
+	vertical-align: center;
+
+	border: 2px solid black;
+  padding: 10px;
+  background-color: #cccccc;
+  margin-bottom: 25px !important;
+
+	#subtotalCounter {
+		font-size: 1.4em;
+	}
+
+	#dateTitle {
+		font-size: 1.4em;
+	}
+
+// ###########################################
+// ###########################################
+
+	// TITLES : date and subtotal
+	div#titles {
+
+		text-align: center;
+
+		div[name="left"] {
+			display: inline-block;
+			width: 39%;
+			min-width: 220px;
+		}
+
+// ###########################################
+
+		div[name="right"] {
+			display: inline-block;
+			width: 59%;
+			min-width: 310px;
+		}
+
+	}
+
+// ###########################################
+// ###########################################
+
+	// CONTROLS : inputs and buttons
+	div#controls {
+
+		vertical-align: center;
+
+// ###########################################
+
+		div[name="left"] {
+			form {
+				width: 100%;
+				display: inline-block;
+				padding-bottom: 15px;
+				
+				// ######
+				div[name="inputs"] {
+					display: inline-block;
+					width: 64%;
+
+					input {
+						display: inline-block;
+					}
+					input#setName {
+						width: 44%;
+						min-width: 80px;							
+					}
+					input#setDate {
+						width: 54%;
+						min-width: 140px;
+					}
+				}
+				
+				// ######
+				div.btn-group[name="submit"] {
+					display: inline-block;
+					width: 33.5%;
+
+					button {
+						width: 100%;
+					}
+				}
+				// ######
+			}
+		}
+// ###########################################
+
+		div[name="right"] {
+			.form-control,
+			.control-button {
+				width: 100%;
+			}
+
+			.btn-group {
+				display: inline-block;
+				width: 100%;
+				min-width: 415px;
+			}
+
+			.button-wrapper,
+			.input-wrapper {
+				display: inline-block;
+				width: 24%;
+				min-width: 88px;
+			}
+		}
+		// input#setName {
+		// 	min-width: 95px;
+		// 	max-width: 95px;
+		// }
+
+		// input#setDate {
+		// 	min-width: 137px;
+		// 	max-width: 137px; 
+		// }
+
+		[name="updates"] {
+			background-color: $dark_grey;
+		}
+
+		input#email {
+			margin: 0px;
+		}
+
+		input#delete {
+			margin: 0px;
+		}
+	}
+// ###########################################
+
+
+	form[action="/send"] {
+		width: 100%;
+		padding-bottom: 15px;
+
+		input {
+			display: inline-block;
+		}
+
+		input#serverAddress {
+			width: 40%;
+			margin-right: 5px;
+			font-size: 1em;
+		}
+
+		input#serverPort {
+			width: 25%;
+			margin-left: 5px;
+			font-size: 1em;
+		}
+
+		input#send {
+			width: 24%;
+			margin-left: 30px;
+		}
+	}
+	
+}

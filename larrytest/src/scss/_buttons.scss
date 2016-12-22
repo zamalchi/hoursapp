@@ -1,0 +1,30 @@
+
+// BUTTONS
+
+
+div[name="recordControls"] {
+
+	button[name="collapse"],
+	button[name="delete"] {
+		display: inline;
+	}
+}
+
+
+button.x-button {
+  background-color: $light_red;
+
+  &:visited {
+  	background-color: $light_red;
+  }
+	&:hover {
+  background-color: $red;
+	}
+	&:active {
+  background-color: $red;
+	}
+
+	.glyphicon {
+		color: $white;
+	}
+}

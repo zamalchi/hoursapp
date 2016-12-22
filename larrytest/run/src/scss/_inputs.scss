@@ -1,0 +1,106 @@
+
+// INPUTS / FORM ELEMENTS
+
+form fieldset.inputs {
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+#inputs-submit {
+    margin-top: 10px;
+}
+
+div.form-group {
+    display: inline;
+}
+
+
+fieldset[name="inputs"] {
+	width: 100%;
+
+	input { color: black; }
+
+// #####################################
+
+	div[name="row1"] {
+
+		input { display: inline-block; }
+
+		input[name="name"] {
+			width: 32%;
+		}
+
+		input[name="start"] {
+			width: 32%;
+		}
+
+		input[name="end"] {
+			width: 32%;
+		}
+	}
+
+// #####################################
+
+	div[name="row2"] {
+
+		// display: block;
+		// width: 100%;
+		//white-space: nowrap;
+
+		div[name="dropdown-wrapper"] {
+			display: inline-block;
+			width: 20%;
+			min-width: 160px;
+			
+			@import 'dropdown';
+		}
+
+		div[name="notes-wrapper"] {
+			display: inline-block;
+			width: 70%;
+			min-width: 380px;
+
+			input {
+				display: inline-block;
+				width: 100%;
+			}
+		}
+
+	}
+
+// #####################################
+
+	div[name="row3"] {
+
+		div[name="left"] {
+			display: inline-block;
+			width: 79%;
+
+			div[name="duration-wrapper"] {
+				display: inline-block;
+				width: 30%;
+
+				input {
+					display: inline-block;
+					width: 100%;
+				}
+			}
+
+			div[name="billable"],
+			div[name="emergency"] {
+				margin-left: 10px;
+				display: inline-block;
+				width: 30%;
+			}
+		}
+
+		div[name="right"] {
+			display: inline-block;
+			width: 19%;
+			float: right;
+		}
+
+	}
+
+// #####################################
+}
