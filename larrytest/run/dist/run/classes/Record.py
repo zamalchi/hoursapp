@@ -473,7 +473,6 @@ class Record:
 
         # if it is an int, it has already been processed, so return
         # ex: called from getDuration()
-        if type(time) == int:
             return time
 
         # ensures it is parsed

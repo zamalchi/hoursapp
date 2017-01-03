@@ -21,14 +21,11 @@ import modu.bottle as bottle
 import modu.color_printer as cp
 import modu.crypto as crypto
 import modu.labeler as labeler
-import modu.record as record
+import modu.recorder as recorder
 
 app = bottle.Bottle()
 
-Record = record.Record
-Labeler = labeler.Labeler
-
-namer = Labeler()
+namer = labeler.Labeler()
 
 ### ARG PARSING ########################################################################################
 
@@ -81,41 +78,42 @@ def fonts(filename):
 ### DIRECTORY ##########################################################################################
 
 # project root and directory for saving hours information : overwrites default values in class
-Record.rootDir = ENV.ROOT
-Record.hoursDir = os.path.join(ENV.ROOT, "hours")
+recorder.rootDir = ENV.ROOT
+recorder.hoursDir = os.path.join(ENV.ROOT, "hours")
 
 # if the directory doesn't exist, create it
-if not os.path.exists(Record.hoursDir):
-  os.makedirs(Record.hoursDir)
+if not os.path.exists(recorder.hoursDir):
+  os.makedirs(recorder.hoursDir)
   
 crypto.ROOT_DIR = ENV.ROOT
 
 ### LOGGING SERVER AND SMTP ############################################################################
 
-address_key = "loggingServerAddress"
-port_key = "loggingServerPort"
-sender_key = "sender"
-receivers_key = "receivers"
-  
-settingsFile = os.path.join(ENV.ROOT, "config/settings")
-settingsDict = {}
+LOGGING = argparse.Namespace()
+LOGGING.ADDRESS_KEY = "loggingServerAddress"
+LOGGING.PORT_KEY = "loggingServerPort"
+LOGGING.SENDER_KEY = "sender"
+LOGGING.RECEIVERS_KEY = "receivers"
 
-if os.path.exists(settingsFile):
-  with open(settingsFile) as f:
+LOGGING.SETTINGS_FILE = os.path.join(ENV.ROOT, "config/settings")
+LOGGING.SETTINGS_DICT = {}
+
+if os.path.exists(LOGGING.SETTINGS_FILE):
+  with open(LOGGING.SETTINGS_FILE) as f:
     rawSettings = filter(None, f.read().split("\n"))
 
     for each in rawSettings:
       key, val = each.split("=")
-      settingsDict[key] = val
+      LOGGING.SETTINGS_DICT[key] = val
 
 elif ENV.DEBUG:
   cp.printWarn("`config/settings` file not found. Some features may not work.")
 
-ENV.LOGGING_SERVER_ADDRESS = settingsDict.get(address_key, "")
-ENV.LOGGING_SERVER_PORT = settingsDict.get(port_key, "")
+ENV.LOGGING_SERVER_ADDRESS = LOGGING.SETTINGS_DICT.get(LOGGING.ADDRESS_KEY, "")
+ENV.LOGGING_SERVER_PORT = LOGGING.SETTINGS_DICT.get(LOGGING.PORT_KEY, "")
     
-ENV.SENDER = settingsDict.get(sender_key, "root")
-ENV.RECEIVERS = filter(None, list(settingsDict.get(receivers_key, "").split(","))) or []
+ENV.SENDER = LOGGING.SETTINGS_DICT.get(LOGGING.SENDER_KEY, "root")
+ENV.RECEIVERS = filter(None, list(LOGGING.SETTINGS_DICT.get(LOGGING.RECEIVERS_KEY, "").split(","))) or []
 
 
 ### LABELS #############################################################################################
@@ -143,10 +141,10 @@ def setNameCookie(res, name):
 
 ### DATE ########################################################
 def getDateCookie(req):
-  return Record.validateDate(req.get_cookie("date") or dt.date.today())
+  return recorder.validateDate(req.get_cookie("date") or dt.date.today())
 
 def setDateCookie(res, date):
-  res.set_cookie("date", str(Record.validateDate(date)))
+  res.set_cookie("date", str(recorder.validateDate(date)))
 
 ### CONSOLIDATED ################################################
 def getCookies(req):
@@ -230,13 +228,13 @@ def hours():
   # get the month to use for the monthly subtotal
   month = date.month
   
-  subtotal = Record.readSubtotal(name, date)
+  subtotal = recorder.readSubtotal(name, date)
   #######################################################
   
   # try to open file with user's name and retrieve data
   # for each record, create a new Record object and add to list to pass to template
   # list of records as Record obj
-  records = Record.parseRecordsFromFile(name, date)
+  records = recorder.parseRecordsFromFile(name, date)
   
   #######################################################
   
@@ -270,15 +268,15 @@ def hours_post():
   #######################################################
   
   # parses form data and returns a Record obj
-  new_record = Record.getRecordFromHTML(bottle.request)
+  new_record = recorder.getRecordFromHTML(bottle.request)
   
   #######################################################
   
   # reads and parses Records on file
-  records = Record.parseRecordsFromFile(name, date)
+  records = recorder.parseRecordsFromFile(name, date)
   
   # count current subtotal for ONLY the day's records
-  current_local_subtotal = Record.countSubtotal(records)
+  current_local_subtotal = recorder.countSubtotal(records)
   
   #######################################################
   
@@ -288,7 +286,7 @@ def hours_post():
   
   # checks if new_record.start < new_record.end
   # and that new_record doesn't exceed the outer limits of adjacent records
-  if Record.checkIfValid(records, new_record, index):
+  if recorder.checkIfValid(records, new_record, index):
     
     if records and not records_pulled:
       # append to the end of unpulled existing records
@@ -299,20 +297,20 @@ def hours_post():
       records.insert(index, new_record)
       
       # adjust timings of adjacent records in case of overlap
-      Record.adjustAdjacentRecords(records, index)
+      recorder.adjustAdjacentRecords(records, index)
       
       # after adjusting the durations, recount total duration for the day
-      new_local_subtotal = Record.countSubtotal(records)
+      new_local_subtotal = recorder.countSubtotal(records)
       
       # add the difference in summed durations back to the file
       # when inserting between two records (whose durations are not locked)
       # (i.e. splicing a record in), the subtotal should not change
-      Record.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
+      recorder.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
     
     #######################################################
     
     # write back updated list
-      Record.writeRecords(name, date, records)
+      recorder.writeRecords(name, date, records)
     
     # after posting a new record, delete the anchor cookie to reset it
     deleteAnchorCookie(bottle.response)
@@ -373,7 +371,7 @@ def set_cookies():
   name = bottle.request.forms.get("setName") or ""
   
   # get date: either set manually or defaults to current day
-  date = Record.validateDate(bottle.request.forms.get("setDate") or dt.date.today())
+  date = recorder.validateDate(bottle.request.forms.get("setDate") or dt.date.today())
   
   #######################################################
   
@@ -404,16 +402,16 @@ def delete_records():
   
   if (deleteConfirm == "true") and name:
     # get records
-    records = Record.parseRecordsFromFile(name, date)
+    records = recorder.parseRecordsFromFile(name, date)
     
     # get summed duration of records
-    summed_subtotal = Record.countSubtotal(records)
+    summed_subtotal = recorder.countSubtotal(records)
     
     # subtract that amount from the subtotal on file
-    Record.subtractFromSubtotal(name, date, summed_subtotal)
+    recorder.subtractFromSubtotal(name, date, summed_subtotal)
     
     # delete both of the user's record files
-    Record.deleteRecords(name, date)
+    recorder.deleteRecords(name, date)
   
   #######################################################
   
@@ -438,7 +436,7 @@ def delete_single_record():
   #######################################################
   
   # read and parse records from file
-  records = Record.parseRecordsFromFile(name, date)
+  records = recorder.parseRecordsFromFile(name, date)
   
   # set the notes to be in the form
   setNotesCookie(bottle.response, records[index].notes)
@@ -447,13 +445,13 @@ def delete_single_record():
   deletedRecordDuration = records[index].duration
   
   # subtract that amount from the subtotal on file
-  Record.subtractFromSubtotal(name, date, deletedRecordDuration)
+  recorder.subtractFromSubtotal(name, date, deletedRecordDuration)
   
   # delete record
   del records[index]
   
   # write back updated records
-  Record.writeRecords(name, date, records)
+  recorder.writeRecords(name, date, records)
   
   # upon redirect, anchor to where the record was deleted
   # open that form and insert notes, etc. from the deleted record
@@ -484,18 +482,18 @@ def complete_notes():
   #######################################################
   
   if notes:
-    records = Record.parseRecordsFromFile(name, date)
+    records = recorder.parseRecordsFromFile(name, date)
     
-    r = records[index]
+    record = records[index]
     
     # replace <br> with " " in case of enter button being pressed
     notes = notes.replace("<br>", " ").strip()
     
-    r.notes = notes
+    record.notes = notes
     
-    records[index] = r
+    records[index] = record
 
-    Record.writeRecords(name, date, records)
+    recorder.writeRecords(name, date, records)
     
     # delete cookie if task completed
     deleteAnchorCookie(bottle.response)
@@ -518,7 +516,7 @@ def complete_end_time():
   setAnchorCookie(bottle.response, index)
   
   # get the submitted end time (which has already been pattern matched) OR get current rounded time
-  end = Record.parseTime(bottle.request.forms.get('completeEnd')) or Record.getCurrentRoundedTime()
+  end = recorder.parseTime(bottle.request.forms.get('completeEnd')) or recorder.getCurrentRoundedTime()
   
   # get name and date cookies
   name, date = getCookies(bottle.request)
@@ -526,7 +524,7 @@ def complete_end_time():
   #######################################################
   
   # get records from file
-  records = Record.parseRecordsFromFile(name, date)
+  records = recorder.parseRecordsFromFile(name, date)
   
   # get particular record to complete
   record = records[index]
@@ -535,7 +533,7 @@ def complete_end_time():
   record.setEnd(end)
   
   # don't accept an invalid or invalidly placed record
-  if not Record.checkIfValid(records, record, index):
+  if not recorder.checkIfValid(records, record, index):
     bottle.redirect('hours')
   
   # else block for clarity
@@ -546,11 +544,11 @@ def complete_end_time():
       record.calculateAndSetDuration()
       
       # add the new duration to the subtotal
-      Record.addToSubtotal(name, date, record.duration)
+      recorder.addToSubtotal(name, date, record.duration)
     
     # write back record
     records[index] = record
-    Record.writeRecords(name, date, records)
+    recorder.writeRecords(name, date, records)
     
     # delete cookie if task completed
     deleteAnchorCookie(bottle.response)
@@ -607,18 +605,18 @@ def toggle_billable():
   # don't delete on task completion (stay anchored to edited record to easily view the change)
   setAnchorCookie(bottle.response, index)
   
-  records = Record.parseRecordsFromFile(name, date)
+  records = recorder.parseRecordsFromFile(name, date)
   
-  r = records[index]
+  record = records[index]
   
-  if r.billable == "Y":
-    r.billable = "N"
+  if record.billable == "Y":
+    record.billable = "N"
   else:
-    r.billable = "Y"
+    record.billable = "Y"
   
-  records[index] = r
+  records[index] = record
 
-  Record.writeRecords(name, date, records)
+  recorder.writeRecords(name, date, records)
 
   bottle.redirect('hours')
 
@@ -633,18 +631,18 @@ def toggle_emergency():
   # don't delete on task completion (stay anchored to edited record to easily view the change)
   setAnchorCookie(bottle.response, index)
   
-  records = Record.parseRecordsFromFile(name, date)
+  records = recorder.parseRecordsFromFile(name, date)
   
-  r = records[index]
+  record = records[index]
   
-  if r.emergency == "Y":
-    r.emergency = "N"
+  if record.emergency == "Y":
+    record.emergency = "N"
   else:
-    r.emergency = "Y"
+    record.emergency = "Y"
   
-  records[index] = r
+  records[index] = record
 
-  Record.writeRecords(name, date, records)
+  recorder.writeRecords(name, date, records)
 
   bottle.redirect('hours')
 
@@ -656,8 +654,6 @@ def toggle_emergency():
 @app.post('/email')
 def email_records():
   
-  global sender, receivers
-  
   #######################################################
   
   # get name and date cookies
@@ -668,33 +664,30 @@ def email_records():
   
   #######################################################
   
-  subtotal = Record.readSubtotal(name, date) or '0.0'
+  subtotal = recorder.readSubtotal(name, date) or '0.0'
   
   #######################################################
   
   curTimeShort = time.strftime("%m/%d")
-  
-  sen = sender
-  rec = receivers
   
   subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
   body = ""
   
   #######################################################
   
-  if (emailConfirm == "true") and name and sen and rec:
+  if (emailConfirm == "true") and name and ENV.SENDER and ENV.RECEIVERS:
     
     # try to open file with user's name and retrieve data
-    records = Record.parseRecordsFromFile(name, date)
+    records = recorder.parseRecordsFromFile(name, date)
     
-    for r in records:
-      body += r.emailFormat() + "\n"
+    for record in records:
+      body += record.emailFormat() + "\n"
     
     message = "Subject: %s\n\n%s" % (subject, body)
     
     try:
       mail = smtplib.SMTP("localhost")
-      mail.sendmail(sen, rec, message)
+      mail.sendmail(ENV.SENDER, ENV.RECEIVERS, message)
       mail.quit()
     
     except smtplib.SMTPException:
@@ -708,22 +701,20 @@ def email_records():
 @app.post('/send')
 def send_records():
   
-  global loggingServerAddress, loggingServerPort
-  
   # get cookies
   name, date = getCookies(bottle.request)
   
   confirm = bottle.request.forms.get('confirm')
   
-  address = bottle.request.forms.get('address').strip() or loggingServerAddress
-  port = bottle.request.forms.get('port').strip() or loggingServerPort
+  address = bottle.request.forms.get('address').strip() or ENV.LOGGING_SERVER_ADDRESS
+  port = bottle.request.forms.get('port').strip() or ENV.LOGGING_SERVER_PORT
   
   if (confirm == "true") and name and address and port:
     
     print("SENDING TO: {0}:{1}".format(address, port))
     
     # parse records from file
-    records = Record.parseRecordsFromFile(name, date)
+    records = recorder.parseRecordsFromFile(name, date)
     
     # turn records into a string separated by \n
     string = "\n".join([r.emailFormat() for r in records])

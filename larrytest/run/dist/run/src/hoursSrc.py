@@ -25,7 +25,7 @@ from src.crypto import *
 
 from config.dirs import ROOT_DIR
 from modu.labeler import Labeler
-from modu.record import Record
+from modu.recorder import Record
 
 namer = Labeler()
 

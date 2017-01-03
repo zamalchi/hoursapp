@@ -1,14 +1,9 @@
 <%
 import datetime as dt
-
-import modu.record as record
-import modu.labeler as labeler
-
 import time
 
-Record = record.Record
-Labeler = labeler.Labeler
-
+import modu.labeler as labeler
+import modu.recorder as recorder
 %>
 
 <!DOCTYPE html>
@@ -82,7 +77,7 @@ Labeler = labeler.Labeler
 		% record_string = ""
 		% for r in records:
 
-			% if r.duration == Record.PENDING_CHAR:
+			% if r.duration == recorder.PENDING_CHAR:
 				
 				% pending_records = True
 			% end
@@ -90,7 +85,7 @@ Labeler = labeler.Labeler
 			% record_string += "<p>" + r.emailFormat() + "</p>"
 		% end
 
-		% daily_subtotal = Record.countSubtotal(records)
+		% daily_subtotal = recorder.countSubtotal(records)
 
 
 	<!-- ######################################################################################################### -->
@@ -125,7 +120,7 @@ Labeler = labeler.Labeler
 			% record_string=record_string, 
 			% pending_records=pending_records,
 			% subtotal=subtotal, daily_subtotal=daily_subtotal,
-			% date_title=date_title, month=Record.getSubtotalMonth(date))
+			% date_title=date_title, month=recorder.getSubtotalMonth(date))
 		
 		<!-- ######################################################################################################### -->
 		<!-- ######################################################################################################### -->
@@ -210,8 +205,8 @@ Labeler = labeler.Labeler
 			    			<!-- PANEL COLLAPSE/BODY START -->
 			    			<!-- differentiated because this form stays open: class="in" -->
 			    			
-			    			% namer = Labeler()
-			    			% ider = Labeler(len(records))
+			    			% namer = labeler.Labeler()
+			    			% ider = labeler.Labeler(len(records))
 		    				<div class="panel-collapse collapse" name={{namer.record()}} id={{ider.record()}} >
 			    				
 			    				% form_start = ""
@@ -219,10 +214,10 @@ Labeler = labeler.Labeler
 			    				% min = "0000"
 			    				% max = "2345"
 
-			    				% prev_record = Record.getPrevRecord(records, ider.i)
+			    				% prev_record = recorder.getPrevRecord(records, ider.i)
 				    				
 			    				% if prev_record:
-			    					% if (prev_record.end != Record.PENDING_CHAR):
+			    					% if (prev_record.end != recorder.PENDING_CHAR):
 			    						% form_start = prev_record.fend
 			    					% end
 
@@ -259,9 +254,9 @@ Labeler = labeler.Labeler
 							<!-- ######################################################################################################### -->
 
 							<!-- PROVIDES NAMES FOR HTML ELEMS -->
-							% namer = Labeler()
+							% namer = labeler.Labeler()
 							<!-- PROVIDES IDS FOR HTML ELEMS -->
-							% ider = Labeler(len(records)-1)
+							% ider = labeler.Labeler(len(records)-1)
 
 							<!-- RECORDS ARE DISPLAYED IN REVERSE -->
 							% for r in reversed(records):
@@ -291,14 +286,14 @@ Labeler = labeler.Labeler
 
 				    				% min = "0000"
 				    				% max = "2345"
-				    				% if (r.end != Record.PENDING_CHAR):
+				    				% if (r.end != recorder.PENDING_CHAR):
 				    					% max = r.end
 				    				% end
 
-				    				% prev_record = Record.getPrevRecord(records, ider.i)
+				    				% prev_record = recorder.getPrevRecord(records, ider.i)
 				    				
 				    				% if prev_record:
-				    					% if (prev_record.end != Record.PENDING_CHAR):
+				    					% if (prev_record.end != recorder.PENDING_CHAR):
 				    						% form_start = prev_record.fend
 				    					% end
 

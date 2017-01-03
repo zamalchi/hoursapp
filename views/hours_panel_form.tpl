@@ -12,15 +12,14 @@
 
 <!-- ######################################################################################################### -->
 
-<!-- TODO: determine if this import is needed -->
-% import modu.record as record
-% import modu.labeler as labeler
+<%
+import modu.labeler as labeler
+import modu.recorder as recorder
 
-<!-- PROVIDE NAMES AND IDS FOR ELEMENTS (IDS INCLUDE THE INDEX OF THE RECORD) -->
-% namer = labeler.Labeler()
-% ider = labeler.Labeler(i)
-
-% Record = record.Record
+# PROVIDE NAMES AND IDS FOR ELEMENTS (IDS INCLUDE THE INDEX OF THE RECORD)
+namer = labeler.Labeler()
+ider = labeler.Labeler(i)
+%>
 
 <!-- ######################################################################################################### -->
 <!-- ######################################################################################################### -->
@@ -86,17 +85,18 @@
 							<div name="dropdown-wrapper">
 								<div class="dropdown form-control">
 									<!-- INITIAL VALUES USED FOR DEFAULT AND INDEX OFFSET -->
-									% ls_name = [""]
-									% ls_billable = ["Y"]
-									% ls_emergency = ["N"]
+									<%
+									ls_name = [""]
+									ls_billable = ["Y"]
+									ls_emergency = ["N"]
 
-									% for each in labels:
-								   	% l = each.split(" | ")
-								   	% ls_name.append(l[0])
-								   	% ls_billable.append(l[1])
-								   	% ls_emergency.append(l[2])
-									% end
-
+									for each in labels:
+								  	l = each.split(" | ")
+								  	ls_name.append(l[0])
+								  	ls_billable.append(l[1])
+								  	ls_emergency.append(l[2])
+								  end
+									%>
 									<select class="dropdownSelect" data-index="{{ider.i}}" onchange="dropdownChangeSelect(this)" tabindex="4">
 									   % for i, each in enumerate(ls_name):
 									   	<option value="{{each}}" data-billable="{{ls_billable[i]}}" data-emergency="{{ls_emergency[i]}}">{{each}}</option>
