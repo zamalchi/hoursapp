@@ -11,13 +11,13 @@ NORMAL=`echo -e "\033[m"`
 # SERVING
 # ----------------------------------------------------------------------
 run:
-	/usr/bin/env python run.py -p $(PORT)
+	/usr/bin/env python app.py -p $(PORT)
 
-# debug:
-# 	/usr/bin/env python app.py -a $(HOST) -p $(PORT) -d
+debug:
+	/usr/bin/env python app.py -p $(PORT) -d
 
-# debug-watch:
-# 	/usr/bin/env python app.py -a $(HOST) -p $(PORT) -d -r
+debug-watch:
+	/usr/bin/env python app.py -p $(PORT) -d -r
 
 # mock:
 # 	/usr/bin/env python app.py -a $(LHOST) -p $(LPORT) -d -m
@@ -64,6 +64,11 @@ help:
 	@echo "    ${LGREEN}run${NORMAL}"
 	@echo "        ${LBLUE}Run the hours server.${NORMAL}"
 	@echo "        ${LBLUE}  vars: PORT${NORMAL}"
+	@echo "    ${LGREEN}debug${NORMAL}"
+	@echo "        ${LBLUE}Run the hours server in debug mode.${NORMAL}"
+	@echo "        ${LBLUE}  vars: PORT${NORMAL}"
+	@echo "    ${LGREEN}debug-watch${NORMAL}"
+	@echo "        ${LBLUE}Run the hours server in debug mode with live reload.${NORMAL}"
 	@echo "${PURPLE}----------------------------------------------------------------------${NORMAL}"
 	@echo "    ${LGREEN}scss${NORMAL}"
 	@echo "        ${LBLUE}Compile scss source files to css static files.${NORMAL}"

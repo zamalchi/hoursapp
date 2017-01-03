@@ -9,30 +9,23 @@
 
 ### PACKAGES ###########################################################################################
 
+import datetime as dt
 import os
-import time
 import smtplib
 import sys
-import datetime as dt
-### IMPORTS ############################################################################################
+import time
 
+import markdown
 from src.bottle import \
     get, post, redirect, \
     request, response,\
     template, static_file,\
     SimpleTemplate, url
-
-# for help button which displays README.md and UPDATES.md
-import markdown
-# Record class
-from classes.Record import Record
-# Labeler class
-from classes.Labeler import Labeler
-
 from src.crypto import *
 
-# root directory for project
 from config.dirs import ROOT_DIR
+from modu.labeler import Labeler
+from modu.record import Record
 
 namer = Labeler()
 

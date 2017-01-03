@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 if __name__ == '__main__':
     print("Import module")
@@ -6,11 +7,11 @@ if __name__ == '__main__':
 ######################################################
 ######################################################
 
-from Crypto.Cipher import AES
-
-from config.dirs import ROOT_DIR
-
 import os
+
+import Crypto.Cipher.AES as AES
+
+ROOT_DIR = os.getcwd()
 
 ######################################################
 ######################################################

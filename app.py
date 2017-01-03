@@ -1,13 +1,12 @@
-
-# TO RUN FROM WRAPPER CLASSES:
-# - labelsInit(labelsFileName) - required
-# - loggingServerInit(address)
+#!/usr/bin/env python
 
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
 
 ### IMPORTS ############################################################################################
+
+from __future__ import print_function
 
 import argparse
 import datetime as dt
@@ -16,11 +15,20 @@ import smtplib
 import sys
 import time
 
+import markdown
+
 import modu.bottle as bottle
-import modu.crypto as crypto
 import modu.color_printer as cp
+import modu.crypto as crypto
+import modu.labeler as labeler
+import modu.record as record
 
 app = bottle.Bottle()
+
+Record = record.Record
+Labeler = labeler.Labeler
+
+namer = Labeler()
 
 ### ARG PARSING ########################################################################################
 
@@ -33,102 +41,20 @@ args = parser.parse_args()
 
 # GLOBAL ENVIRONMENT VARIABLES
 ENV = argparse.Namespace()
+ENV.HOST = "localhost"
 ENV.PORT = args.p
 ENV.DEBUG = True if args.d else False
 ENV.RELOAD = True if args.r else False
 ENV.ROOT = os.getcwd()
 
-### IMPORTS ############################################################################################
-
-# from src.bottle import \
-#     get, post, redirect, \
-#     request, response,\
-#     template, static_file,\
-#     SimpleTemplate, url
-
-# for help button which displays README.md and UPDATES.md
-from markdown import markdown
-
-# Record class
-from classes.Record import Record
-# Labeler class
-from classes.Labeler import Labeler
-
-# from src.crypto import *
-
-# root directory for project
-# from config.dirs import ROOT_DIR
-
-namer = Labeler()
-
 ### APACHE #############################################################################################
 
-os.chdir(os.path.dirname(__file__))
-sys.path.insert(1, os.path.dirname(__file__))
+os.chdir(ENV.ROOT)
+sys.path.insert(1, ENV.ROOT)
 
 ### FOR CSS READING IN TEMPLATES #######################################################################
 
 bottle.SimpleTemplate.defaults["url"] = bottle.url
-
-### DIRECTORY ##########################################################################################
-
-# ROOT_DIR = os.getcwd()
-
-# project root and directory for saving hours information : overwrites default values in class
-Record.rootDir = ENV.ROOT
-Record.hoursDir = os.path.join(ENV.ROOT, "hours")
-
-# if the directory doesn't exist, create it
-if not os.path.exists(Record.hoursDir):
-  os.makedirs(Record.hoursDir)
-
-### LOGGING SERVER #####################################################################################
-
-# ip and port as a string
-loggingServerAddress = ""
-loggingServerPort = ""
-
-def loggingServerInit(address, port):
-  global loggingServerAddress
-  global loggingServerPort
-  
-  loggingServerAddress = address.strip()
-  loggingServerPort = port.strip()
-  
-  print("SERVER: {0}:{1}".format(loggingServerAddress, loggingServerPort))
-
-### SMTP ###############################################################################################
-
-sender = ""
-receivers = ""
-def smtpInit(mailTo=[], mailFrom='root'):
-  # this is called from the wrapper file
-  # sets the sender and receiver for emails
-  global receivers
-  global sender
-  
-  receivers = mailTo
-  sender = mailFrom
-  
-  print("SMTP: {0} -> {1}".format(sender, receivers))
-
-### LABELS #############################################################################################
-
-# sets labels for populating dropdown list in /hours
-labels = []
-
-def labelsInit(filename):
-  # read labels from labels.txt
-  global labels
-  try:
-    f = open(filename, 'r')
-    
-    # parses into list and filters out any empty lines (ex. trailing \n)
-    labels = filter(None, f.read().split("\n"))
-    
-    f.close()
-  except IOError:
-    print("***\nERROR: Labels file not found. Labels will not be populated.\n***")
 
 ### STATIC ROUTING ########################################################################################
 
@@ -151,6 +77,60 @@ def images(filename):
 @app.get('/fonts/<filename:re:.*\.(eot|ttf|woff|woff2|svg)>')
 def fonts(filename):
   return bottle.static_file(filename, root=os.path.join(ENV.ROOT, 'static/fonts'))
+
+### DIRECTORY ##########################################################################################
+
+# project root and directory for saving hours information : overwrites default values in class
+Record.rootDir = ENV.ROOT
+Record.hoursDir = os.path.join(ENV.ROOT, "hours")
+
+# if the directory doesn't exist, create it
+if not os.path.exists(Record.hoursDir):
+  os.makedirs(Record.hoursDir)
+  
+crypto.ROOT_DIR = ENV.ROOT
+
+### LOGGING SERVER AND SMTP ############################################################################
+
+address_key = "loggingServerAddress"
+port_key = "loggingServerPort"
+sender_key = "sender"
+receivers_key = "receivers"
+  
+settingsFile = os.path.join(ENV.ROOT, "config/settings")
+settingsDict = {}
+
+if os.path.exists(settingsFile):
+  with open(settingsFile) as f:
+    rawSettings = filter(None, f.read().split("\n"))
+
+    for each in rawSettings:
+      key, val = each.split("=")
+      settingsDict[key] = val
+
+elif ENV.DEBUG:
+  cp.printWarn("`config/settings` file not found. Some features may not work.")
+
+ENV.LOGGING_SERVER_ADDRESS = settingsDict.get(address_key, "")
+ENV.LOGGING_SERVER_PORT = settingsDict.get(port_key, "")
+    
+ENV.SENDER = settingsDict.get(sender_key, "root")
+ENV.RECEIVERS = filter(None, list(settingsDict.get(receivers_key, "").split(","))) or []
+
+
+### LABELS #############################################################################################
+
+labelsFile = os.path.join(ENV.ROOT, "config/labels.txt")
+ENV.LABELS = []
+
+if os.path.exists(labelsFile):
+  with open(labelsFile, 'r') as f:
+    
+    # parses into list and filters out any empty lines (ex. trailing \n)
+    ENV.LABELS = filter(None, f.read().split("\n"))
+  
+elif ENV.DEBUG:
+  cp.printWarn("`config/labels.txt` file not found. Labels will not be populated.")
 
 ### COOKIE GETTERS/SETTERS #############################################################################
 
@@ -262,11 +242,11 @@ def hours():
   
   return bottle.template('hours',
                          name=name, date=date,
-                         records=records, labels=labels,
+                         records=records, labels=ENV.LABELS,
                          month=month, subtotal=subtotal,
                          anchor=anchor, notes=notes,
-                         sender=sender, receivers=receivers,
-                         loggingServerAddress=loggingServerAddress, loggingServerPort=loggingServerPort,
+                         sender=ENV.SENDER, receivers=ENV.RECEIVERS,
+                         loggingServerAddress=ENV.LOGGING_SERVER_ADDRESS, loggingServerPort=ENV.LOGGING_SERVER_PORT,
                          msg=msg)
 
 
@@ -332,7 +312,7 @@ def hours_post():
     #######################################################
     
     # write back updated list
-    Record.writeRecords(name, date, records)
+      Record.writeRecords(name, date, records)
     
     # after posting a new record, delete the anchor cookie to reset it
     deleteAnchorCookie(bottle.response)
@@ -506,15 +486,15 @@ def complete_notes():
   if notes:
     records = Record.parseRecordsFromFile(name, date)
     
-    record = records[index]
+    r = records[index]
     
     # replace <br> with " " in case of enter button being pressed
     notes = notes.replace("<br>", " ").strip()
     
-    record.notes = notes
+    r.notes = notes
     
-    records[index] = record
-    
+    records[index] = r
+
     Record.writeRecords(name, date, records)
     
     # delete cookie if task completed
@@ -590,11 +570,10 @@ def view_updates():
   readme = updates = ""
   
   try:
-    f = open(os.path.join(ENV.ROOT, 'README.md'), 'r')
-    raw = f.read()
-    f.close()
+    with open(os.path.join(ENV.ROOT, 'README.md'), 'r') as f:
+      raw = f.read()
     
-    readme = markdown(raw)
+    readme = markdown.markdown(raw)
   
   except IOError:
     readme = "<h2>Readme not found.</h2>"
@@ -602,11 +581,10 @@ def view_updates():
   ##############################################
   
   try:
-    f = open(os.path.join(ENV.ROOT, "docs/UPDATES.md"), 'r')
-    raw = f.read()
-    f.close()
+    with open(os.path.join(ENV.ROOT, "docs/UPDATES.md"), 'r') as f:
+      raw = f.read()
     
-    updates = markdown(raw)
+    updates = markdown.markdown(raw)
   
   except IOError:
     updates = "<h2>Updates not found.</h2>"
@@ -639,7 +617,7 @@ def toggle_billable():
     r.billable = "Y"
   
   records[index] = r
-  
+
   Record.writeRecords(name, date, records)
 
   bottle.redirect('hours')
@@ -665,7 +643,7 @@ def toggle_emergency():
     r.emergency = "Y"
   
   records[index] = r
-  
+
   Record.writeRecords(name, date, records)
 
   bottle.redirect('hours')
@@ -777,4 +755,34 @@ def ack_sent_records():
 
 ########################################################################################################
 ######################################  	MISC ROUTES END	   ###########################################
+########################################################################################################
+
+border = "* * * * * * * * * * * * * * * * * * * * * * * * * * * "
+
+cp.printHeader(border)
+
+print("APP RUNNING FROM : {project_dir}".format(project_dir=ENV.ROOT))
+print("HOST ADDRESS     : {hostAddr}".format(hostAddr=ENV.HOST))
+print("HOST PORT        : {hostPort}".format(hostPort=ENV.PORT))
+
+sender = "SMTP SENDER      : {senderStr}".format(senderStr=ENV.SENDER)
+receivers = "SMTP RECEIVERS   : {receiversStr}".format(receiversStr=", ".join(ENV.RECEIVERS))
+debug = "DEBUG            : {devMode}".format(devMode=ENV.DEBUG)
+reloader = "LIVE RELOAD      : {liveReload}".format(liveReload=ENV.RELOAD)
+
+print(sender) if ENV.SENDER else cp.printWarn(sender)
+print(receivers) if ENV.RECEIVERS else cp.printWarn(receivers)
+
+cp.printOK(debug) if ENV.DEBUG else print(debug)
+cp.printOK(reloader) if ENV.RELOAD else print(reloader)
+
+cp.printHeader(border)
+
+app.run(host=ENV.HOST, port=ENV.PORT, debug=ENV.DEBUG, reloader=ENV.RELOAD)
+
+########################################################################################################
+########################################################################################################
+########################################################################################################
+########################################################################################################
+########################################################################################################
 ########################################################################################################

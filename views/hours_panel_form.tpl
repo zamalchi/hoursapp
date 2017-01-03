@@ -13,12 +13,14 @@
 <!-- ######################################################################################################### -->
 
 <!-- TODO: determine if this import is needed -->
-% from classes.Record import Record
-
+% import modu.record as record
+% import modu.labeler as labeler
 
 <!-- PROVIDE NAMES AND IDS FOR ELEMENTS (IDS INCLUDE THE INDEX OF THE RECORD) -->
-% namer = Labeler()
-% ider = Labeler(i)
+% namer = labeler.Labeler()
+% ider = labeler.Labeler(i)
+
+% Record = record.Record
 
 <!-- ######################################################################################################### -->
 <!-- ######################################################################################################### -->

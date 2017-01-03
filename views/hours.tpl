@@ -1,3 +1,16 @@
+<%
+import datetime as dt
+
+import modu.record as record
+import modu.labeler as labeler
+
+import time
+
+Record = record.Record
+Labeler = labeler.Labeler
+
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,13 +69,9 @@
 
 		<!-- ######################################################################################################### -->
 
-		% from classes.Record import Record
 
-		% import datetime as dt
+		% date_title = dt.datetime.strftime(date, "%a %d %b : %Y-%m-%d")
 
-		% date_title = date.strftime("%a %d %b : %Y-%m-%d")
-
-		% from classes.Labeler import Labeler
 
 		<!-- pending_records is for modifying the subtotal with "*" to show there are pending records -->
 		% pending_records = False
