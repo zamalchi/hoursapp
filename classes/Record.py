@@ -285,8 +285,9 @@ class Record:
 
         # if the day is past the 25th, increase the month by 1
         # this is when the pay period switches over to the next month
-        if day_int > 25:
-            month_int += 1
+        # this breaks something
+#        if day_int > 25:
+#            month_int += 1
 
         return month_int
 
@@ -298,6 +299,7 @@ class Record:
         month_int = Record.getSubtotalMonthInt(date)
 
         # replace month with the one used for the subtotal
+        print("DEBUG:",date.year, month_int , date.day)
         date = date.replace(date.year, month_int, date.day)
 
         # get the str name for the month

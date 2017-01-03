@@ -1,0 +1,36 @@
+#!/bin/bash
+
+YEAR=$(date '+%Y')
+MONTH=$(date '+%m')
+DAY=$(date --date="yesterday" '+%d')
+TODAY="${YEAR}-${MONTH}-${DAY}"
+
+CUSER="$USER"
+
+echo $TODAY $LASTFRI $LASTMONTH $FIRSTDAY
+
+
+# get the last friday of the month
+LASTYEAR=$(date -d 'today - 1 month' '+%Y')
+LASTMONTH=$(date -d 'today - 1 month' '+%m')
+LASTFRI=$(ncal -m ${MONTH}p -h |awk '/Fr/ {print $(NF)}')
+if [ $LASTFRI -lt 26 ]; then
+    echo "last fri is less than 26 need to fix this code.  exitting..."
+    exit
+fi
+FIRSTDAY=$(date -d "${LASTYEAR}-${LASTMONTH}-${LASTFRI} + 1 day" "+%Y-%m-%d")
+
+ENDDATE="$(date --date="yesterday" '+%Y-%m-%d')"
+CDATE=$FIRSTDAY
+COUNT=0
+while [ "$CDATE" != "$ENDDATE" ]; do
+    CDATE=$(date -d "$FIRSTDAY + $COUNT days" '+%Y-%m-%d')
+    CYEAR=$(date -d "$FIRSTDAY + $COUNT days" '+%Y')
+    REMOTEFILE="${CUSER}@aquinas.techsquare.com:/projects/hours/${CYEAR}/"${CDATE}-${CUSER}
+    LOCALFILE=$(pwd)/hours/${CDATE}-${CUSER}
+    if [ ! -f "${LOCALFILE}" ]; then
+	touch ${LOCALFILE}
+    fi
+    rsync -avzS $LOCALFILE $REMOTEFILE
+    COUNT=$(($COUNT + 1))
+done
