@@ -1,7 +1,7 @@
-#!/bin/bash
+# #!/bin/bash
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
+# parent_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
 
-cd $parent_path
+# cd $parent_path
 
-python ./run.py -p 8080
+# python ./run.py -p 8080

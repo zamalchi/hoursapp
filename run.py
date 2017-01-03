@@ -8,9 +8,10 @@ from src.bottle import run
 
 from src.hoursSrc import *
 
-from config.dirs import ROOT_DIR
+# from config.dirs import ROOT_DIR
 
-ROOT_DIR = os.path.dirname(os.path.abspath('.'))
+# ROOT_DIR = os.path.dirname(os.path.abspath('.'))
+ROOT_DIR = os.getcwd()
 
 print("############################################")
 print(sys.version)
