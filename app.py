@@ -43,6 +43,8 @@ ENV.PORT = args.p
 ENV.DEBUG = True if args.d else False
 ENV.RELOAD = True if args.r else False
 ENV.ROOT = os.getcwd()
+ENV.WARNINGS = []
+ENV.ERRORS = []
 
 ### APACHE #############################################################################################
 
@@ -55,47 +57,52 @@ bottle.SimpleTemplate.defaults["url"] = bottle.url
 
 ### STATIC ROUTING ########################################################################################
 
-# CSS
+""" CSS """
 @app.get('/css/<filename:re:.*\.css>')
 def stylesheets(filename):
   return bottle.static_file(filename, root=os.path.join(ENV.ROOT, 'static/css'))
 
-# JAVASCRIPT
+""" JAVASCRIPT """
 @app.get('/js/<filename:re:.*\.js>')
 def javascripts(filename):
   return bottle.static_file(filename, root=os.path.join(ENV.ROOT, 'static/js'))
 
-# IMAGES
-@app.get('/img/<filename:re:.*\.(jpg|png|gif|ico)>')
+""" IMAGES """
+@app.get('/img/<filename:re:.*\.(jpg|png|gif)>')
 def images(filename):
   return bottle.static_file(filename, root=os.path.join(ENV.ROOT, 'static/img'))
 
-# FONTS
+""" FONTS """
 @app.get('/fonts/<filename:re:.*\.(eot|ttf|woff|woff2|svg)>')
 def fonts(filename):
   return bottle.static_file(filename, root=os.path.join(ENV.ROOT, 'static/fonts'))
 
+""" FAVICON """
+@app.get('/favicon.ico')
+def favicon():
+  return bottle.static_file('favicon.ico', root=os.path.join(ENV.ROOT, 'static'))
+
 ### DIRECTORY ##########################################################################################
 
 # project root and directory for saving hours information : overwrites default values in class
-recorder.rootDir = ENV.ROOT
-recorder.hoursDir = os.path.join(ENV.ROOT, "hours")
+recorder.ROOT_DIR = ENV.ROOT
+recorder.HOURS_DIR = os.path.join(ENV.ROOT, "hours")
 
 # if the directory doesn't exist, create it
-if not os.path.exists(recorder.hoursDir):
-  os.makedirs(recorder.hoursDir)
+if not os.path.exists(recorder.HOURS_DIR):
+  os.makedirs(recorder.HOURS_DIR)
   
 crypto.ROOT_DIR = ENV.ROOT
 
 ### LOGGING SERVER AND SMTP ############################################################################
 
 LOGGING = argparse.Namespace()
+LOGGING.SETTINGS_FILE = os.path.join(ENV.ROOT, "config/settings")
+
 LOGGING.ADDRESS_KEY = "loggingServerAddress"
 LOGGING.PORT_KEY = "loggingServerPort"
 LOGGING.SENDER_KEY = "sender"
 LOGGING.RECEIVERS_KEY = "receivers"
-
-LOGGING.SETTINGS_FILE = os.path.join(ENV.ROOT, "config/settings")
 LOGGING.SETTINGS_DICT = {}
 
 if os.path.exists(LOGGING.SETTINGS_FILE):
@@ -107,14 +114,13 @@ if os.path.exists(LOGGING.SETTINGS_FILE):
       LOGGING.SETTINGS_DICT[key] = val
 
 elif ENV.DEBUG:
-  cp.printWarn("`config/settings` file not found. Some features may not work.")
+  ENV.WARNINGS.append("'config/settings' file not found. Some features may not work.")
 
 ENV.LOGGING_SERVER_ADDRESS = LOGGING.SETTINGS_DICT.get(LOGGING.ADDRESS_KEY, "")
 ENV.LOGGING_SERVER_PORT = LOGGING.SETTINGS_DICT.get(LOGGING.PORT_KEY, "")
     
 ENV.SENDER = LOGGING.SETTINGS_DICT.get(LOGGING.SENDER_KEY, "root")
 ENV.RECEIVERS = filter(None, list(LOGGING.SETTINGS_DICT.get(LOGGING.RECEIVERS_KEY, "").split(","))) or []
-
 
 ### LABELS #############################################################################################
 
@@ -128,7 +134,7 @@ if os.path.exists(labelsFile):
     ENV.LABELS = filter(None, f.read().split("\n"))
   
 elif ENV.DEBUG:
-  cp.printWarn("`config/labels.txt` file not found. Labels will not be populated.")
+  ENV.WARNINGS.append("'config/labels.txt' file not found. Labels will not be populated.")
 
 ### COOKIE GETTERS/SETTERS #############################################################################
 
@@ -239,13 +245,13 @@ def hours():
   #######################################################
   
   return bottle.template('hours',
-                         name=name, date=date,
-                         records=records, labels=ENV.LABELS,
-                         month=month, subtotal=subtotal,
-                         anchor=anchor, notes=notes,
-                         sender=ENV.SENDER, receivers=ENV.RECEIVERS,
-                         loggingServerAddress=ENV.LOGGING_SERVER_ADDRESS, loggingServerPort=ENV.LOGGING_SERVER_PORT,
-                         msg=msg)
+      name=name, date=date,
+      records=records, labels=ENV.LABELS,
+      month=month, subtotal=subtotal,
+      anchor=anchor, notes=notes,
+      sender=ENV.SENDER, receivers=ENV.RECEIVERS,
+      loggingServerAddress=ENV.LOGGING_SERVER_ADDRESS, loggingServerPort=ENV.LOGGING_SERVER_PORT,
+      msg=msg)
 
 
 ########################################################################################################
@@ -748,9 +754,36 @@ def ack_sent_records():
 ######################################  	MISC ROUTES END	   ###########################################
 ########################################################################################################
 
+
+
+
+########################################################################################################
+#######################################  	APP LAUNCHER	   #############################################
+########################################################################################################
+
 border = "* * * * * * * * * * * * * * * * * * * * * * * * * * * "
 
 cp.printHeader(border)
+
+######################################
+
+if ENV.DEBUG:
+  ENV.WARNINGS.insert(0, "TEST WARNING")
+  ENV.ERRORS.insert(0, "TEST ERROR")
+
+######################################
+
+if ENV.WARNINGS or ENV.ERRORS:
+  
+  for warning in ENV.WARNINGS:
+    cp.printWarn("WARNING : " + warning)
+  
+  for error in ENV.ERRORS:
+    cp.printFail("ERROR   : " + error)
+
+  cp.printHeader(border)
+
+######################################
 
 print("APP RUNNING FROM : {project_dir}".format(project_dir=ENV.ROOT))
 print("HOST ADDRESS     : {hostAddr}".format(hostAddr=ENV.HOST))
@@ -768,6 +801,8 @@ cp.printOK(debug) if ENV.DEBUG else print(debug)
 cp.printOK(reloader) if ENV.RELOAD else print(reloader)
 
 cp.printHeader(border)
+
+######################################
 
 app.run(host=ENV.HOST, port=ENV.PORT, debug=ENV.DEBUG, reloader=ENV.RELOAD)
 

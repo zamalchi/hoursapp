@@ -7,8 +7,8 @@
 #   RecordMalformedException (required by Record)
 
 # (optional) after importing, set:
-#   Record.rootDir - default: '.'
-#   Record.hoursDir - default: './hours'
+#   Record.ROOT_DIR - default: '.'
+#   Record.HOURS_DIR - default: './hours'
 
 ### PACKAGES ###########################################################################################
 
@@ -30,8 +30,8 @@ if __name__ == "__main__":
 ########################################################################################################
 
 # default values : set after importing class
-rootDir = "."
-hoursDir = os.path.join(rootDir, "hours")
+ROOT_DIR = "."
+HOURS_DIR = os.path.join(ROOT_DIR, "hours")
 
 # used as a placeholder for the end time in an ongoing record
 # it is replaced when the next record is created (with the new start time)
@@ -319,7 +319,7 @@ def getFileName(name, date):
   filename = "{0}-{1}".format(str(date), name)
   
   # return filename
-  return os.path.join(hoursDir, filename)
+  return os.path.join(HOURS_DIR, filename)
 
 
 ### GENERATE FILE NAME: (.YYYY-MM-DD-NAME) #############################################################
@@ -331,7 +331,7 @@ def getHiddenFileName(name, date):
   filename = ".{0}-{1}".format(str(date), name)
   
   # return filename: uses hidden version of the file, since it contains extra info (durationLocked)
-  return os.path.join(hoursDir, filename)
+  return os.path.join(HOURS_DIR, filename)
 
 
 ### GENERATE SUBTOTAL FILENAME: (YYYY-MM-NAME-subtotal) ################################################
@@ -355,7 +355,7 @@ def getSubtotalFileName(name, date):
   filename = ".{0}-{1}-subtotal-{2}".format(date.year, month, name)
   
   # ("DIR/.YYYY-MM-subtotal-NAME")
-  return os.path.join(hoursDir, filename)
+  return os.path.join(HOURS_DIR, filename)
 
 
 ########################################################################################################
