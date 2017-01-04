@@ -43,10 +43,10 @@ debug-watch:
 # COMPILING / TRANSPILING
 # ----------------------------------------------------------------------
 scss:
-	./src/scss/transpile.sh
+	./src/scss/transpiler.sh
 
 scss-watch:
-	./src/scss/transpile.sh --watch
+	./src/scss/transpiler.sh --watch
 
 # MISC
 # ----------------------------------------------------------------------

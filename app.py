@@ -19,6 +19,7 @@ import markdown
 
 import modu.bottle as bottle
 import modu.color_printer as cp
+import modu.cookies as cookies
 import modu.crypto as crypto
 import modu.labeler as labeler
 import modu.recorder as recorder
@@ -96,6 +97,7 @@ crypto.ROOT_DIR = ENV.ROOT
 
 ### LOGGING SERVER AND SMTP ############################################################################
 
+""" LOGGING is being used solely as a namespace/enumerator ; the useful values are stored in ENV """
 LOGGING = argparse.Namespace()
 LOGGING.SETTINGS_FILE = os.path.join(ENV.ROOT, "config/settings")
 
@@ -136,51 +138,6 @@ if os.path.exists(labelsFile):
 elif ENV.DEBUG:
   ENV.WARNINGS.append("'config/labels.txt' file not found. Labels will not be populated.")
 
-### COOKIE GETTERS/SETTERS #############################################################################
-
-### NAME ########################################################
-def getNameCookie(req):
-  return req.get_cookie("name") or ""
-
-def setNameCookie(res, name):
-  res.set_cookie("name", name)
-
-### DATE ########################################################
-def getDateCookie(req):
-  return recorder.validateDate(req.get_cookie("date") or dt.date.today())
-
-def setDateCookie(res, date):
-  res.set_cookie("date", str(recorder.validateDate(date)))
-
-### CONSOLIDATED ################################################
-def getCookies(req):
-  return getNameCookie(req), getDateCookie(req)
-
-def setCookies(res, name, date):
-  setNameCookie(res, name)
-  setDateCookie(res, date)
-
-### ANCHOR ######################################################
-def getAnchorCookie(req):
-  return req.get_cookie("anchor") or "-1"
-
-def setAnchorCookie(res, anchor):
-  res.set_cookie("anchor", str(anchor))
-
-def deleteAnchorCookie(res):
-  res.delete_cookie("anchor")
-
-### NOTES #######################################################
-
-def getNotesCookie(req):
-  return req.get_cookie("notes") or ""
-
-def setNotesCookie(res, notes):
-  res.set_cookie("notes", notes)
-
-def deleteNotesCookie(res):
-  res.delete_cookie("notes")
-
 ########################################################################################################
 ########################################################################################################
 ########################################################################################################
@@ -210,6 +167,8 @@ def deleteNotesCookie(res):
 @app.get('/hours')
 def hours():
   
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+  
   #######################################################
   
   msg = ""
@@ -219,17 +178,17 @@ def hours():
     pass
   
   # get name and date cookies
-  name, date = getCookies(bottle.request)
+  name = Cookies.name
+  date = Cookies.date
   
   # get anchor cookie in case record has been just edited
-  anchor = getAnchorCookie(bottle.request)
+  anchor = Cookies.anchor
   
   # set anchor cookie to null after getting it
-  deleteAnchorCookie(bottle.response)
+  Cookies.delete_anchor()
   
-  notes = getNotesCookie(bottle.request)
-  
-  deleteNotesCookie(bottle.response)
+  notes = Cookies.notes
+  Cookies.delete_notes()
   
   # get the month to use for the monthly subtotal
   month = date.month
@@ -260,13 +219,16 @@ def hours():
 
 @app.post('/hours')
 def hours_post():
+  
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+  
   #######################################################
   
   # name of user
   name = bottle.request.forms.get(namer.name()).strip()
   
   # date : either picked by user or default today
-  date = getDateCookie(bottle.request)
+  date = Cookies.date
   
   # index for inserting new Record into the list of records
   index = int(bottle.request.forms.get(namer.insert()))
@@ -288,7 +250,7 @@ def hours_post():
   
   # if the cookie is set, the user has pulled any existing files
   # if there are no existing files, the cookie will be null
-  records_pulled = getNameCookie(bottle.request)
+  records_pulled = bool(Cookies.name)
   
   # checks if new_record.start < new_record.end
   # and that new_record doesn't exceed the outer limits of adjacent records
@@ -319,18 +281,16 @@ def hours_post():
       recorder.writeRecords(name, date, records)
     
     # after posting a new record, delete the anchor cookie to reset it
-    deleteAnchorCookie(bottle.response)
-    
-    deleteNotesCookie(bottle.response)
+    Cookies.delete_anchor()
+    Cookies.delete_notes()
   
   else:
-    
-    setNotesCookie(bottle.response, new_record.notes)
+    Cookies.notes = new_record.notes
   
   #######################################################
   
   # set name cookie with most recently used name (for insurance mostly)
-  setNameCookie(bottle.response, name)
+  Cookies.name = name
   
   #######################################################
   
@@ -371,6 +331,9 @@ def hours_post():
 
 @app.post('/setCookies')
 def set_cookies():
+  
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+  
   #######################################################
   
   # get name of user provided in specified field
@@ -382,7 +345,8 @@ def set_cookies():
   #######################################################
   
   # set name and date cookie
-  setCookies(bottle.response, name, date)
+  Cookies.name = name
+  Cookies.date = date
   
   #######################################################
   
@@ -396,10 +360,14 @@ def set_cookies():
 ### deletes records of current user
 @app.post('/delete')
 def delete_records():
+  
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+  
   #######################################################
   
   # get name and date cookies
-  name, date = getCookies(bottle.request)
+  name = Cookies.name
+  date = Cookies.date
   
   # sets flag based on user's confirmation / denial from popup alert
   deleteConfirm = bottle.request.forms.get("deleteConfirm")
@@ -431,13 +399,17 @@ def delete_records():
 ### deletes one record from those currently displayed
 @app.post('/deleteOne')
 def delete_single_record():
+  
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+  
   #######################################################
   
   # get index based on which delete button was clicked / which form was submitted
   index = int(bottle.request.forms.get('index'))
   
   # get name and date cookies
-  name, date = getCookies(bottle.request)
+  name = Cookies.name
+  date = Cookies.date
   
   #######################################################
   
@@ -445,7 +417,7 @@ def delete_single_record():
   records = recorder.parseRecordsFromFile(name, date)
   
   # set the notes to be in the form
-  setNotesCookie(bottle.response, records[index].notes)
+  Cookies.notes = records[index].notes
   
   # get the duration of the record to be deleted
   deletedRecordDuration = records[index].duration
@@ -461,7 +433,7 @@ def delete_single_record():
   
   # upon redirect, anchor to where the record was deleted
   # open that form and insert notes, etc. from the deleted record
-  setAnchorCookie(bottle.response, index)
+  Cookies.anchor = index
   
   #######################################################
   
@@ -474,16 +446,20 @@ def delete_single_record():
 ### updates the notes field of a specific record ; triggered by the save button
 @app.post('/completeNotes')
 def complete_notes():
+  
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+  
   #######################################################
   
   # get index of completed record
   index = int(bottle.request.forms.get("index"))
   
-  setAnchorCookie(bottle.response, index)
+  Cookies.anchor = index
   
   notes = bottle.request.forms.get("notesDisplay")
   
-  name, date = getCookies(bottle.request)
+  name = Cookies.name
+  date = Cookies.date
   
   #######################################################
   
@@ -502,7 +478,7 @@ def complete_notes():
     recorder.writeRecords(name, date, records)
     
     # delete cookie if task completed
-    deleteAnchorCookie(bottle.response)
+    Cookies.delete_anchor()
   
   #######################################################
   
@@ -514,18 +490,22 @@ def complete_notes():
 
 @app.post('/completeEndTime')
 def complete_end_time():
+  
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+  
   #######################################################
   
   # get index of completed record
   index = int(bottle.request.forms.get('index'))
   
-  setAnchorCookie(bottle.response, index)
+  Cookies.anchor = index
   
   # get the submitted end time (which has already been pattern matched) OR get current rounded time
   end = recorder.parseTime(bottle.request.forms.get('completeEnd')) or recorder.getCurrentRoundedTime()
   
   # get name and date cookies
-  name, date = getCookies(bottle.request)
+  name = Cookies.name
+  date = Cookies.date
   
   #######################################################
   
@@ -557,7 +537,7 @@ def complete_end_time():
     recorder.writeRecords(name, date, records)
     
     # delete cookie if task completed
-    deleteAnchorCookie(bottle.response)
+    Cookies.delete_anchor()
   
   #######################################################
 
@@ -604,12 +584,15 @@ def view_updates():
 @app.post('/toggleBillable')
 def toggle_billable():
   
-  name, date = getCookies(bottle.request)
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+
+  name = Cookies.name
+  date = Cookies.date
   
   index = int(bottle.request.forms.get('index'))
   
   # don't delete on task completion (stay anchored to edited record to easily view the change)
-  setAnchorCookie(bottle.response, index)
+  Cookies.anchor = index
   
   records = recorder.parseRecordsFromFile(name, date)
   
@@ -630,12 +613,15 @@ def toggle_billable():
 @app.post('/toggleEmergency')
 def toggle_emergency():
   
-  name, date = getCookies(bottle.request)
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+
+  name = Cookies.name
+  date = Cookies.date
   
   index = int(bottle.request.forms.get('index'))
   
   # don't delete on task completion (stay anchored to edited record to easily view the change)
-  setAnchorCookie(bottle.response, index)
+  Cookies.anchor = index
   
   records = recorder.parseRecordsFromFile(name, date)
   
@@ -660,10 +646,13 @@ def toggle_emergency():
 @app.post('/email')
 def email_records():
   
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+  
   #######################################################
   
   # get name and date cookies
-  name, date = getCookies(bottle.request)
+  name = Cookies.name
+  date = Cookies.date
   
   # sets flag based on user's confirmation / denial from popup alert
   emailConfirm = bottle.request.forms.get("emailConfirm")
@@ -707,8 +696,11 @@ def email_records():
 @app.post('/send')
 def send_records():
   
+  Cookies = cookies.Cookies(bottle.request, bottle.response)
+  
   # get cookies
-  name, date = getCookies(bottle.request)
+  name = Cookies.name
+  date = Cookies.date
   
   confirm = bottle.request.forms.get('confirm')
   
