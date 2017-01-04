@@ -141,6 +141,7 @@ elif ENV.DEBUG:
 ### COOKIES ############################################################################################
 
 Cookies = argparse.Namespace()
+
 Cookies.get = argparse.Namespace()
 Cookies.get.name = lambda req: req.get_cookie("name") or ""
 Cookies.get.date = lambda req: recorder.validateDate(req.get_cookie("date") or dt.date.today())
@@ -196,7 +197,6 @@ def hours():
   anchor = Cookies.get.anchor(bottle.request)
   
   # set anchor cookie to null after getting it
-  # Cookies.delete_anchor()
   Cookies.delete.anchor(bottle.response)
   
   notes = Cookies.get.notes(bottle.request)

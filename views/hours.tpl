@@ -183,7 +183,7 @@ include('hours_header.tpl', name=name,
 				<!-- PANEL HEADING START -->
   			
   			% include('hours_panel_display.tpl',
-  				% r=None, i=len(records),
+  				% r=None, i=len(records), notes=notes,
   				% is_new_record=True)
   			
   			<!-- PANEL HEADING END -->
