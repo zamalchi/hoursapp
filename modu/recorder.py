@@ -12,9 +12,10 @@
 
 ### PACKAGES ###########################################################################################
 
-import time
-import os
+import calendar
 import datetime as dt
+import os
+import time
 
 ### IMPORTS ############################################################################################
 
@@ -276,8 +277,13 @@ class RecordMalformedException(Exception):
 ### GENERATOR METHODS START ############################################################################
 ########################################################################################################
 
-### GENERATE FILE NAME: (YYYY-MM-DD-NAME) ##############################################################
 def getFileName(name, date):
+  """
+  Produces a filename for a specific day of records
+  :param name: <str> name of user
+  :param date: <str>|<datetime.date> date of records
+  :return: <str> filename with format "YYYY-MM-DD-name"
+  """
   # get current date if supplied date is ""
   date = validateDate(date)
   
@@ -288,8 +294,14 @@ def getFileName(name, date):
   return os.path.join(HOURS_DIR, filename)
 
 
-### GENERATE FILE NAME: (.YYYY-MM-DD-NAME) #############################################################
 def getHiddenFileName(name, date):
+  """
+  Produces a hidden filename for a specific day of records
+    The hidden file contains an extra piece of info (durationLocked) for each record that day
+  :param name: <str> name of user
+  :param date: <str>|<datetime.date> date of records
+  :return: <str> filename with format ".YYYY-MM-DD-name"
+  """
   # get current date if supplied date is ""
   date = validateDate(date)
   
@@ -302,6 +314,12 @@ def getHiddenFileName(name, date):
 
 ### GENERATE SUBTOTAL FILENAME: (YYYY-MM-NAME-subtotal) ################################################
 def getSubtotalFileName(name, date):
+  """
+  
+  :param name:
+  :param date:
+  :return:
+  """
   #######################################################
   
   date = validateDate(date)
@@ -440,6 +458,72 @@ def writeSubtotal(name, date, subtotal):
 
 ### SUBTOTAL METHODS START #############################################################################
 ########################################################################################################
+
+def getSubtotalForDay(name, date):
+  """
+  Adds up the hours worked on a specific day by a user
+  :param name: <str> name of user
+  :param date: <str>|<datetime.date> date of records
+  :return: <float> total hours worked during the day
+  """
+  records = parseRecordsFromFile(name, validateDate(date))
+  subtotal = countSubtotal(records)
+  return subtotal
+  
+
+def getTotalForPayPeriod(name, date):
+  """
+  Adds up subtotals of each record in the pay period (adjusted for the 25th of the month)
+  :param name: <str> name of user
+  :param date: <str>|<datetime.date> date within the pay period
+  :return: <float> total hours worked during the pay period
+  """
+  PERIOD_END = 25
+  
+  date = validateDate(date)
+  total = 0.0
+  
+  """ NOTE:
+  beforeCutoff<Month,Year> is the part of the pay period that occurs between the 26th and the end of the month
+    in actuality, this is kind of erroneous naming, since all the counted days happen after the cutoff
+    (by nature of being within the pay period);
+  
+  afterCutoff<Month,Year> is the part of the pay period that occurs between the 1st and the 25th of the month
+  """
+  
+  if date.day <= PERIOD_END:
+    # DATE IS BEFORE THE 25th, meaning the cutoff happened in the previous month
+    beforeCutoffMonth = date.month - 1 if date.month > 1 else 12
+    beforeCutoffYear = date.year - 1 if beforeCutoffMonth == 12 else date.year
+    
+  else:
+    # DATE IS AFTER THE 25th, meaning the cutoff happened in this month
+    beforeCutoffMonth = date.month
+    beforeCutoffYear = date.year
+  
+  # get the last day of the month
+  beforeCutoffMonthEnd = calendar.monthrange(beforeCutoffYear, beforeCutoffMonth)[1]
+  
+  # these statements reference beforeCutoff<Month,Year> and not date to normalize the following logic
+  afterCutoffMonth = beforeCutoffMonth + 1 if beforeCutoffMonth < 12 else 1
+  afterCutoffYear = beforeCutoffYear + 1 if afterCutoffMonth == 1 else beforeCutoffYear
+
+  # GET TOTAL FOR DAYS IN RANGE : 26th - LAST DAY OF MONTH
+  for day in range(26, beforeCutoffMonthEnd + 1):
+    beforeCutoffDate = dt.date(year=beforeCutoffYear, month=beforeCutoffMonth, day=day)
+    total += getSubtotalForDay(name, beforeCutoffDate)
+    print("DATE : {} -- SUBTOTAL : {} -- TOTAL : {}".format(beforeCutoffDate, getSubtotalForDay(name, beforeCutoffDate), total))
+
+  # GET TOTAL FOR DAYS IN RANGE : 1st - 25th
+  for day in range(1, 26):
+    afterCutoffDate = dt.date(year=afterCutoffYear, month=afterCutoffMonth, day=day)
+    total += getSubtotalForDay(name, afterCutoffDate)
+    print("DATE : {} -- SUBTOTAL : {} -- TOTAL : {}".format(afterCutoffDate, getSubtotalForDay(name, afterCutoffDate), total))
+
+  # RETURN SUM
+  return total
+  
+
 
 ### ADDS TO SUBTOTAL FILE ##############################################################################
 def addToSubtotal(name, date, amount):
