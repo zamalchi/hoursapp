@@ -26,8 +26,6 @@ if __name__ == "__main__":
   print("Exiting...")
   exit()
 
-
-
 # default values : set after importing class
 ROOT_DIR = "."
 HOURS_DIR = os.path.join(ROOT_DIR, "hours")
@@ -38,11 +36,11 @@ PENDING_CHAR = "***"
 
 PERIOD_END = 25
 
+
 ########################################################################################################
 #######################################  	CLASS DEF START	 #############################################
 ########################################################################################################
 class Record:
-  
   ### CONSTRUCTOR START ##################################################################################
   ########################################################################################################
   
@@ -127,7 +125,6 @@ class Record:
   def modifyDuration(self, amount):
     
     if not self.durationLocked:
-      
       # get the duration
       d = float(self.duration)
       
@@ -180,7 +177,7 @@ class Record:
     start = getMinFromTime(self.start)
     
     # convert amount into minutes and add to start time
-    new = float(start) + (float(amount)*60)
+    new = float(start) + (float(amount) * 60)
     
     # set start to new value (converted back into a string)
     self.setStart(getTimeFromMin(int(new)))
@@ -195,7 +192,7 @@ class Record:
     end = getMinFromTime(self.end)
     
     # convert amount into minutes and add to end time
-    new = float(end) + (float(amount)*60)
+    new = float(end) + (float(amount) * 60)
     
     # set end to new value (converted back into a string)
     self.setEnd(getTimeFromMin(int(new)))
@@ -245,6 +242,7 @@ class Record:
     ########################################################################################################
     ### TO_STRING METHODS END ##############################################################################
 
+
 ########################################################################################################
 ####################################### CLASS DEF END ##################################################
 ########################################################################################################
@@ -268,7 +266,7 @@ class RecordMalformedException(Exception):
 #
 #
 
-#### STATIC METHODS START ##############################################################################
+#### MODULE METHODS START ##############################################################################
 ########################################################################################################
 ########################################################################################################
 
@@ -278,7 +276,7 @@ class RecordMalformedException(Exception):
 ### GENERATOR METHODS START ############################################################################
 ########################################################################################################
 
-def getFileName(name, date):
+def generateFileName(name, date):
   """
   Produces a filename for a specific day of records
   :param name: <str> name of user
@@ -295,7 +293,7 @@ def getFileName(name, date):
   return os.path.join(HOURS_DIR, filename)
 
 
-def getHiddenFileName(name, date):
+def generateHiddenFileName(name, date):
   """
   Produces a hidden filename for a specific day of records
     The hidden file contains an extra piece of info (durationLocked) for each record that day
@@ -313,36 +311,6 @@ def getHiddenFileName(name, date):
   return os.path.join(HOURS_DIR, filename)
 
 
-### GENERATE SUBTOTAL FILENAME: (YYYY-MM-NAME-subtotal) ################################################
-# def getSubtotalFileName(name, date):
-#   """
-#
-#   :param name:
-#   :param date:
-#   :return:
-#   """
-#   #######################################################
-#
-#   date = validateDate(date)
-#
-#   month = date.month
-#
-#   # adjust for pay period which ends on the 25th
-#   if date.day > 25:
-#     month += 1
-#
-#   # add leading 0 if < 10 ; also convert to str
-#   month = str(month).zfill(2)
-#
-#   #######################################################
-#
-#   # ("YYYY-MM-")
-#   filename = ".{0}-{1}-subtotal-{2}".format(date.year, month, name)
-#
-#   # ("DIR/.YYYY-MM-subtotal-NAME")
-#   return os.path.join(HOURS_DIR, filename)
-
-
 ########################################################################################################
 ### GENERATOR METHODS END ##############################################################################
 
@@ -352,38 +320,43 @@ def getHiddenFileName(name, date):
 ### IO METHODS START ###################################################################################
 ########################################################################################################
 
-### READ RECORDS FROM FILE #############################################################################
 def readRecords(name, date):
-  #######################################################
+  """
+  Attempts to read records from a file corresponding to the name and date supplied
+  :param name: <str> name of user
+  :param date: <str|datetime.date> date of records
+  :return: <list[str] or []> unparsed list of records as strings
+  """
   
-  # set filename: uses hidden version of the file, since it contains extra info (durationLocked)
-  fileName = getHiddenFileName(name, date)
+  # uses hidden version of the file, since it contains extra info (durationLocked)
+  fileName = generateHiddenFileName(name, date)
   
-  #######################################################
+  if os.path.exists(fileName):
+    try:
+      with open(fileName, 'r') as f:
+        records = f.read().split('\n')
+        return records
+    
+    except IOError:
+      pass
   
-  # read from file and return list of strings
-  try:
-    f = open(fileName, 'r')
-    records = f.read().split('\n')
-    f.close()
-    return records
-  
-  # if the file doesn't exist, return an empty list
-  except IOError:
-    return []
+  return []
 
 
-### WRITE RECORDS TO FILE ##############################################################################
 def writeRecords(name, date, records):
-  #######################################################
+  """
+  Writes a list of records to a file with a name generated from name and date
+  :param name: <str> name of user
+  :param date: <str|datetime.date> date of records
+  :param records: <list[recorder.Record]> records to write to file
+  """
   
-  # set filename
-  fileName = getFileName(name, date)
+  fileName = generateFileName(name, date)
   
-  # set hidden filename: used to store extra information (durationLocked)
-  hiddenFileName = getHiddenFileName(name, date)
+  # used to store extra information (durationLocked)
+  hiddenFileName = generateHiddenFileName(name, date)
   
-  # string vars: will contain joined records, will be written to file
+  # will contain joined records and be written to files
   res, hiddenRes = "", ""
   
   #######################################################
@@ -393,62 +366,35 @@ def writeRecords(name, date, records):
     res += r.emailFormat() + "\n"
     hiddenRes += str(r) + "\n"
   
-  # write strings to file
+  #######################################################
+  
+  # write strings to files
   try:
-    f = open(fileName, 'w')
-    f.write(res)
-    f.close()
+    with open(fileName, 'w') as f:
+      f.write(res)
     
-    f = open(hiddenFileName, 'w')
-    f.write(hiddenRes)
-    f.close()
+    with open(hiddenFileName, 'w') as f:
+      f.write(hiddenRes)
+  
   except IOError:
     pass
 
 
-### DELETES RECORDS FILES ##############################################################################
 def deleteRecords(name, date):
-  #######################################################
+  """
+  Uses a system call to delete the normal and hidden files corresponding to a name and date
+  :param name: <str> name of user
+  :param date: <str|datetime.date> date of records
+  """
   
-  # set filename
-  fileName = getFileName(name, date)
+  fileName = generateFileName(name, date)
   
-  # set hidden filename: used to store extra information (durationLocked)
-  hiddenFileName = getHiddenFileName(name, date)
-  
-  #######################################################
+  # used to store extra information (durationLocked)
+  hiddenFileName = generateHiddenFileName(name, date)
   
   # system calls to delete both normal and hidden file
-  os.system("rm -f " + fileName)
-  os.system("rm -f " + hiddenFileName)
-
-
-### READS SUBTOTAL FILE ################################################################################
-# def readSubtotal(name, date):
-#   # get filename
-#   fileName = getSubtotalFileName(name, date)
-#
-#   try:
-#     f = open(fileName, 'r')
-#     subtotal = f.read()
-#     f.close()
-#     return float(subtotal or 0.0)
-#   except IOError:
-#     return 0.0
-#
-#
-# ### WRITES SUBTOTAL FILE ###############################################################################
-# def writeSubtotal(name, date, subtotal):
-#   # get filename
-#   fileName = getSubtotalFileName(name, date)
-#
-#   try:
-#     f = open(fileName, 'w')
-#     f.write(str(subtotal))
-#     f.close()
-#
-#   except IOError:
-#     pass
+  os.system("rm -f {}".format(fileName))
+  os.system("rm -f {}".format(hiddenFileName))
 
 
 ########################################################################################################
@@ -457,11 +403,11 @@ def deleteRecords(name, date):
 #
 #
 
-### SUBTOTAL METHODS START #############################################################################
+### SUBTOTAL & TOTAL METHODS START #####################################################################
 ########################################################################################################
 
 def getSubtotalForDay(name, date):
-  """
+  """ PUBLIC
   Adds up the hours worked on a specific day by a user
   :param name: <str> name of user
   :param date: <str>|<datetime.date> date of records
@@ -470,10 +416,10 @@ def getSubtotalForDay(name, date):
   records = parseRecordsFromFile(name, validateDate(date))
   subtotal = countSubtotal(records)
   return subtotal
-  
+
 
 def getTotalForPayPeriod(name, date):
-  """
+  """ PUBLIC
   Adds up subtotals of each record in the pay period (adjusted for the 25th of the month)
   :param name: <str> name of user
   :param date: <str>|<datetime.date> date within the pay period
@@ -495,7 +441,7 @@ def getTotalForPayPeriod(name, date):
     # DATE IS BEFORE THE 25th, meaning the cutoff happened in the previous month
     beforeCutoffMonth = date.month - 1 if date.month > 1 else 12
     beforeCutoffYear = date.year - 1 if beforeCutoffMonth == 12 else date.year
-    
+  
   else:
     # DATE IS AFTER THE 25th, meaning the cutoff happened in this month
     beforeCutoffMonth = date.month
@@ -504,76 +450,27 @@ def getTotalForPayPeriod(name, date):
   # get the last day of the month
   beforeCutoffMonthEnd = calendar.monthrange(beforeCutoffYear, beforeCutoffMonth)[1]
   
-  # these statements reference beforeCutoff<Month,Year> and not date to normalize the following logic
+  # these statements reference beforeCutoff<Month,Year> and not date to consolidate the following logic
   afterCutoffMonth = beforeCutoffMonth + 1 if beforeCutoffMonth < 12 else 1
   afterCutoffYear = beforeCutoffYear + 1 if afterCutoffMonth == 1 else beforeCutoffYear
-
+  
   # GET TOTAL FOR DAYS IN RANGE : 26th - LAST DAY OF MONTH
-  for day in range(26, beforeCutoffMonthEnd + 1):
+  for day in range(PERIOD_END + 1, beforeCutoffMonthEnd + 1):
     beforeCutoffDate = dt.date(year=beforeCutoffYear, month=beforeCutoffMonth, day=day)
     total += getSubtotalForDay(name, beforeCutoffDate)
-    print("DATE : {} -- SUBTOTAL : {} -- TOTAL : {}".format(beforeCutoffDate, getSubtotalForDay(name, beforeCutoffDate), total))
-
+    # print("DATE : {} -- SUBTOTAL : {} -- TOTAL : {}".format(beforeCutoffDate, getSubtotalForDay(name, beforeCutoffDate), total))
+  
   # GET TOTAL FOR DAYS IN RANGE : 1st - 25th
-  for day in range(1, 26):
+  for day in range(1, PERIOD_END + 1):
     afterCutoffDate = dt.date(year=afterCutoffYear, month=afterCutoffMonth, day=day)
     total += getSubtotalForDay(name, afterCutoffDate)
-    print("DATE : {} -- SUBTOTAL : {} -- TOTAL : {}".format(afterCutoffDate, getSubtotalForDay(name, afterCutoffDate), total))
-
-  # RETURN SUM
-  return total
+    # print("DATE : {} -- SUBTOTAL : {} -- TOTAL : {}".format(afterCutoffDate, getSubtotalForDay(name, afterCutoffDate), total))
   
+  return total
 
 
-### ADDS TO SUBTOTAL FILE ##############################################################################
-# def addToSubtotal(name, date, amount):
-#   # if the duration passed in is valid (it exists / not pending)
-#   if amount != PENDING_CHAR:
-#     # read in subtotal
-#     subtotal = readSubtotal(name, date)
-#
-#     # add the duration
-#     subtotal += float(amount)
-#
-#     # write back the updated subtotal
-#     writeSubtotal(name, date, subtotal)
-#
-#
-# ### SUBTRACTS FROM SUBTOTAL FILE #######################################################################
-# def subtractFromSubtotal(name, date, amount):
-#   # if the duration passed in is valid (it exists / not pending)
-#   if amount != PENDING_CHAR:
-#     # read in subtotal
-#     subtotal = readSubtotal(name, date)
-#
-#     # subtract the duration
-#     subtotal -= float(amount)
-#
-#     # write back the updated subtotal
-#     writeSubtotal(name, date, subtotal)
-
-
-# ### GET SUBTOTAL MONTH INTEGER #########################################################################
-# def getSubtotalMonthInt(date):
-#   date = validateDate(date)
-#
-#   # get the integer of the day
-#   day_int = date.day
-#
-#   # get the integer of the month
-#   month_int = date.month
-#
-#   # if the day is past the 25th, increase the month by 1
-#   # this is when the pay period switches over to the next month
-#   if day_int > 25:
-#     month_int += 1
-#
-#   return month_int
-
-
-### GET SUBTOTAL MONTH STRING ##########################################################################
 def getPayPeriodMonth(date):
-  """
+  """ PUBLIC
   Produces the datetime.date string representation of the pay period month
   :param date: <str|datetime.date> date within the pay period
   :return: <str> corresponding to the pay period month (ex: "2016-12-26" --> "Jan")
@@ -583,6 +480,7 @@ def getPayPeriodMonth(date):
   if date.day <= PERIOD_END:
     month_int = date.month
   else:
+    # if past the cutoff, increment the month and wrap around if necessary
     month_int = date.month + 1 if date.month < 12 else 1
   
   # correcting for year is not necessary because only the month string is returned
@@ -592,9 +490,14 @@ def getPayPeriodMonth(date):
   return date.strftime("%b")
 
 
-### GET SUBTOTAL COUNT #################################################################################
 def countSubtotal(records):
-  new_subtotal = 0.0
+  """ PRIVATE
+  Sums the durations of a list of recorder.Record objects
+    will parse a list of record strings into objects
+  :param records: <list[recorder.Record|str]>
+  :return: <float> subtotal
+  """
+  subtotal = 0.0
   
   for r in records:
     
@@ -603,17 +506,16 @@ def countSubtotal(records):
       
       # if the record is a string, make it an object first
       if type(r) is str:
-        new_subtotal += float(Record(r).duration)
+        subtotal += float(Record(r).duration)
       
       # else just add its duration
       else:
-        new_subtotal += float(r.duration)
+        subtotal += float(r.duration)
   
-  return new_subtotal
-
+  return subtotal
 
 ########################################################################################################
-### SUBTOTAL METHODS END ###############################################################################
+### SUBTOTAL & TOTAL METHODS END #######################################################################
 
 #
 #
@@ -621,19 +523,26 @@ def countSubtotal(records):
 ### PARSING METHODS START ##############################################################################
 ########################################################################################################
 
-### PARSE LIST OF STRINGS INTO LIST OF RECORD OBJECTS ##################################################
-
 def parseRecords(raw_records):
+  """ PRIVATE
+  Parses string records into recorder.Record objects
+  :param raw_records: <list[str]>
+  :return: <list[recorder.Record]>
+  """
   # filter out empty records
-  r_r = filter(None, raw_records)
+  records = filter(None, raw_records)
   
   # return list mapped to Record objects
-  return [Record(r) for r in r_r]
+  return [Record(r) for r in records]
 
-
-### READ RECORDS FILE AND PARSE INTO RECORD OBJECTS ####################################################
 
 def parseRecordsFromFile(name, date):
+  """ PUBLIC
+  Reads records from a file and parses the strings into a list of recorder.Record objects
+  :param name: <str> name of user
+  :param date: <str|datetime.date> date of records
+  :return: <list[recorder.Record]> parsed records for the date and user
+  """
   # read in records
   raw_records = readRecords(name, date)
   
@@ -641,10 +550,12 @@ def parseRecordsFromFile(name, date):
   return parseRecords(raw_records)
 
 
-### PARSE HTML FORM INTO RECORD OBJECT #################################################################
-
-def getRecordFromHTML(request):
-  #######################################################
+def parseRecordFromHTML(request):
+  """ PUBLIC
+  Parses the data from an HTML form into a recorder.Record object
+  :param request: <bottle.request> contains HTML form data
+  :return: <recorder.Record> parsed object
+  """
   
   name = request.forms.get('name').strip().lower()
   
@@ -657,10 +568,12 @@ def getRecordFromHTML(request):
   emergency = request.forms.get('emergency')
   ###
   label = request.forms.get('label').strip().upper()
+  # filters out "|" char to not confuse the later parsing (better solution would be a check in the HTML)
   notes = request.forms.get('notes').strip().translate(None, '|')
   
   #######################################################
   
+  # duration locked is only present in the hidden file, since it is extra data for each record
   durationLocked = False
   
   # if a duration is entered
@@ -700,23 +613,20 @@ def getRecordFromHTML(request):
   
   #######################################################
   
-  # duration locked is only present in the hidden file, since it is extra data for each record
-  
   # format the string that will be supplied to the Record constructor
-  record_string = "{0}|{1} {2}|{3} {4}|{5}|{6}|{7}|{8}|{9}|{10}".format(
-    name,
-    date, start,
-    date, end,
-    duration,
-    label,
-    billable, emergency,
-    notes,
-    durationLocked)
-  
-  #######################################################
+  record_string = \
+      "{name}|{startDate} {start}|{endDate} {end}|{duration}|{label}|{billable}|{emergency}|{notes}|{durationLocked}" \
+      .format(
+        name=name,
+        startDate=date, start=start,
+        endDate=date, end=end,
+        duration=duration,
+        label=label,
+        billable=billable, emergency=emergency,
+        notes=notes,
+        durationLocked=durationLocked)
   
   return Record(record_string)
-
 
 ########################################################################################################
 ### PARSING METHODS END ################################################################################
@@ -727,29 +637,40 @@ def getRecordFromHTML(request):
 ### TIME METHODS START #################################################################################
 ########################################################################################################
 
-### PARSE TIME INTO ("HHMM") FORMAT ####################################################################
-
-def parseTime(time):
-  if time:
+def parseTime(t):
+  """
+  Conforms a time string to format "HHMM"
+    Removes ':' and fills with leading '0'
+  :param t: <str> time to parse
+  :return: <str> time in format "HHMM"
+  """
+  
+  if t:
     # return if pending
-    if time == PENDING_CHAR:
-      return time
+    if t == PENDING_CHAR:
+      return t
     
     # removes colon and adds leading '0' if missing
-    return str(time.strip()).translate(None, ':').zfill(4)
+    return str(t.strip()).translate(None, ':').zfill(4)
   
+  # if not supplied, return empty string
   return ""
 
 
 ### FORMAT TIME INTO ("HH:MM") FORMAT ##################################################################
 
-def formatTime(time):
+def formatTime(t):
+  """
+  Conforms a time string to format "HH:MM"
+    calls parseTime(t) beforehand
+  :param t: <str> time to format
+  :return: <str> time in format "HH:MM"
+  """
   # ensures time is parsed correctly
-  p = parseTime(time)
+  p = parseTime(t)
   
   # adds a colon between hours and minutes
-  return str(p)[:2] + ':' + p[2:]
-
+  return "{HH}:{MM}".format(HH=p[:2], MM=p[2:])
 
 ### CONVERT TIME INTO NUMBER OF MINUTES ################################################################
 
@@ -1086,7 +1007,7 @@ def validateDate(d):
     
     ########################################################################################################
     ########################################################################################################
-    #### STATIC METHODS END ################################################################################
+    #### MODULE METHODS END ################################################################################
     
     #
     #

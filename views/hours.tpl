@@ -72,7 +72,8 @@ for r in records:
 	record_string += "<p>" + r.emailFormat() + "</p>"
 end
 
-daily_subtotal = recorder.countSubtotal(records)
+subtotal = recorder.getSubtotalForDay(name, date)
+total = recorder.getTotalForPayPeriod(name, date)
 
 #########################################################################################################
 #########################################################################################################
@@ -107,8 +108,8 @@ daily_subtotal = recorder.countSubtotal(records)
 include('hours_header.tpl', name=name,
 	record_string=record_string, 
 	pending_records=pending_records,
-	subtotal=subtotal, daily_subtotal=daily_subtotal,
-	date_title=date_title, month=recorder.getSubtotalMonth(date))
+	subtotal=subtotal, total=total,
+	date_title=date_title, month=recorder.getPayPeriodMonth(date))
 %>
 
 <!-- ######################################################################################################### -->

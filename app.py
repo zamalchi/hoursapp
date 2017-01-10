@@ -250,7 +250,7 @@ def hours_post():
   #######################################################
   
   # parses form data and returns a Record obj
-  new_record = recorder.getRecordFromHTML(bottle.request)
+  new_record = recorder.parseRecordFromHTML(bottle.request)
   
   #######################################################
   
