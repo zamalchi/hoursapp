@@ -141,24 +141,25 @@ elif ENV.DEBUG:
 ### COOKIES ############################################################################################
 
 Cookies = argparse.Namespace()
+Cookies.id = ENV.PORT
 
 Cookies.get = argparse.Namespace()
-Cookies.get.name = lambda req: req.get_cookie("name") or ""
-Cookies.get.date = lambda req: recorder.validateDate(req.get_cookie("date") or dt.date.today())
-Cookies.get.anchor = lambda req: req.get_cookie("anchor") or "-1"
-Cookies.get.notes = lambda req: req.get_cookie("notes") or ""
+Cookies.get.name = lambda req: req.get_cookie(Cookies.id + "name") or ""
+Cookies.get.date = lambda req: recorder.validateDate(req.get_cookie(Cookies.id + "date") or dt.date.today())
+Cookies.get.anchor = lambda req: req.get_cookie(Cookies.id + "anchor") or "-1"
+Cookies.get.notes = lambda req: req.get_cookie(Cookies.id + "notes") or ""
 
 Cookies.set = argparse.Namespace()
-Cookies.set.name = lambda res, name: res.set_cookie("name", str(name))
-Cookies.set.date = lambda res, date: res.set_cookie("date", str(recorder.validateDate(date)))
-Cookies.set.anchor = lambda res, anchor: res.set_cookie("anchor", str(anchor))
-Cookies.set.notes = lambda res, notes: res.set_cookie("notes", str(notes))
+Cookies.set.name = lambda res, name: res.set_cookie(Cookies.id + "name", str(name))
+Cookies.set.date = lambda res, date: res.set_cookie(Cookies.id + "date", str(recorder.validateDate(date)))
+Cookies.set.anchor = lambda res, anchor: res.set_cookie(Cookies.id + "anchor", str(anchor))
+Cookies.set.notes = lambda res, notes: res.set_cookie(Cookies.id + "notes", str(notes))
 
 Cookies.delete = argparse.Namespace()
-Cookies.delete.name = lambda res: res.delete_cookie("name")
-Cookies.delete.date = lambda res: res.delete_cookie("date")
-Cookies.delete.anchor = lambda res: res.delete_cookie("anchor")
-Cookies.delete.notes = lambda res: res.delete_cookie("notes")
+Cookies.delete.name = lambda res: res.delete_cookie(Cookies.id + "name")
+Cookies.delete.date = lambda res: res.delete_cookie(Cookies.id + "date")
+Cookies.delete.anchor = lambda res: res.delete_cookie(Cookies.id + "anchor")
+Cookies.delete.notes = lambda res: res.delete_cookie(Cookies.id + "notes")
 
 ########################################################################################################
 ########################################################################################################
