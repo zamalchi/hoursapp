@@ -713,46 +713,60 @@ def convertMinutesToTime(minutes):
   return hours + minutes
 
 
-### CALCULATE THE DURATION USING THE START AND END TIMES ###############################################
-
 def getDuration(start, end):
+  """
+  Calculate a duration using start and end times
+  :param start: <str> starting time string
+  :param end: <str> ending time string
+  :return: <float or 0.0> number of hours between start and end
+  """
   # get number of minutes from start time
-  s = convertTimeToMinutes(start)
+  start = convertTimeToMinutes(start)
   
   # get number of minutes from end time
-  e = convertTimeToMinutes(end)
+  end = convertTimeToMinutes(end)
   
-  # return number of hours as float (x.xx)
-  return float((e - s) / float(60))
+  if start and end:
+    # return number of hours as float (x.xx)
+    return float((end - start) / float(60))
+  
+  # if end == PENDING_CHAR
+  return 0.0
 
 
-### ROUND PASSED IN TIME TO NEAREST 15-MINUTE MARK #####################################################
+def getDuration(record):
+  """
+  Calculate a duration from a record's data
+  :param record: <recorder.Record>
+  :return: <float> either the record's duration or the value calculated from its start and end times
+  """
+  
+  if record.duration:
+    return float(record.duration)
+  
+  start = convertTimeToMinutes(record.start)
+  end = convertTimeToMinutes(record.end)
+  
+  return getDuration(start, end)
+
 
 def roundTime(t):
-  hours = minutes = 0
-  
-  #######################################################
+  """
+  Rounds the passed in time to the nearest 15-minute mark
+  :param t: <str|datetime.time> time to round
+  :return: <str> rounded time in the format "HHMM"
+  """
   
   if type(t) is dt.time:
     
     hours = t.hour
     minutes = t.minute
   
-  #######################################################
-  
   else:
-    return ""
+    
+    t = formatTime(t)
+    hours, minutes = (int(i) for i in t.split(':'))
   
-  # else:
-  #     # ensure the time is parsed correctly
-  #     time = parseTime(t)
-  #
-  #     # parse the hours
-  #     hours = int(time[:2])
-  #
-  #     # parse the minutes
-  #     minutes = int(time[2:])
-  #
   #######################################################
   
   # calculate the number of quarter-hour units (rounded down) the minutes equal
@@ -775,12 +789,14 @@ def roundTime(t):
   #######################################################
   
   # return ("HHMM") now rounded to the quarter-hour
-  return str(hours).zfill(2) + str(quarters * 15).zfill(2)
+  return "{HH}{MM}".format(str(hours).zfill(2), str(quarters * 15).zfill(2))
 
-
-### ROUND CURRENT TIME TO NEAREST 15-MINUTE MARK #######################################################
 
 def getCurrentRoundedTime():
+  """
+  Rounds the current time to the nearest 15-minute mark
+  :return: <str> rounded time in the format "HHMM"
+  """
   # get current time ; round it to 15-minute mark
   return roundTime(dt.datetime.now().time())
 
