@@ -36,6 +36,7 @@ HOURS_DIR = os.path.join(ROOT_DIR, "hours")
 # it is replaced when the next record is created (with the new start time)
 PENDING_CHAR = "***"
 
+PERIOD_END = 25
 
 ########################################################################################################
 #######################################  	CLASS DEF START	 #############################################
@@ -313,33 +314,33 @@ def getHiddenFileName(name, date):
 
 
 ### GENERATE SUBTOTAL FILENAME: (YYYY-MM-NAME-subtotal) ################################################
-def getSubtotalFileName(name, date):
-  """
-  
-  :param name:
-  :param date:
-  :return:
-  """
-  #######################################################
-  
-  date = validateDate(date)
-  
-  month = date.month
-  
-  # adjust for pay period which ends on the 25th
-  if date.day > 25:
-    month += 1
-  
-  # add leading 0 if < 10 ; also convert to str
-  month = str(month).zfill(2)
-  
-  #######################################################
-  
-  # ("YYYY-MM-")
-  filename = ".{0}-{1}-subtotal-{2}".format(date.year, month, name)
-  
-  # ("DIR/.YYYY-MM-subtotal-NAME")
-  return os.path.join(HOURS_DIR, filename)
+# def getSubtotalFileName(name, date):
+#   """
+#
+#   :param name:
+#   :param date:
+#   :return:
+#   """
+#   #######################################################
+#
+#   date = validateDate(date)
+#
+#   month = date.month
+#
+#   # adjust for pay period which ends on the 25th
+#   if date.day > 25:
+#     month += 1
+#
+#   # add leading 0 if < 10 ; also convert to str
+#   month = str(month).zfill(2)
+#
+#   #######################################################
+#
+#   # ("YYYY-MM-")
+#   filename = ".{0}-{1}-subtotal-{2}".format(date.year, month, name)
+#
+#   # ("DIR/.YYYY-MM-subtotal-NAME")
+#   return os.path.join(HOURS_DIR, filename)
 
 
 ########################################################################################################
@@ -423,31 +424,31 @@ def deleteRecords(name, date):
 
 
 ### READS SUBTOTAL FILE ################################################################################
-def readSubtotal(name, date):
-  # get filename
-  fileName = getSubtotalFileName(name, date)
-  
-  try:
-    f = open(fileName, 'r')
-    subtotal = f.read()
-    f.close()
-    return float(subtotal or 0.0)
-  except IOError:
-    return 0.0
-
-
-### WRITES SUBTOTAL FILE ###############################################################################
-def writeSubtotal(name, date, subtotal):
-  # get filename
-  fileName = getSubtotalFileName(name, date)
-  
-  try:
-    f = open(fileName, 'w')
-    f.write(str(subtotal))
-    f.close()
-  
-  except IOError:
-    pass
+# def readSubtotal(name, date):
+#   # get filename
+#   fileName = getSubtotalFileName(name, date)
+#
+#   try:
+#     f = open(fileName, 'r')
+#     subtotal = f.read()
+#     f.close()
+#     return float(subtotal or 0.0)
+#   except IOError:
+#     return 0.0
+#
+#
+# ### WRITES SUBTOTAL FILE ###############################################################################
+# def writeSubtotal(name, date, subtotal):
+#   # get filename
+#   fileName = getSubtotalFileName(name, date)
+#
+#   try:
+#     f = open(fileName, 'w')
+#     f.write(str(subtotal))
+#     f.close()
+#
+#   except IOError:
+#     pass
 
 
 ########################################################################################################
@@ -478,7 +479,6 @@ def getTotalForPayPeriod(name, date):
   :param date: <str>|<datetime.date> date within the pay period
   :return: <float> total hours worked during the pay period
   """
-  PERIOD_END = 25
   
   date = validateDate(date)
   total = 0.0
@@ -526,58 +526,67 @@ def getTotalForPayPeriod(name, date):
 
 
 ### ADDS TO SUBTOTAL FILE ##############################################################################
-def addToSubtotal(name, date, amount):
-  # if the duration passed in is valid (it exists / not pending)
-  if amount != PENDING_CHAR:
-    # read in subtotal
-    subtotal = readSubtotal(name, date)
-    
-    # add the duration
-    subtotal += float(amount)
-    
-    # write back the updated subtotal
-    writeSubtotal(name, date, subtotal)
+# def addToSubtotal(name, date, amount):
+#   # if the duration passed in is valid (it exists / not pending)
+#   if amount != PENDING_CHAR:
+#     # read in subtotal
+#     subtotal = readSubtotal(name, date)
+#
+#     # add the duration
+#     subtotal += float(amount)
+#
+#     # write back the updated subtotal
+#     writeSubtotal(name, date, subtotal)
+#
+#
+# ### SUBTRACTS FROM SUBTOTAL FILE #######################################################################
+# def subtractFromSubtotal(name, date, amount):
+#   # if the duration passed in is valid (it exists / not pending)
+#   if amount != PENDING_CHAR:
+#     # read in subtotal
+#     subtotal = readSubtotal(name, date)
+#
+#     # subtract the duration
+#     subtotal -= float(amount)
+#
+#     # write back the updated subtotal
+#     writeSubtotal(name, date, subtotal)
 
 
-### SUBTRACTS FROM SUBTOTAL FILE #######################################################################
-def subtractFromSubtotal(name, date, amount):
-  # if the duration passed in is valid (it exists / not pending)
-  if amount != PENDING_CHAR:
-    # read in subtotal
-    subtotal = readSubtotal(name, date)
-    
-    # subtract the duration
-    subtotal -= float(amount)
-    
-    # write back the updated subtotal
-    writeSubtotal(name, date, subtotal)
-
-
-### GET SUBTOTAL MONTH INTEGER #########################################################################
-def getSubtotalMonthInt(date):
-  date = validateDate(date)
-  
-  # get the integer of the day
-  day_int = date.day
-  
-  # get the integer of the month
-  month_int = date.month
-  
-  # if the day is past the 25th, increase the month by 1
-  # this is when the pay period switches over to the next month
-  if day_int > 25:
-    month_int += 1
-  
-  return month_int
+# ### GET SUBTOTAL MONTH INTEGER #########################################################################
+# def getSubtotalMonthInt(date):
+#   date = validateDate(date)
+#
+#   # get the integer of the day
+#   day_int = date.day
+#
+#   # get the integer of the month
+#   month_int = date.month
+#
+#   # if the day is past the 25th, increase the month by 1
+#   # this is when the pay period switches over to the next month
+#   if day_int > 25:
+#     month_int += 1
+#
+#   return month_int
 
 
 ### GET SUBTOTAL MONTH STRING ##########################################################################
-def getSubtotalMonth(date):
-  # get updated month ; defines the pay period ; used for labeling the subtotal counter
-  month_int = getSubtotalMonthInt(date)
+def getPayPeriodMonth(date):
+  """
+  Produces the datetime.date string representation of the pay period month
+  :param date: <str|datetime.date> date within the pay period
+  :return: <str> corresponding to the pay period month (ex: "2016-12-26" --> "Jan")
+  """
+  date = validateDate(date)
   
-  # replace month with the one used for the subtotal
-  date = date.replace(date.year, month_int, date.day)
+  if date.day <= PERIOD_END:
+    month_int = date.month
+  else:
+    month_int = date.month + 1 if date.month < 12 else 1
+  
+  # correcting for year is not necessary because only the month string is returned
+  date = dt.date(date.year, month_int, date.day)
   
   # get the str name for the month
   return date.strftime("%b")

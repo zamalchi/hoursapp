@@ -206,7 +206,10 @@ def hours():
   # get the month to use for the monthly subtotal
   month = date.month
   
-  subtotal = recorder.readSubtotal(name, date)
+  # TODO : wire this to the template properly
+  # subtotal = recorder.readSubtotal(name, date)
+  subtotal = recorder.getSubtotalForDay(name, date)
+  total = recorder.getTotalForPayPeriod(name, date)
   #######################################################
   
   # try to open file with user's name and retrieve data
@@ -253,9 +256,10 @@ def hours_post():
   
   # reads and parses Records on file
   records = recorder.parseRecordsFromFile(name, date)
-  
+
+  # TODO: remove
   # count current subtotal for ONLY the day's records
-  current_local_subtotal = recorder.countSubtotal(records)
+  # current_local_subtotal = recorder.countSubtotal(records)
   
   #######################################################
   
@@ -278,13 +282,14 @@ def hours_post():
       # adjust timings of adjacent records in case of overlap
       recorder.adjustAdjacentRecords(records, index)
       
+      # TODO: remove
       # after adjusting the durations, recount total duration for the day
-      new_local_subtotal = recorder.countSubtotal(records)
-      
+      # new_local_subtotal = recorder.countSubtotal(records)
+      # TODO: remove
       # add the difference in summed durations back to the file
       # when inserting between two records (whose durations are not locked)
       # (i.e. splicing a record in), the subtotal should not change
-      recorder.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
+      # recorder.addToSubtotal(name, date, (new_local_subtotal - current_local_subtotal))
     
     #######################################################
     
@@ -384,12 +389,14 @@ def delete_records():
   if (deleteConfirm == "true") and name:
     # get records
     records = recorder.parseRecordsFromFile(name, date)
-    
+
+    # TODO: remove
     # get summed duration of records
-    summed_subtotal = recorder.countSubtotal(records)
-    
+    # summed_subtotal = recorder.countSubtotal(records)
+
+    # TODO: remove
     # subtract that amount from the subtotal on file
-    recorder.subtractFromSubtotal(name, date, summed_subtotal)
+    # recorder.subtractFromSubtotal(name, date, summed_subtotal)
     
     # delete both of the user's record files
     recorder.deleteRecords(name, date)
@@ -423,12 +430,14 @@ def delete_single_record():
   
   # set the notes to be in the form
   Cookies.set.notes(bottle.response, records[index].notes)
-  
+
+  # TODO: remove
   # get the duration of the record to be deleted
-  deletedRecordDuration = records[index].duration
-  
+  # deletedRecordDuration = records[index].duration
+
+  # TODO: remove
   # subtract that amount from the subtotal on file
-  recorder.subtractFromSubtotal(name, date, deletedRecordDuration)
+  # recorder.subtractFromSubtotal(name, date, deletedRecordDuration)
   
   # delete record
   del records[index]
@@ -529,9 +538,10 @@ def complete_end_time():
       
       # calculate and set duration
       record.calculateAndSetDuration()
-      
+    
+      # TODO: remove
       # add the new duration to the subtotal
-      recorder.addToSubtotal(name, date, record.duration)
+      # recorder.addToSubtotal(name, date, record.duration)
     
     # write back record
     records[index] = record
@@ -653,14 +663,17 @@ def email_records():
   emailConfirm = bottle.request.forms.get("emailConfirm")
   
   #######################################################
+
+  # TODO: remove
+  # subtotal = recorder.readSubtotal(name, date) or '0.0'
   
-  subtotal = recorder.readSubtotal(name, date) or '0.0'
+  total = recorder.getTotalForPayPeriod(name, date)
   
   #######################################################
   
   curTimeShort = time.strftime("%m/%d")
   
-  subject = "Hours {0} (Subtotal: {1})".format(curTimeShort, subtotal)
+  subject = "Hours {0} (Total: {1})".format(curTimeShort, str(total))
   body = ""
   
   #######################################################
