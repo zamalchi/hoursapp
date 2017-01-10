@@ -174,13 +174,13 @@ class Record:
   def modifyStart(self, amount):
     
     # get start time in minutes
-    start = getMinFromTime(self.start)
+    start = convertTimeToMinutes(self.start)
     
     # convert amount into minutes and add to start time
     new = float(start) + (float(amount) * 60)
     
     # set start to new value (converted back into a string)
-    self.setStart(getTimeFromMin(int(new)))
+    self.setStart(convertMinutesToTime(int(new)))
     
     # modify the duration by subtracting the amount added to the start time
     self.modifyDuration(-float(amount))
@@ -189,13 +189,13 @@ class Record:
   def modifyEnd(self, amount):
     
     # get the end time in minutes
-    end = getMinFromTime(self.end)
+    end = convertTimeToMinutes(self.end)
     
     # convert amount into minutes and add to end time
     new = float(end) + (float(amount) * 60)
     
     # set end to new value (converted back into a string)
-    self.setEnd(getTimeFromMin(int(new)))
+    self.setEnd(convertMinutesToTime(int(new)))
     
     # modify the duration by adding the amount added to the end time
     self.modifyDuration(float(amount))
@@ -657,8 +657,6 @@ def parseTime(t):
   return ""
 
 
-### FORMAT TIME INTO ("HH:MM") FORMAT ##################################################################
-
 def formatTime(t):
   """
   Conforms a time string to format "HH:MM"
@@ -672,30 +670,38 @@ def formatTime(t):
   # adds a colon between hours and minutes
   return "{HH}:{MM}".format(HH=p[:2], MM=p[2:])
 
-### CONVERT TIME INTO NUMBER OF MINUTES ################################################################
 
-def getMinFromTime(time):
+def convertTimeToMinutes(t):
+  """
+  Converts a time string into an int representing the number of minutes since 00:00
+  :param t: <str|(int)> time to convert to minutes (will accept but simply return an int)
+  :return: <int> number of minutes since 00:00; 0 if the end time is pending
+  """
   # checks for not present time
-  if time == PENDING_CHAR:
-    return None
+  if t == PENDING_CHAR:
+    #TODO: ensure that changing this from `return None` to `return 0` doesn't break anything
+    return 0
   
   # if it is an int, it has already been processed, so return
   # ex: called from getDuration()
-  if type(time) == int:
-    return time
+  if type(t) is int:
+    return t
   
-  # ensures it is parsed
-  p = parseTime(time)
+  # ensures it is parsed to "HHMM"
+  p = parseTime(t)
   
-  # returns number of minutes
+  # returns number of minutes (HH*60 + MM)
   return (int(p[:2]) * 60) + int(p[2:])
 
 
-### CONVERT NUMBER OF MINUTES INTO ("HHMM") ############################################################
-
-def getTimeFromMin(min):
+def convertMinutesToTime(minutes):
+  """
+  Converts a number of minutes since 00:00 into a time string
+  :param minutes: <int|(str)> number of minutes (will cast to int)
+  :return: <str> time string in the format "HHMM"
+  """
   # ensures int type
-  i = int(min)
+  i = int(minutes)
   
   # gets hours through integer division
   hours = str(i / 60).zfill(2)
@@ -711,10 +717,10 @@ def getTimeFromMin(min):
 
 def getDuration(start, end):
   # get number of minutes from start time
-  s = getMinFromTime(start)
+  s = convertTimeToMinutes(start)
   
   # get number of minutes from end time
-  e = getMinFromTime(end)
+  e = convertTimeToMinutes(end)
   
   # return number of hours as float (x.xx)
   return float((e - s) / float(60))
