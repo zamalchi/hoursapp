@@ -733,21 +733,21 @@ def getDuration(start, end):
   # if end == PENDING_CHAR
   return 0.0
 
-
-def getDuration(record):
-  """
-  Calculate a duration from a record's data
-  :param record: <recorder.Record>
-  :return: <float> either the record's duration or the value calculated from its start and end times
-  """
-  
-  if record.duration:
-    return float(record.duration)
-  
-  start = convertTimeToMinutes(record.start)
-  end = convertTimeToMinutes(record.end)
-  
-  return getDuration(start, end)
+# TODO: decide whether to keep this and figure out how overloading is done best in Python
+# def getDuration(record):
+#   """
+#   Calculate a duration from a record's data
+#   :param record: <recorder.Record>
+#   :return: <float> either the record's duration or the value calculated from its start and end times
+#   """
+#
+#   if record.duration:
+#     return float(record.duration)
+#
+#   start = convertTimeToMinutes(record.start)
+#   end = convertTimeToMinutes(record.end)
+#
+#   return getDuration(start, end)
 
 
 def roundTime(t):
