@@ -810,9 +810,13 @@ def getCurrentRoundedTime():
 ### RECORD METHODS START ###############################################################################
 ########################################################################################################
 
-### RETURNS PREVIOUS RECORD IN LIST or NONE ############################################################
-
 def getPrevRecord(records, index):
+  """
+  Attempts to get the chronologically previous record
+  :param records: <list[recorder.Record|(str)]> list of records (type doesn't matter)
+  :param index: <int> index value of starting record (index - 1 should be the previous record)
+  :return: <recorder.Record|(str) or None> previous record from list (returns whatever the list element type is)
+  """
   try:
     # if the previous index is a valid index
     if index - 1 >= 0:
@@ -826,9 +830,13 @@ def getPrevRecord(records, index):
   return None
 
 
-### RETURNS NEXT RECORD IN LIST or NONE ################################################################
-
 def getNextRecord(records, index):
+  """
+  Attempts to get the chronologically next record
+  :param records: <list[recorder.Record|(str)]> list of records (type doesn't matter)
+  :param index: <int> index value of starting record (index + 1 should be the next record)
+  :return: <recorder.Record|(str) or None> next record from list (returns whatever the list element type is)
+  """
   try:
     # if the next index is a valid index
     if index + 1 < len(records):
@@ -842,20 +850,22 @@ def getNextRecord(records, index):
   return None
 
 
-### CHECKS IF RECORD OVERLAPS WITH ADJACENT RECORDS AND ADJUSTS ADJACENT START/END TIMES ACCORDINGLY ###
-
 def adjustAdjacentRecords(records, index):
-  #######################################################
-  
+  """
+  Checks if a specific record overlaps with adjacent records and adjusts adjacent start/end times accordingly
+  :param records: <list[recorder.Record]> list of records
+  :param index: <int> index of the record to use as the base for adjusting
+  """
   # if the records list is empty, print error statement and return from function
+  # TODO: decide if this print statement is ok or what to do with it
   if not records:
     print("ERROR: empty records list passed into adjustAdjacentRecords()")
     return
   
   #######################################################
   
-  # get the newly inserted record
-  new_record = records[index]
+  # get the newly-inserted / base record
+  base_record = records[index]
   
   # get the previous record if it exists
   prev_record = getPrevRecord(records, index)
@@ -864,42 +874,57 @@ def adjustAdjacentRecords(records, index):
   next_record = getNextRecord(records, index)
   
   #######################################################
-  # FUNCTION: SETS PREVIOUS RECORD'S END TIME
-  
+  """ FUNCTION: ADJUSTS THE PREVIOUS RECORD'S END TIME
+  the base record *FINISHES* the previous record
+  visually:
+    previous: [START][PENDING --> END]
+    base: [START][PENDING|END]
+  """
   if prev_record:
-    
     # if the previous record's end time has not been supplied
     if prev_record.duration == PENDING_CHAR:
       # set the previous record's end time to be the new record's start time
-      prev_record.setEnd(new_record.start)
+      prev_record.setEnd(base_record.start)
       
-      # the new record *FINISHES* the previous record
-      # visually: [START]~previous~[PENDING --> END]   [START]~new~[PENDING|END]
-  
   #######################################################
-  # FUNCTION: SHIFTS NEXT RECORD'S START TIME (IF PARTIAL RECORD)
-  
+  """ FUNCTION: SHIFTS NEXT RECORD'S START TIME (IF PARTIAL RECORD)
+  the base record *SHIFTS* the next record forward to match its end time
+  visually:
+    base: [START][END]
+    next: [START --> MODIFIED START][PENDING|END]
+  """
   if next_record:
-    
-    # if (the next record's end time has not been supplied) and (the new record has an end time)
-    # NOTE: if the next record doesn't have a supplied end time, the new record MUST have an end time (required by HTML input)
-    if (next_record.duration == PENDING_CHAR) and (new_record.end != PENDING_CHAR):
+    # if (the next record's end time has not been supplied) and (the base record has an end time)
+    if (next_record.duration == PENDING_CHAR) and (base_record.end != PENDING_CHAR):
       # supply the next record's start time using the new record's end time
-      next_record.setStart(new_record.end)
+      next_record.setStart(base_record.end)
       
-      # the new record *SHIFTS* the next record forward to match its end time
-      # visually: [START]~new~[END]   [START --> MODIFIED START]~next~[PENDING]
-    
+     
+    # TODO: FIX THE REST OF THIS METHOD
+    """
+    I don't think I changed any logic, but I need to decide how this will work
+      specifically, if two records in a row can have pending end times
+    Pseudocode out the steps
+      1)  set previous end time to base start time
+      2)  if next is pending and base isn't: set next start time to base end time
+      3?) if base is pending: set base end to next start
+      4?) ?
+      5?) ?
+    Create an as-simple-as-possible overview of the method at the top
+    """
     ####### REQUIRED TAG IN HTML END TIME INPUT BYPASSES THIS CODE ######
     
     # FUNCTION: SETS NEW RECORD'S END TIME (REDUNDANT)
     
     # NOTE: this case seems to work, but the HTML requires the end time in this case, so this isn't currently executed
     
+    """
+    if the next record doesn't have a supplied end time, the new record MUST have an end time (required by HTML input)
+    """
     # if (a next record exists) and (the new record has a pending duration)
-    if new_record.duration == PENDING_CHAR:
+    if base_record.duration == PENDING_CHAR:
       # set the end time of the new record to be the next record's start time
-      new_record.setEnd(next_record.start)
+      base_record.setEnd(next_record.start)
       
       #######
   
@@ -917,7 +942,7 @@ def adjustAdjacentRecords(records, index):
     
     # calculate overlap : new_start - prev_end : if overlap => negative duration
     # if the new start time is less than the previous end time: adjustment needed
-    overlap = getDuration(prev_record.end, new_record.start)
+    overlap = getDuration(prev_record.end, base_record.start)
     
     # if there was overlap
     if overlap < 0:
@@ -931,14 +956,14 @@ def adjustAdjacentRecords(records, index):
   if next_record:
     
     # calculate the new record's duration using its start and end times
-    new_record.duration = getDuration(new_record.start, new_record.end)
+    base_record.duration = getDuration(base_record.start, base_record.end)
     
     # update the record in the list
-    records[index] = new_record
+    records[index] = base_record
     
     # calculate overlap : next_start - new_end : if overlap => negative duration
     # if the next record's start is less than the new record's end: adjustment needed
-    overlap = getDuration(new_record.end, next_record.start)
+    overlap = getDuration(base_record.end, next_record.start)
     
     # if there was overlap
     if overlap < 0:
@@ -946,8 +971,17 @@ def adjustAdjacentRecords(records, index):
       next_record.modifyStart(-overlap)
 
 
-### CHECKS IF A NEW RECORD IS TEMPORALLY SOUND ITSELF AND IN RELATION TO ADJACENT RECORDS ##############
 def checkIfValid(records, record, index):
+  """
+  Checks if a new record is temporally sound with itself and in relation to adjacent records
+    i.e. checks that a record's start comes before its end
+      and checks that a record doesn't overlap an entire adjacent record
+  :param records: <list[recorder.Record]> list of records not including the one passed in
+  :param record: <recorder.Record> single record to check if it fits validly in the record list
+  :param index: <int> index where the new record is trying to be placed
+  :return: <bool> returns True only if record fits between (existing) adjacent records
+  """
+  # TODO: look over this method (i.e. where I left off)
   ################################################
   
   # get records to check positioning of the new record
