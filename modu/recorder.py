@@ -134,6 +134,10 @@ class Record:
       # set modified duration
       self.duration = str(d)
   
+  #TODO: find a place for this if not here
+  def isPending(self):
+    return self.end == PENDING_CHAR
+  
   ########################################################################################################
   ### DURATION METHODS END ###############################################################################
   
@@ -270,10 +274,8 @@ class RecordMalformedException(Exception):
 ########################################################################################################
 ########################################################################################################
 
-#
-#
 
-### GENERATOR METHODS START ############################################################################
+### GENERATOR METHODS ##################################################################################
 ########################################################################################################
 
 def generateFileName(name, date):
@@ -311,13 +313,7 @@ def generateHiddenFileName(name, date):
   return os.path.join(HOURS_DIR, filename)
 
 
-########################################################################################################
-### GENERATOR METHODS END ##############################################################################
-
-#
-#
-
-### IO METHODS START ###################################################################################
+### IO METHODS #########################################################################################
 ########################################################################################################
 
 def readRecords(name, date):
@@ -397,13 +393,7 @@ def deleteRecords(name, date):
   os.system("rm -f {}".format(hiddenFileName))
 
 
-########################################################################################################
-### IO METHODS END #####################################################################################
-
-#
-#
-
-### SUBTOTAL & TOTAL METHODS START #####################################################################
+### SUBTOTAL & TOTAL METHODS ###########################################################################
 ########################################################################################################
 
 def getSubtotalForDay(name, date):
@@ -514,13 +504,8 @@ def countSubtotal(records):
   
   return subtotal
 
-########################################################################################################
-### SUBTOTAL & TOTAL METHODS END #######################################################################
 
-#
-#
-
-### PARSING METHODS START ##############################################################################
+### PARSING METHODS ####################################################################################
 ########################################################################################################
 
 def parseRecords(raw_records):
@@ -628,13 +613,8 @@ def parseRecordFromHTML(request):
   
   return Record(record_string)
 
-########################################################################################################
-### PARSING METHODS END ################################################################################
 
-#
-#
-
-### TIME METHODS START #################################################################################
+### TIME METHODS #######################################################################################
 ########################################################################################################
 
 def parseTime(t):
@@ -733,6 +713,7 @@ def getDuration(start, end):
   # if end == PENDING_CHAR
   return 0.0
 
+
 # TODO: decide whether to keep this and figure out how overloading is done best in Python
 # def getDuration(record):
 #   """
@@ -801,13 +782,7 @@ def getCurrentRoundedTime():
   return roundTime(dt.datetime.now().time())
 
 
-########################################################################################################
-### TIME METHODS END ###################################################################################
-
-#
-#
-
-### RECORD METHODS START ###############################################################################
+### RECORD METHODS #####################################################################################
 ########################################################################################################
 
 def getPrevRecord(records, index):
@@ -981,60 +956,66 @@ def checkIfValid(records, record, index):
   :param index: <int> index where the new record is trying to be placed
   :return: <bool> returns True only if record fits between (existing) adjacent records
   """
-  # TODO: look over this method (i.e. where I left off)
-  ################################################
-  
   # get records to check positioning of the new record
-  prev = next = None
+  prevRecord = nextRecord = None
   
-  # for checking the relationship with the adjacent records
-  prevValid = nextValid = False
-  
-  ################################################
-  ################################################
-  
-  if records:
-    prev = getPrevRecord(records, index)
-    next = getNextRecord(records, index)
+  # for checking the relationship with self and the adjacent records
+  prevValid = nextValid = selfValid = False
   
   ################################################
   
-  # either there is no previous record or the new start is greater than the previous start
-  if (not prev) or (prev and (record.start > prev.start)):
-    prevValid = True
-  
-  # either there is no next record or the new end is less than the next end
-  if (not next) or (next and (record.end < next.end)):
-    nextValid = True
-  
-  ################################################
-  
-  # END != PENDING
-  if record.end != PENDING_CHAR:
-    return record.start < record.end
-  
-  ################################################
-  ################################################
-  
-  # END == PENDING
-  elif next:
-    # cannot have a pending end time within the list (must be at the end)
+  if not record:
     return False
   
+  if records:
+    prevRecord = getPrevRecord(records, index)
+    nextRecord = getNextRecord(records, index)
+  
   ################################################
   
-  else:
-    # can't compare pending end time to record.start
-    # so return whether or not both adjacency checks were passed
-    return prevValid and nextValid
+  # either there is no previous record
+  if not prevRecord:
+    prevValid = True
     
-    ################################################
-    ################################################
+  # or the new start is greater than the previous start
+  else:
+    prevValid = record.start > prevRecord.start
+  
+  ################################################
 
+  # either there is no nextRecord record
+  if not nextRecord:
+    nextValid = True
+    
+  # or the new end is less than the nextRecord end
+  # (implied) if record is pending, the nextRecord record must not exist
+  elif not record.isPending():
+    nextValid = record.end < nextRecord.end
+  
+  ################################################
+  
+  # if a record is pending, it is valid with itself
+  if record.isPending():
+    selfValid = True
+  
+  # else, the start must come before the end
+  else:
+    selfValid = record.start < record.end
 
-### EITHER RETURNS A VALIDATED DATETIME.DATE OBJECT BASED ON SUPPLIED DATE, OR RETURNS THE CURRENT DATE
+  ################################################
+
+  # true iff all checks are passed
+  return prevValid and nextValid and selfValid
+    
+  # TODO: maybe return a second var that's a list of reasons why the record was invalid
+
 
 def validateDate(d):
+  """
+  Normalizes dates as datetime.date objects
+  :param d: <str|(datetime.date)> to convert to datetime.date (will return unchanged a passed-in datetime.date object)
+  :return: <datetime.date> converted date if supplied else the current date
+  """
   # if datetime.date
   if type(d) is dt.date:
     return d
@@ -1045,31 +1026,16 @@ def validateDate(d):
       # could throw ValueError
       # could throw a TypeError
       year, month, day = [int(x) for x in d.split("-")]
-      
-      return dt.date(year, month, day)
     
-    except (ValueError, TypeError):
-      # if invalid date supplied, return current date
-      return dt.date.today()
+      return dt.date(year=year, month=month, day=day)
   
-  else:
-    return dt.date.today()
-    
-    ########################################################################################################
-    ### RECORD METHODS END #################################################################################
-    
-    #
-    #
-    
-    ########################################################################################################
-    ########################################################################################################
-    #### MODULE METHODS END ################################################################################
-    
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
+    except (ValueError, TypeError):
+      pass
+
+  # if invalid date supplied, return current date
+  return dt.date.today()
+
+
+########################################################################################################
+########################################################################################################
+#### MODULE METHODS END ################################################################################
