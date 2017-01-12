@@ -30,7 +30,7 @@
 												% if pending_records:
 													<span class="pending-text">* </span>
 												% end
-													Subtotal [Today]: <strong>{{daily_subtotal}}</strong> [{{month}}]: <strong>{{subtotal}}</strong>
+													Subtotal [Today]: <strong>{{subtotal}}</strong> [{{month}}]: <strong>{{total}}</strong>
 											</h3>
 										</div>
 									</div>

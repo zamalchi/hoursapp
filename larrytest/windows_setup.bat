@@ -1,1 +1,0 @@
-windowssetup\get-pip.py

@@ -13,14 +13,16 @@
 
 <!-- ######################################################################################################### -->
 
-<!-- TODO: determine if this import is needed -->
-% from classes.Record import Record
+<%
+import modu.labeler as labeler
+import modu.recorder as recorder
 
-<!-- PROVIDE NAMES AND IDS FOR ELEMENTS (IDS INCLUDE THE INDEX OF THE RECORD) -->
-% namer = Labeler()
-% ider = Labeler(i)
+# PROVIDE NAMES AND IDS FOR ELEMENTS (IDS INCLUDE THE INDEX OF THE RECORD)
+namer = labeler.Labeler()
+ider = labeler.Labeler(i)
 
-% TIME_REGEX = "(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))"
+TIME_REGEX = "(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))"
+%>
 
 <!-- ######################################################################################################### -->
 <!-- ######################################################################################################### -->
@@ -138,7 +140,7 @@
 							<!-- ######################################################################################################### -->
 	
 							<!-- IF INCOMPLETE RECORD (END TIME AND DURATION) -->
-							% if (r.fend == Record.PENDING_CHAR):
+							% if (r.fend == recorder.PENDING_CHAR):
 								
 								<!-- COMPLETE END TIME FORM -->
 								<form action="/completeEndTime" method="post" class="form-inline" enctype="multipart/form-data" >
