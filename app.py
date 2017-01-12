@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+"""
+Bottle Python webapp for recording hours worked
+"""
+# TODO: doc this whole file
 
 ########################################################################################################
 ########################################################################################################
@@ -19,7 +23,6 @@ import markdown
 
 import modu.bottle as bottle
 import modu.color_printer as cp
-# import modu.cookies as cookies
 import modu.crypto as crypto
 import modu.labeler as labeler
 import modu.recorder as recorder
