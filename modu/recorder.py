@@ -789,7 +789,7 @@ def roundTime(t):
   #######################################################
   
   # return ("HHMM") now rounded to the quarter-hour
-  return "{HH}{MM}".format(str(hours).zfill(2), str(quarters * 15).zfill(2))
+  return "{HH}{MM}".format(HH=str(hours).zfill(2), MM=str(quarters * 15).zfill(2))
 
 
 def getCurrentRoundedTime():
