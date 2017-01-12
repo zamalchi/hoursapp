@@ -70,6 +70,7 @@ class Record:
       end_DT = elems[2].split(" ")
       
       #######################################################
+      # TODO: docstrings for all the self elements with types
       
       self.name = elems[0]
       
@@ -122,17 +123,28 @@ class Record:
   ### DURATION METHODS ###################################################################################
   ########################################################################################################
   
-  ### SETS DURATION TO SUPPLIED VALUE ####################################################################
   def setDuration(self, duration):
+    """
+    Sets the duration to a supplied value
+    :param duration: <float|(str)> new duration value (casts to float)
+    """
+    # TODO: decide if I want to change this to @duration.setter and add @property functions
     self.duration = float(duration)
   
-  ### CALCULATES THE DURATION FROM START AND END TIMES, THEN SETS THE DURATION ###########################
+  
   def calculateAndSetDuration(self):
+    """
+    Calculates the duration from own start and end times, then sets the duration
+    """
+    # TODO: decide if I want to change up getDuration (module func) in relation to setDuration (class func)
     self.setDuration(getDuration(self.start, self.end))
   
-  ### IF NOT LOCKED, *MODIFIES* THE DURATION BY THE SUPPLIED AMOUNT ######################################
+  
   def modifyDuration(self, amount):
-    
+    """
+    Modifies the existing duration by a specified amount, iff not durationLocked
+    :param amount: <float|(str)> amount by which to shift the duration (casts to float)
+    """
     if not self.durationLocked:
       # get the duration
       d = float(self.duration)
@@ -143,8 +155,13 @@ class Record:
       # set modified duration
       self.duration = str(d)
   
-  #TODO: find a place for this if not here
+  
   def isPending(self):
+    """
+    True iff an end time has not been supplied (i.e. self.end (or self.duration) is pending)
+    :return: <bool> pending status of record
+    """
+    #TODO: find a place for this method if not here
     return self.end == PENDING_CHAR
   
   
