@@ -1,54 +1,68 @@
 #!/usr/bin/env python
+"""
+Module for manipulating records of hours worked
+  
+Record
+  Object that simulates a single record of work done
+RecordMalFormedException
+  Wrapped exception used and required, internally, by the Record class
 
-### INSTRUCTIONS #######################################################################################
+After importing, set (optional):
+  ROOT_DIR - default: '.'
+  HOURS_DIR - default: './hours'
+"""
 
-# from Record import \
-#   Record
-#   RecordMalformedException (required by Record)
-
-# (optional) after importing, set:
-#   Record.ROOT_DIR - default: '.'
-#   Record.HOURS_DIR - default: './hours'
-
-### PACKAGES ###########################################################################################
+### IMPORTS ############################################################################################
 
 import calendar
 import datetime as dt
 import os
-import time
-
-### IMPORTS ############################################################################################
+# import time
 
 ### RUNNING AS MAIN ####################################################################################
 
 if __name__ == "__main__":
-  print("Import class: from Record import Record, RecordMalformedException")
+  print("Import class.")
   print("Exiting...")
-  exit()
+  exit(1)
 
-# default values : set after importing class
+### MODULE VARS ########################################################################################
+
 ROOT_DIR = "."
-HOURS_DIR = os.path.join(ROOT_DIR, "hours")
+""" Allows the module to reference the root project directory
+Recommended to manually set after importing """
 
-# used as a placeholder for the end time in an ongoing record
-# it is replaced when the next record is created (with the new start time)
+HOURS_DIR = os.path.join(ROOT_DIR, "hours")
+""" Where the module will save recorded-hours files """
+
 PENDING_CHAR = "***"
+""" Used as a placeholder for the end time and duration in a record
+It is replaced when the next record is created or when the end time is supplied """
 
 PERIOD_END = 25
-
+""" Date of the month on which the pay period ends """
 
 ########################################################################################################
-#######################################  	CLASS DEF START	 #############################################
+#### CLASS DEF START ###################################################################################
 ########################################################################################################
+
 class Record:
-  ### CONSTRUCTOR START ##################################################################################
-  ########################################################################################################
+  """
+  Object that simulates a single record of work done
+  """
   
-  ### DEFAULT CONSTRUCTOR: PARSES PROPERLY FORMATTED STRING INTO RECORD OBJECT ###########################
   def __init__(self, string):
+    """ PUBLIC - Default Constructor
+    Parses a properly-formatted string into a Record object
+    :param string: <str> to parse - must be in correct format
     
+    Format: "name|startDate start|endDate end|duration|label|billable|emergency|notes(|durationLocked)"
+    Example: "test|2017-01-12 12:00|2017-01-12 16:30|4.5|TS|N|N|test0|False"
+    
+    Optional field 'durationLocked': will default to False
+    Invalid string: throws a RecordMalformedException
+    """
     try:
-      
       #######################################################
       
       elems = string.split('|')
@@ -104,13 +118,8 @@ class Record:
     except Exception:
       raise RecordMalformedException("ERROR - INVALID __init__ STRING : " + string)
   
-  ########################################################################################################
-  ### CONSTRUCTOR END ####################################################################################
   
-  #
-  #
-  
-  ### DURATION METHODS START #############################################################################
+  ### DURATION METHODS ###################################################################################
   ########################################################################################################
   
   ### SETS DURATION TO SUPPLIED VALUE ####################################################################
@@ -138,13 +147,8 @@ class Record:
   def isPending(self):
     return self.end == PENDING_CHAR
   
-  ########################################################################################################
-  ### DURATION METHODS END ###############################################################################
   
-  #
-  #
-  
-  ### TIME METHODS START #################################################################################
+  ### TIME METHODS #######################################################################################
   ########################################################################################################
   
   ### SET START TIME WHILE ENSURING CORRECT PARSING/FORMATTING ###########################################
@@ -209,69 +213,66 @@ class Record:
     self.modifyStart(amount)
     self.modifyEnd(amount)
   
-  ########################################################################################################
-  ### TIME METHODS END ###################################################################################
   
-  #
-  #
-  
-  ### TO_STRING METHODS START ############################################################################
+  ### TO_STRING METHODS ##################################################################################
   ########################################################################################################
   
-  ### DEFAULT TO_STRING CALLED VIA str() #################################################################
   def __str__(self):
-    # contains durationLocked --> intended for writing to hidden file
-    return "{0}|{1} {2}|{3} {4}|{5}|{6}|{7}|{8}|{9}|{10}".format(
-      self.name,
-      self.date, self.fstart,
-      self.date, self.fend,
-      self.duration,
-      self.label,
-      self.billable, self.emergency,
-      self.notes,
-      self.durationLocked)
+    """ Default to_string - called via str(record)
+    This format contains durationLocked and is intended for writing to a hidden file
+    :return: <str> formatted record data
+    """
+    return "{emailFormat}|{durationLocked}".format(
+      emailFormat=self.emailFormat(), durationLocked=self.durationLocked)
+
   
-  ### SECONDARY TO_STRING TO MATCH CORRECT RECORD STRING FORMAT (FOR PAYROLL) ############################
   def emailFormat(self):
-    # does not contain durationLocked
-    return "{0}|{1} {2}|{3} {4}|{5}|{6}|{7}|{8}|{9}".format(
-      self.name,
-      self.date, self.fstart,
-      self.date, self.fend,
-      self.duration,
-      self.label,
-      self.billable, self.emergency,
-      self.notes)
-    
-    ########################################################################################################
-    ### TO_STRING METHODS END ##############################################################################
+    """ Secondary to_string
+    This format doesn't contain durationLocked and is intended for emailing/submitting to payroll
+    :return: <str> formatted record data
+    """
+    return "{name}|{startDate} {start}|{endDate} {end}|{duration}|{label}|{billable}|{emergency}|{notes}".format(
+      name=self.name,
+      startDate=self.date, start=self.fstart,
+      endDate=self.date, end=self.fend,
+      duration=self.duration,
+      label=self.label,
+      billable=self.billable, emergency=self.emergency,
+      notes=self.notes)
 
 
 ########################################################################################################
-####################################### CLASS DEF END ##################################################
+#### CLASS DEF END #####################################################################################
+########################################################################################################
+
+#
+
+########################################################################################################
+#### HELPER CLASS DEF START ############################################################################
 ########################################################################################################
 
 class RecordMalformedException(Exception):
+  """
+  Wrapped exception used and required, internally, by the Record class
+  """
   pass
 
-
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-
-#### MODULE METHODS START ##############################################################################
 ########################################################################################################
+#### HELPER CLASS DEF END ##############################################################################
+########################################################################################################
+
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
+########################################################################################################
+#### MODULE METHODS START ##############################################################################
 ########################################################################################################
 
 
