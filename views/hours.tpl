@@ -6,6 +6,8 @@ import time
 import modu.labeler as labeler
 import modu.recorder as recorder
 
+# TODO: continue reconstructing the templates ; use the psuedocode ; try starting over and building up if stuck
+
 #########################################################################################################
 
 REGEX = argparse.Namespace()
@@ -53,45 +55,58 @@ DATA.record_string = "".join("<p>{record}</p>".format(record=r.emailFormat()) fo
 	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 
-	% include('hours_js_functions.tpl')
+	% include('js_functions.tpl')
 </head>
 
 
-
+<!-- TODO: is the message needed here? -->
 <body data-index="{{DATA.anchor}}" data-server-response="{{DATA.msg}}">
 
 <!-- default anchor tag -->
 <a name="-1"></a>
-
+<!-- TODO: is this needed / can it be done differently? -->
 <input type="hidden" id="num-records" value="{{len(DATA.records)}}" />
 
-<div class="container" name="main">
 
-<!-- HEADER START -->
-<!-- ######################################################################################################### -->			
-<!-- ######################################################################################################### -->
+<div class="container" name="main">
 
 <%
 include('hours_header.tpl', DATA=DATA)
 %>
 
-<!-- ######################################################################################################### -->
-<!-- ######################################################################################################### -->
-<!-- HEADER END -->
+
+<%
+"""
+LAYOUT:
+
+header
+
+new record header
+record form
+
+for each record:
+	record display
+	record form
+
+look at bootstrap code to figure out panels and media and such
+"""
+%> 
 
 
-<!-- X -->
-<!-- X -->
-<!-- X -->
+<div class="row">
+<div class="col-md-10">
+	<div class="records">
+		
+		<div class="panel panel-default">
 
+		</div>
 
-<!-- NO INITIAL RECORDS START -->
-<!-- ********************************************************************************************************* -->
-<!-- ######################################################################################################### -->
-<!-- ********************************************************************************************************* -->
-<!-- ######################################################################################################### -->
+	</div>
+</div>
+</div>
+
 <!-- Creates an initial form if there are no records yet; otherwise, it doesn't exist -->
-	
+
 % if not records:
 <!-- INPUTS -->
 <div class="row">
@@ -111,24 +126,7 @@ include('hours_header.tpl', DATA=DATA)
 </div>
 </div> 
 	
-	<!-- ######################################################################################################### -->
-	<!-- ********************************************************************************************************* -->
-	<!-- ######################################################################################################### -->
-	<!-- ********************************************************************************************************* -->
-	<!-- NO INITIAL RECORDS END -->
-
-
-	<!-- X -->
-	<!-- X -->
-	<!-- X -->
-
-
-	<!-- RECORDS LIST START -->
-	<!-- ********************************************************************************************************* -->
-	<!-- ######################################################################################################### -->
-	<!-- ********************************************************************************************************* -->
-	<!-- ######################################################################################################### -->
-	<!-- Creates a series of records; each record has its own form; the records toggle accordion-style -->
+<!-- Creates a series of records; each record has its own form; the records toggle accordion-style -->
 
 % else:
 <div class="row">
