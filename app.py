@@ -214,53 +214,65 @@ Cookies.delete.notes = lambda res: res.delete_cookie(Cookies.id + "notes")
 @app.get('/')
 @app.get('/hours')
 def hours():
+  """ Main page ; serves up base template ; other routes redirect to here
+  1) check for message from logging server
+  2) get and manipulate cookies
+  3) get subtotal and total
+  4) read records from file
+  5) return base template with appropriate values passed to it
+  """
+  # used to send all the required data to the template in one variable
+  TEMPLATE = argparse.Namespace()
   
   #######################################################
   
-  msg = ""
+  # if an encrypted message was returned from the logging server, get it and decrypt it
+  TEMPLATE.msg = ""
   try:
-    msg = crypto.getDecodedString(bottle.request.query['msg'])
+    TEMPLATE.msg = crypto.getDecodedString(bottle.request.query['msg'])
   except KeyError:
     pass
+
+  #######################################################
   
   # get name and date cookies
-  name = Cookies.get.name(bottle.request)
-  date = Cookies.get.date(bottle.request)
+  TEMPLATE.name = Cookies.get.name(bottle.request)
+  TEMPLATE.date = Cookies.get.date(bottle.request)
   
-  # get anchor cookie in case record has been just edited
-  anchor = Cookies.get.anchor(bottle.request)
-  
-  # set anchor cookie to null after getting it
+  # get anchor cookie in case a record has been just edited
+  TEMPLATE.anchor = Cookies.get.anchor(bottle.request)
+  # delete anchor cookie after getting it
   Cookies.delete.anchor(bottle.response)
   
-  notes = Cookies.get.notes(bottle.request)
+  # get notes cookie ; in the case a record was just deleted, this cookie tracks the notes the record had
+  TEMPLATE.notes = Cookies.get.notes(bottle.request)
+  # delete notes cookie after getting it
   Cookies.delete.notes(bottle.response)
   
-  # get the month to use for the monthly subtotal
-  month = date.month
-  
-  # TODO : wire this to the template properly
-  # subtotal = recorder.readSubtotal(name, date)
-  subtotal = recorder.getSubtotalForDay(name, date)
-  total = recorder.getTotalForPayPeriod(name, date)
   #######################################################
   
-  # try to open file with user's name and retrieve data
-  # for each record, create a new Record object and add to list to pass to template
-  # list of records as Record obj
-  records = recorder.parseRecordsFromFile(name, date)
-  
-  #######################################################
-  
-  return bottle.template('hours',
-      name=name, date=date,
-      records=records, labels=ENV.LABELS,
-      month=month, subtotal=subtotal,
-      anchor=anchor, notes=notes,
-      sender=ENV.SENDER, receivers=ENV.RECEIVERS,
-      loggingServerAddress=ENV.LOGGING_SERVER_ADDRESS, loggingServerPort=ENV.LOGGING_SERVER_PORT,
-      msg=msg)
+  # parses through the saved records and counts the hours worked for the day / pay period
+  TEMPLATE.subtotal = recorder.getSubtotalForDay(TEMPLATE.name, TEMPLATE.date)
+  TEMPLATE.total = recorder.getTotalForPayPeriod(TEMPLATE.name, TEMPLATE.date)
 
+  #######################################################
+  
+  # try to read and parse saved records corresponding to the name and date provided
+  TEMPLATE.records = recorder.parseRecordsFromFile(TEMPLATE.name, TEMPLATE.date)
+  
+  #######################################################
+  
+  # additional data to send to template
+  TEMPLATE.month = recorder.getPayPeriodMonth(TEMPLATE.date)
+  TEMPLATE.LABELS = ENV.LABELS
+  TEMPLATE.SENDER = ENV.SENDER
+  TEMPLATE.RECEIVERS = ENV.RECEIVERS
+  TEMPLATE.LOGGING_SERVER_ADDRESS = ENV.LOGGING_SERVER_ADDRESS
+  TEMPLATE.LOGGING_SERVER_PORT = ENV.LOGGING_SERVER_PORT
+  
+  #######################################################
+
+  return bottle.template('hours', DATA=TEMPLATE)
 
 ########################################################################################################
 ########################################################################################################
