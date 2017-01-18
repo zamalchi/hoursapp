@@ -8,16 +8,14 @@ TODO:
   git flow feature finish docs
   git flow feature start date-nav (add forward/backward buttons for navigating through dates)
   git flow release ...
+  update readme and updates
 """
-
-########################################################################################################
-########################################################################################################
-########################################################################################################
 
 ### IMPORTS ############################################################################################
 
 from __future__ import print_function
 
+## BUILTIN
 import argparse
 import datetime as dt
 import os
@@ -25,16 +23,24 @@ import smtplib
 import sys
 import time
 
+## INSTALLED
 import markdown
-
 import modu.bottle as bottle
-import modu.color_printer as cp
+
+## CUSTOM
+# allows sending encrypted logs to remote server
 import modu.crypto as crypto
+# provides methods for printing in color
+import modu.color_printer as cp
+# provides names and ids for HTML elements
 import modu.labeler as labeler
+# module for creating, manipulating, and storing record data
 import modu.recorder as recorder
 
+## INSTANTIATION OF GLOBAL OBJECTS
+# bottle app object to which the routes are attached
 app = bottle.Bottle()
-
+# provides names for extracting data from HTML requests
 namer = labeler.Labeler()
 
 ### ARG PARSING ########################################################################################
@@ -58,7 +64,9 @@ ENV.ERRORS = []
 
 ### APACHE #############################################################################################
 
+# changes directory to the project root
 os.chdir(ENV.ROOT)
+# inserts the project root into the system path
 sys.path.insert(1, ENV.ROOT)
 
 ### FOR CSS READING IN TEMPLATES #######################################################################
@@ -92,16 +100,18 @@ def fonts(filename):
 def favicon():
   return bottle.static_file('favicon.ico', root=os.path.join(ENV.ROOT, 'static'))
 
-### DIRECTORY ##########################################################################################
+### DIRECTORIES ########################################################################################
 
-# project root and directory for saving hours information : overwrites default values in class
+# make recorder module aware of the project root
 recorder.ROOT_DIR = ENV.ROOT
+# set recorder module to save hours logs in project root's subdir "hours"
 recorder.HOURS_DIR = os.path.join(ENV.ROOT, "hours")
 
-# if the directory doesn't exist, create it
+# if the hours-logging directory doesn't exist, create it
 if not os.path.exists(recorder.HOURS_DIR):
   os.makedirs(recorder.HOURS_DIR)
-  
+
+# make the crypto module aware of the project root
 crypto.ROOT_DIR = ENV.ROOT
 
 ### LOGGING SERVER AND SMTP ############################################################################
@@ -116,6 +126,7 @@ LOGGING.SENDER_KEY = "sender"
 LOGGING.RECEIVERS_KEY = "receivers"
 LOGGING.SETTINGS_DICT = {}
 
+# if the settings file exists, attempt to read and parse logging and SMTP settings
 if os.path.exists(LOGGING.SETTINGS_FILE):
   with open(LOGGING.SETTINGS_FILE) as f:
     rawSettings = filter(None, f.read().split("\n"))
@@ -124,46 +135,59 @@ if os.path.exists(LOGGING.SETTINGS_FILE):
       key, val = each.split("=")
       LOGGING.SETTINGS_DICT[key] = val
 
+# display warning if in debug mode
 elif ENV.DEBUG:
   ENV.WARNINGS.append("'config/settings' file not found. Some features may not work.")
 
+# transfer logging values into ENV
 ENV.LOGGING_SERVER_ADDRESS = LOGGING.SETTINGS_DICT.get(LOGGING.ADDRESS_KEY, "")
 ENV.LOGGING_SERVER_PORT = LOGGING.SETTINGS_DICT.get(LOGGING.PORT_KEY, "")
-    
+# transfer SMTP values into ENV
 ENV.SENDER = LOGGING.SETTINGS_DICT.get(LOGGING.SENDER_KEY, "root")
 ENV.RECEIVERS = filter(None, list(LOGGING.SETTINGS_DICT.get(LOGGING.RECEIVERS_KEY, "").split(","))) or []
 
 ### LABELS #############################################################################################
 
+""" Provides a list of valid labels to tag work done ; iff the list is missing, any string will be accepted """
+
 labelsFile = os.path.join(ENV.ROOT, "config/labels.txt")
 ENV.LABELS = []
 
+# if the labels file exists, read the values into ENV
 if os.path.exists(labelsFile):
   with open(labelsFile, 'r') as f:
     
     # parses into list and filters out any empty lines (ex. trailing \n)
     ENV.LABELS = filter(None, f.read().split("\n"))
-  
+
+# display warning if in debug mode
 elif ENV.DEBUG:
   ENV.WARNINGS.append("'config/labels.txt' file not found. Labels will not be populated.")
 
 ### COOKIES ############################################################################################
 
+""" Namespace that consolidates the manipulation of session cookies """
+
 Cookies = argparse.Namespace()
+# prepends each cookie with the currently-used port
+# this prevents another server instance from overwriting the cookies
 Cookies.id = ENV.PORT
 
+# GET namespace : receives bottle.request
 Cookies.get = argparse.Namespace()
 Cookies.get.name = lambda req: req.get_cookie(Cookies.id + "name") or ""
 Cookies.get.date = lambda req: recorder.validateDate(req.get_cookie(Cookies.id + "date") or dt.date.today())
 Cookies.get.anchor = lambda req: req.get_cookie(Cookies.id + "anchor") or "-1"
 Cookies.get.notes = lambda req: req.get_cookie(Cookies.id + "notes") or ""
 
+# SET namespace : receives bottle.response
 Cookies.set = argparse.Namespace()
 Cookies.set.name = lambda res, name: res.set_cookie(Cookies.id + "name", str(name))
 Cookies.set.date = lambda res, date: res.set_cookie(Cookies.id + "date", str(recorder.validateDate(date)))
 Cookies.set.anchor = lambda res, anchor: res.set_cookie(Cookies.id + "anchor", str(anchor))
 Cookies.set.notes = lambda res, notes: res.set_cookie(Cookies.id + "notes", str(notes))
 
+# DELETE namespace : receives bottle.response
 Cookies.delete = argparse.Namespace()
 Cookies.delete.name = lambda res: res.delete_cookie(Cookies.id + "name")
 Cookies.delete.date = lambda res: res.delete_cookie(Cookies.id + "date")
