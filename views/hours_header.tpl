@@ -1,3 +1,7 @@
+<%
+import modu.recorder as recorder
+%>
+
 <div class="row">
 	<div class="col-md-10">
 		<div class="container-fluid" id="header">
