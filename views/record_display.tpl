@@ -56,11 +56,11 @@ import modu.recorder as recorder
 			% end
 
 			|
-			<div name="label" class="record-content">{{r.label}}</div>
+			<div name="label" class="record-content">{{record.label}}</div>
 			|
-			% include("toggle_billable.tpl", record=record)
+			% include("toggle_display_billable.tpl", record=record)
 			| 
-			% incluce("toggle_emergency.tpl", record=record)				
+			% include("toggle_display_emergency.tpl", record=record)				
 			|
 			<br>
 			% include("complete_notes_form.tpl", record=record)

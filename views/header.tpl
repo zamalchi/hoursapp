@@ -25,16 +25,16 @@ import modu.recorder as recorder
 
 										<div name="left">
 											<h3 id="dateTitle">
-												{{date_title}}
+												{{DATA.date_title}}
 											</h3>
 										</div>
 
 										<div name="right">
 											<h3 id="subtotalCounter">
-												% if pending_records:
+												% if DATA.pending_records:
 													<span class="pending-text">* </span>
 												% end
-													Subtotal [Today]: <strong>{{subtotal}}</strong> [{{month}}]: <strong>{{total}}</strong>
+													Subtotal [Today]: <strong>{{DATA.subtotal}}</strong> [{{DATA.month}}]: <strong>{{DATA.total}}</strong>
 											</h3>
 										</div>
 									</div>
@@ -61,7 +61,7 @@ import modu.recorder as recorder
 											<form action="/setCookies" method="post" enctype="multipart/form-data">
 												
 												<div name="inputs">
-													<input type="text" id="setName" name="setName" value="{{name}}" class="form-control input-sm"
+													<input type="text" id="setName" name="setName" value="{{DATA.name}}" class="form-control input-sm"
 														placeholder="Enter name..." required />
 													
 													<input type="date" id="setDate" name="setDate" class="form-control input-sm" />
@@ -87,7 +87,7 @@ import modu.recorder as recorder
 											<div class="form-group inline-block button-wrapper">
 												<input id="view" name="view" type="submit" value="Raw" class="control-button btn btn-info btn-sm"
 													onclick="openViewer()" />
-												<input id="viewRecords" name="viewRecords" type="hidden" value="{{!record_string}}" />
+												<input id="viewRecords" name="viewRecords" type="hidden" value="{{!DATA.record_string}}" />
 											</div>
 									
 											<!-- VIEW README/UPDATES -->
@@ -112,7 +112,7 @@ import modu.recorder as recorder
 												<div class="form-group full-width">						
 													
 													<input id="email" name="email" type="submit" value="Email" class="control-button btn btn-success btn-sm"
-														onclick="confirmEmail(this)" data-sender="{{sender}}" data-receivers="{{receivers}}" />
+														onclick="confirmEmail(this)" data-sender="{{DATA.SENDER}}" data-receivers="{{DATA.RECEIVERS}}" />
 													
 													<input id="emailConfirm" name="emailConfirm" type="hidden" value="false" />
 												</div>
@@ -134,9 +134,9 @@ import modu.recorder as recorder
 											<form action="/send" method="post" class="inline-block button-wrapper" enctype="multipart/form-data">
 												<div class="form-group full-width">						
 													
-													<input type="text" id="serverAddress" name="address" value="{{loggingServerAddress}}" placeholder="Logging Server Address" class="form-control input-sm" />
+													<input type="text" id="serverAddress" name="address" value="{{DATA.LOGGING_SERVER_ADDRESS}}" placeholder="Logging Server Address" class="form-control input-sm" />
 													<strong>:</strong>
-													<input type="text" id="serverPort" name="port" value="{{loggingServerPort}}" placeholder="Port" class="form-control input-sm">
+													<input type="text" id="serverPort" name="port" value="{{DATA.LOGGING_SERVER_PORT}}" placeholder="Port" class="form-control input-sm">
 
 													<input id="send" name="send" type="submit" value="Send" class="control-button btn btn-success btn-sm"
 														onclick="confirmSend(this)" />

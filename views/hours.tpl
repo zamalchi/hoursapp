@@ -33,9 +33,13 @@ DATA.date_title = dt.datetime.strftime(DATA.date, "%a %d %b : %Y-%m-%d")
 DATA.pending_records = any(r.duration == recorder.PENDING_CHAR for r in DATA.records)
 
 # get all records as a string with each encased in <p></p>
-DATA.record_string = "".join("<p>{record}</p>".format(record=r.emailFormat()) for record in DATA.records)
+DATA.record_string = "".join("<p>{record}</p>".format(record=record.emailFormat()) for record in DATA.records)
 
 #########################################################################################################
+
+ider = labeler.Labeler(0)
+namer = labeler.Labeler()
+
 %>
 
 <!DOCTYPE html>
@@ -58,7 +62,7 @@ DATA.record_string = "".join("<p>{record}</p>".format(record=r.emailFormat()) fo
 <div class="container" name="main">
 	
 	<%
-	include('hours_header.tpl', DATA=DATA)
+	include('header.tpl', DATA=DATA)
 	%>
 
 	<div class="row">
@@ -69,16 +73,17 @@ DATA.record_string = "".join("<p>{record}</p>".format(record=r.emailFormat()) fo
 			
 			<div class="panel panel-default">
 				% include('new_record_header.tpl')
-				% include('record_form.tpl')
+				% include('record_form.tpl', record=None)
 			</div>
 
 			% for record in DATA.records:
 				
 				<div class="panel panel-default">
 					% include('record_display.tpl', record=record)
-					% include('record_form.tpl')
+					% include('record_form.tpl', record=record)
 				</div>
 
+				% ider.inc()
 			% end
 
 		</div>
