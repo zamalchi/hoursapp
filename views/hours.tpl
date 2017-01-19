@@ -37,7 +37,7 @@ DATA.record_string = "".join("<p>{record}</p>".format(record=record.emailFormat(
 
 #########################################################################################################
 
-ider = labeler.Labeler(0)
+ider = labeler.Labeler(len(DATA.records)-1)
 namer = labeler.Labeler()
 
 %>
@@ -71,19 +71,50 @@ namer = labeler.Labeler()
 		
 		<div class="panel-group" id="accordion">
 			
+			<!-- NEW RECORD -->
 			<div class="panel panel-default">
-				% include('new_record_header.tpl')
-				% include('record_form.tpl', record=None)
+				<%
+				previousRecord = recorder.getPrevRecord(DATA.records, len(DATA.records))
+
+				FORM = argparse.Namespace()
+				FORM.index = -1
+				FORM.start = previousRecord.fend if previousRecord and not previousRecord.isPending() else ""
+				FORM.end = ""
+				FORM.min = previousRecord.fstart if previousRecord else "0000"
+				FORM.max = "2345"
+				FORM.notes = DATA.notes if DATA.anchor == str(FORM.index) else ""
+
+				include('new_record_header.tpl', numRecords=len(DATA.records))
+				include('record_form.tpl', FORM=FORM)
+				%>
 			</div>
 
-			% for record in DATA.records:
+			<!-- EXISTING RECORDS -->
+			% for record in reversed(DATA.records):
 				
 				<div class="panel panel-default">
-					% include('record_display.tpl', record=record)
-					% include('record_form.tpl', record=record)
+					<%
+					previousRecord = recorder.getPrevRecord(DATA.records, ider.i)
+					nextRecord = recorder.getNextRecord(DATA.records, ider.i)
+
+					DISPLAY = argparse.Namespace()
+					DISPLAY.record = record
+					DISPLAY.index = ider.i
+
+					FORM = argparse.Namespace()
+					FORM.index = ider.i
+					FORM.start = previousRecord.fend if previousRecord and not previousRecord.isPending() else ""
+					FORM.end = nextRecord.fstart if nextRecord else ""
+					FORM.min = previousRecord.fstart if previousRecord else "0000"
+					FORM.max = nextRecord.fend if nextRecord and not nextRecord.isPending() else "2345"
+					FORM.notes = DATA.notes if DATA.anchor == str(FORM.index) else ""
+
+					include('record_display.tpl', DISPLAY=DISPLAY)
+					include('record_form.tpl', FORM=FORM)
+					%>
 				</div>
 
-				% ider.inc()
+				% ider.dec()
 			% end
 
 		</div>

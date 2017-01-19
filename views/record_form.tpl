@@ -2,7 +2,7 @@
 import modu.labeler as labeler
 import modu.recorder as recorder
 
-name = record.name if record else ""
+name = DATA.name
 
 form_start = form_end = ""
 
@@ -40,13 +40,13 @@ if DATA.anchor == "-1":
 			<!-- START TIME -->
 			<input type="text" name={{namer.start()}} id={{ider.start()}}
 				class="form-control" pattern={{REGEX.TIME}}
-				value="{{form_start}}" data-min="{{min}}" data-max="{{max}}"
+				value="{{FORM.start}}" data-min="{{FORM.min}}" data-max="{{FORM.max}}"
 				placeholder="Start Time" required tabindex="2"
 				onblur="checkTime(this);" />
 			<!-- END TIME -->
 			<input type="text" name={{namer.end()}} id={{ider.end()}}
 				class="form-control" pattern={{REGEX.TIME}}
-				value="{{form_end}}" data-min="{{min}}" data-max="{{max}}"
+				value="{{FORM.end}}" data-min="{{FORM.min}}" data-max="{{FORM.max}}"
 				placeholder="End Time" tabindex="3" 
 				onblur="checkTime(this);" />
 		</div>
@@ -59,7 +59,7 @@ if DATA.anchor == "-1":
 			% include("dropdown_labels.tpl")
 			<!-- NOTES : TEXT -->
 			<div name="notes-wrapper">
-				<input  name={{namer.notes()}} id={{ider.notes()}} type="text" value="{{DATA.notes}}" class="form-control" placeholder="Notes" required tabindex="6" />
+				<input  name={{namer.notes()}} id={{ider.notes()}} type="text" value="{{FORM.notes}}" class="form-control" placeholder="Notes" required tabindex="6" />
 			</div>
 		</div>
 
@@ -88,7 +88,7 @@ if DATA.anchor == "-1":
 		</div>
 
 		<!-- INDEX FOR NEXT RECORD : HIDDEN -->
-		<input type="hidden" name={{namer.insert()}} id={{ider.insert()}} value={{ider.i}} />
+		<input type="hidden" name={{namer.insert()}} id={{ider.insert()}} value={{FORM.index}} />
 	</fieldset>
 </form>
 

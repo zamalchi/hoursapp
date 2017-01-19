@@ -2,6 +2,7 @@
 import modu.labeler as labeler
 %>
 
+<div class="panel-heading">
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-12" name="record-display-col">
@@ -13,9 +14,10 @@ import modu.labeler as labeler
 
 
 	<div class="media-body" name="recordDisplay">
-		<h4 class="panel-title"><strong>Insert new record: #{{ider.i+1}}</strong></h4>
+		<h4 class="panel-title"><strong>Insert new record: #{{numRecords+1}}</strong></h4>
 	</div>
 
+</div>
 </div>
 </div>
 </div>
