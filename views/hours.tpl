@@ -18,7 +18,7 @@ REGEX.FLOAT = "(0|[1-9]{1,})(\.(0|25|5|75))?"
 # only labels from the list can be entered
 # if the labels list is empty, this defaults to accept any string
 # "l1|l2|l3|l4..." or "*"
-REGEX.LABELS = "({0})".format( "|".join( [l.split(" | ")[0] for l in DATA.LABELS] ) ) if DATA.LABELS else "*"
+REGEX.LABELS = "({labelsString})".format(labelsString="|".join( [l.split(" | ")[0] for l in DATA.LABELS] ) ) if DATA.LABELS else "*"
 
 # name must be at least two chars and can't contain any special chars
 REGEX.NAME = "[a-zA-Z0-9]{2,}"
@@ -40,7 +40,6 @@ DATA.record_string = "".join("<p>{record}</p>".format(record=r.emailFormat()) fo
 #########################################################################################################
 %>
 
-
 <!DOCTYPE html>
 <html>
 
@@ -50,12 +49,6 @@ DATA.record_string = "".join("<p>{record}</p>".format(record=r.emailFormat()) fo
  	<link rel="shortcut icon" href="favicon.ico" />
 
  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
- 	<!-- jquery must come first as it's required by bootstrap -->
-	<script src="js/jquery-3.1.0.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-
-	% include('js_functions.tpl')
 </head>
 
 
@@ -92,21 +85,34 @@ look at bootstrap code to figure out panels and media and such
 """
 %> 
 
-
 <div class="row">
 <div class="col-md-10">
-	<div class="records">
+<div class="records">
+	
+	<div class="panel-group" id="accordion">
 		
 		<div class="panel panel-default">
-
+			% include('new_record_header.tpl')
+			% include('record_form.tpl')
 		</div>
 
+		% for record in DATA.records:
+			
+			<div class="panel panel-default">
+				% include('record_display.tpl', record=record)
+				% include('record_form.tpl')
+			</div>
+			
+		% end
+
 	</div>
+
+</div>
 </div>
 </div>
 
 <!-- Creates an initial form if there are no records yet; otherwise, it doesn't exist -->
-
+<%'''
 % if not records:
 <!-- INPUTS -->
 <div class="row">
@@ -125,7 +131,9 @@ look at bootstrap code to figure out panels and media and such
 	</div>
 </div>
 </div> 
-	
+'''
+%>
+
 <!-- Creates a series of records; each record has its own form; the records toggle accordion-style -->
 
 % else:
@@ -302,6 +310,13 @@ look at bootstrap code to figure out panels and media and such
 
 </div> <!-- /.container -->
 
+
+<!-- jquery must come first as it's required by bootstrap -->
+<script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<%
+include('js_functions.tpl')
+%>
 </body>
 
 </html>

@@ -18,6 +18,7 @@ import modu.labeler as labeler
 import modu.recorder as recorder
 
 # PROVIDE NAMES AND IDS FOR ELEMENTS (IDS INCLUDE THE INDEX OF THE RECORD)
+# TODO: check if these are needed or if the sub-template can access the existing global objects
 namer = labeler.Labeler()
 ider = labeler.Labeler(i)
 
