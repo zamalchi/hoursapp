@@ -6,8 +6,6 @@ import time
 import modu.labeler as labeler
 import modu.recorder as recorder
 
-# TODO: continue reconstructing the templates ; use the psuedocode ; try starting over and building up if stuck
-
 #########################################################################################################
 
 REGEX = argparse.Namespace()
@@ -52,262 +50,42 @@ DATA.record_string = "".join("<p>{record}</p>".format(record=r.emailFormat()) fo
 </head>
 
 
-<!-- TODO: is the message needed here? -->
-<body data-index="{{DATA.anchor}}" data-server-response="{{DATA.msg}}">
-
+<body>
 <!-- default anchor tag -->
 <a name="-1"></a>
-<!-- TODO: is this needed / can it be done differently? -->
-<input type="hidden" id="num-records" value="{{len(DATA.records)}}" />
 
 
 <div class="container" name="main">
-
-<%
-include('hours_header.tpl', DATA=DATA)
-%>
-
-
-<%
-"""
-LAYOUT:
-
-header
-
-new record header
-record form
-
-for each record:
-	record display
-	record form
-
-look at bootstrap code to figure out panels and media and such
-"""
-%> 
-
-<div class="row">
-<div class="col-md-10">
-<div class="records">
 	
-	<div class="panel-group" id="accordion">
-		
-		<div class="panel panel-default">
-			% include('new_record_header.tpl')
-			% include('record_form.tpl')
-		</div>
+	<%
+	include('hours_header.tpl', DATA=DATA)
+	%>
 
-		% for record in DATA.records:
+	<div class="row">
+	<div class="col-md-10">
+	<div class="records">
+		
+		<div class="panel-group" id="accordion">
 			
 			<div class="panel panel-default">
-				% include('record_display.tpl', record=record)
+				% include('new_record_header.tpl')
 				% include('record_form.tpl')
 			</div>
-			
-		% end
 
-	</div>
+			% for record in DATA.records:
+				
+				<div class="panel panel-default">
+					% include('record_display.tpl', record=record)
+					% include('record_form.tpl')
+				</div>
 
-</div>
-</div>
-</div>
-
-<!-- Creates an initial form if there are no records yet; otherwise, it doesn't exist -->
-<%'''
-% if not records:
-<!-- INPUTS -->
-<div class="row">
-<div class="col-md-10">
-	<!-- PANEL -->
-	<div class="records">
-		<div class="panel panel-default">
-			
-			<% 
-			include('hours_panel_form.tpl', DATA=DATA, i=0,
-				form_start="", form_end="", min="0000", max="2345",
-				is_new_record=False, is_initial_record=True)
-			%>
+			% end
 
 		</div>
+
 	</div>
-</div>
-</div> 
-'''
-%>
-
-<!-- Creates a series of records; each record has its own form; the records toggle accordion-style -->
-
-% else:
-<div class="row">
-<div class="col-md-10">
-	<div class="records">
-		<div class="panel-group" id="accordion">
-			% records = filter(None, records) # remove empty elements from records 
-
-			<!-- NEW RECORD FORM START -->
-			<!-- ######################################################################################################### -->
-			<!-- ######################################################################################################### -->
-
-			<div class="panel panel-default">
-				
-				<!-- ######################################################################################################### -->
-				<!-- PANEL HEADING START -->
-  			
-  			% include('hours_panel_display.tpl',
-  				% r=None, i=len(records), notes=notes,
-  				% is_new_record=True)
-  			
-  			<!-- PANEL HEADING END -->
-  			<!-- ######################################################################################################### -->
-
-
-  			<!-- ######################################################################################################### -->
-  			<!-- PANEL COLLAPSE/BODY START -->
-  			<!-- differentiated because this form stays open: class="in" -->
-  			<%
-  			namer = labeler.Labeler()
-  			ider = labeler.Labeler(len(records))
-				%>
-				
-				<div class="panel-collapse collapse" name={{namer.record()}} id={{ider.record()}} >
-  				<%
-  				form_start = ""
-
-  				min = "0000"
-  				max = "2345"
-
-  				prev_record = recorder.getPrevRecord(records, ider.i)
-    				
-  				if prev_record:
-  					if (prev_record.end != recorder.PENDING_CHAR):
-  						form_start = prev_record.fend
-  					end
-
-  					min = prev_record.start 
-  				end
-
-  				form_notes = ""
-  				if anchor == "-1":
-  					form_notes = notes
-  				end
-
-  				include('hours_panel_form.tpl',
-  					name=name, date=date, notes=form_notes,
-  					labels=labels, i=len(records),
-  					form_start=form_start, form_end="", min=min, max=max,
-  					is_new_record=True, is_initial_record=False)
-  				%>
-  			</div>
-  			
-  			<!-- PANEL BODY/COLLAPSE END -->
-  			<!-- ######################################################################################################### -->
-		
-			</div>
-			<!-- ######################################################################################################### -->
-			<!-- ######################################################################################################### -->
-			<!-- NEW RECORD FORM END -->
-
-
-			<hr />
-
-
-			<!-- FOR EACH RECORD START -->
-			<!-- ######################################################################################################### -->
-			<!-- ######################################################################################################### -->
-
-			<!-- PROVIDES NAMES FOR HTML ELEMS -->
-			% namer = labeler.Labeler()
-			<!-- PROVIDES IDS FOR HTML ELEMS -->
-			% ider = labeler.Labeler(len(records)-1)
-
-			<!-- RECORDS ARE DISPLAYED IN REVERSE -->
-			% for r in reversed(records):
-
-				<!-- PANEL START -->
-				<div class="panel panel-default">
-
-					<!-- ######################################################################################################### -->
-					<!-- PANEL HEADING START -->					    			
-    			
-    			% include('hours_panel_display.tpl',
-    				% r=r, i=ider.i,
-    				% is_new_record=False)
-    			
-    			<!-- PANEL HEADING END -->
-    			<!-- ######################################################################################################### -->
-
-					<!-- ######################################################################################################### -->
-    			<!-- PANEL COLLAPSE/BODY START -->
-  				<div class="panel-collapse collapse" name={{namer.record()}} id={{ider.record()}} >
-  					
-  					<!-- form_start = prev_record.fend -->
-  					<!-- form_end =  r.fstart -->
-  					<%
-    				form_start = ""
-    				form_end = r.fstart
-
-    				min = "0000"
-    				max = "2345"
-    				if (r.end != recorder.PENDING_CHAR):
-    					max = r.end
-    				end
-
-    				prev_record = recorder.getPrevRecord(records, ider.i)
-    				
-    				if prev_record:
-    					if (prev_record.end != recorder.PENDING_CHAR):
-    						form_start = prev_record.fend
-  						end
-
-  						min = prev_record.start 
-    				end
-
-  					form_notes = ""
-  					if anchor == str(ider.i):
-  						form_notes = notes
-  					end
-
-  					include('hours_panel_form.tpl',
-  						name=name, date=date, notes=form_notes,
-  						labels=labels, i=ider.i,
-  						form_start=form_start, form_end=form_end, min=min, max=max,
-  						is_new_record=False, is_initial_record=False)
-    				%>
-    			</div>					    			
-    			<!-- PANEL BODY/COLLAPSE END -->
-					<!-- ######################################################################################################### -->
-
-				</div>
-				<!-- PANEL END -->
-
-				<hr />
-				
-				<!-- Increment counter after -->
-				% ider.dec()
-
-			% end # end for each record
-
-			<!-- ######################################################################################################### -->
-			<!-- ######################################################################################################### -->
-			<!-- FOR EACH RECORD END -->
-		
-
-			<!-- X -->
-			<!-- X -->
-			<!-- X -->
-
-			
-		</div> <!-- /.panel-group -->
-	</div> <!-- /.records -->
-</div> <!-- /.col-md- -->
-</div> <!-- /.row -->
-% end # if/else
-
-	<!-- ######################################################################################################### -->
-	<!-- ********************************************************************************************************* -->
-	<!-- ######################################################################################################### -->
-	<!-- ********************************************************************************************************* -->
-	<!-- RECORDS LIST END -->
-
+	</div>
+	</div>
 </div> <!-- /.container -->
 
 
