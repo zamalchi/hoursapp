@@ -48,6 +48,11 @@ scss:
 scss-watch:
 	./src/scss/transpiler.sh --watch
 
+# INSTALL
+# ----------------------------------------------------------------------
+install:
+	sudo ./installers/centos7-installer.sh
+
 # MISC
 # ----------------------------------------------------------------------
 clean:
@@ -69,6 +74,9 @@ help:
 	@echo "        ${LBLUE}  vars: PORT${NORMAL}"
 	@echo "    ${LGREEN}debug-watch${NORMAL}"
 	@echo "        ${LBLUE}Run the hours server in debug mode with live reload.${NORMAL}"
+	@echo "${PURPLE}----------------------------------------------------------------------${NORMAL}"
+	@echo "    ${LGREEN}install${NORMAL}"
+	@echo "        ${LBLUE}Installs modules. Only Centos7.${NORMAL}"
 	@echo "${PURPLE}----------------------------------------------------------------------${NORMAL}"
 	@echo "    ${LGREEN}scss${NORMAL}"
 	@echo "        ${LBLUE}Compile scss source files to css static files.${NORMAL}"
