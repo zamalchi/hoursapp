@@ -1,5 +1,5 @@
 <!-- COMPLETE NOTES FORM -->
-<form action="/completeNotes" method="post" name="completeNotes" class="form-inline" enctype="multipart/form-data">
+<form action="/updateNotes" method="post" name="completeNotes" class="form-inline" enctype="multipart/form-data">
 	<div class="form-group full-width">
 
 		<!-- RECORD INDEX : *value* is passed back via form -->
