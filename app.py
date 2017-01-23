@@ -3,8 +3,8 @@
 Bottle Python webapp for recording hours worked
 
 TODO:
-  doc this whole file
-  finish working on recorder module
+  [done] doc this whole file
+  [?] finish working on recorder module
   git flow feature finish docs
   git flow feature start date-nav (add forward/backward buttons for navigating through dates)
   git flow release ...
