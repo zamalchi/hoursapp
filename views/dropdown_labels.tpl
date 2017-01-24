@@ -1,7 +1,16 @@
+<%
+"""
+This sub-template provides a dropdown/text-input field for a record's label
+Inputting text will match the value against REGEX.LABELS (which only allows an existing label)
+"""
+%>
+
 <div name="dropdown-wrapper">
 	<div class="dropdown form-control">
-		<!-- INITIAL VALUES USED FOR DEFAULT AND INDEX OFFSET -->
 		<%
+		"""
+		Splits each label entry into its components: name, billable y/n, and emergency y/n
+		"""
 		ls_name = [""]
 		ls_billable = ["Y"]
 		ls_emergency = ["N"]
@@ -13,17 +22,24 @@
 	  	ls_emergency.append(l[2])
 	  end
 		%>
-		<select class="dropdownSelect" data-index="{{ider.i}}" onchange="dropdownChangeSelect(this)" tabindex="4">
-		   % for i, each in enumerate(ls_name):
-		   	<option value="{{each}}" data-billable="{{ls_billable[i]}}" data-emergency="{{ls_emergency[i]}}">{{each}}</option>
-		   % end
+
+		<select class="dropdown-select" data-index="{{recordIndex}}" tabindex="4"
+			onchange="dropdownChangeSelect(this)">
+
+			% for i, each in enumerate(ls_name):
+				<option value="{{each}}" data-billable="{{ls_billable[i]}}" data-emergency="{{ls_emergency[i]}}">{{each}}</option>
+			% end
+
 		</select>
 		
-		<input type="text" class="dropdownInput" name="{{namer.dropdown()}}" placeholder="Label" id="{{ider.dropdown()}}"
+		<input type="text" name="{{HTML_LABEL.DROPDOWN}}" id="{{HTML_LABEL+recordIndex}}" class="dropdown-input"
+			pattern="{{REGEX.LABELS}}" placeholder="Label"
+			data-name="{{ls_name}}" data-billable="{{ls_billable}}" data-emergency="{{ls_emergency}}" data-index="{{recordIndex}}"
 			onfocus="this.select()" onchange="dropdownChangeType(this)"
-			data-name="{{ls_name}}" data-billable="{{ls_billable}}" data-emergency="{{ls_emergency}}" data-index="{{ider.i}}"
-			required style="text-transform: uppercase;" tabindex="5" pattern="{{REGEX.LABELS}}" />
+			style="text-transform: uppercase;"
+			tabindex="5" required />
 		
-		<input name="{{namer.label()}}" id="{{ider.label()}}" type="hidden">
+		<!-- <input type="hidden" name="{{HTML_LABEL.NAME}}" id="{{HTML_LABEL.NAME+recordIndex}}" /> -->
+
 	</div>
 </div>
