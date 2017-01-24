@@ -26,16 +26,32 @@ REGEX.TIME = "(\s*|(0?[0-9]|1[0-9]|2[0-3]):?(00|15|30|45))"
 
 #########################################################################################################
 
-DATA.date_title = dt.datetime.strftime(DATA.date, "%a %d %b : %Y-%m-%d")
+DATA.dateTitle = dt.datetime.strftime(DATA.date, "%a %d %b : %Y-%m-%d")
 
 # iff any record is pending will this be true
 # it's used for modifying the subtotal with "*" to show there are pending records
-DATA.pending_records = any(r.duration == recorder.PENDING_CHAR for r in DATA.records)
+DATA.pendingRecordsExist = any(r.duration == recorder.PENDING_CHAR for r in DATA.records)
 
 # get all records as a string with each encased in <p></p>
-DATA.record_string = "".join("<p>{record}</p>".format(record=record.emailFormat()) for record in DATA.records)
+DATA.recordString = "".join("<p>{record}</p>".format(record=record.emailFormat()) for record in DATA.records)
 
 #########################################################################################################
+
+BASE_FORM = lambda index=-1, previousRecord=None, nextRecord=None : argparse.Namespace(
+	index = str(index),
+	start = previousRecord.fend if previousRecord and not previousRecord.isPending() else "",
+	end = nextRecord.fstart if nextRecord else "",
+	min = previousRecord.fstart if previousRecord else "0000",
+	max = nextRecord.fend if nextRecord and not nextRecord.isPending() else "2345",
+	notes = DATA.notes if DATA.anchor == str(index) else "")
+
+BASE_DISPLAY = lambda index, record : argparse.Namespace(
+	index = index,
+	record = record)
+
+#########################################################################################################
+
+HTML_LABELS = labeler.HTML_LABELS
 
 ider = labeler.Labeler(len(DATA.records)-1)
 namer = labeler.Labeler()
@@ -62,7 +78,7 @@ namer = labeler.Labeler()
 <div class="container" name="main">
 	
 	<%
-	include('header.tpl', DATA=DATA)
+	include('header.tpl')
 	%>
 
 	<div class="row">
@@ -74,18 +90,19 @@ namer = labeler.Labeler()
 			<!-- NEW RECORD -->
 			<div class="panel panel-default">
 				<%
+
+				# FORM = argparse.Namespace()
+				# FORM.index = -1
+				# FORM.start = previousRecord.fend if previousRecord and not previousRecord.isPending() else ""
+				# FORM.end = ""
+				# FORM.min = previousRecord.fstart if previousRecord else "0000"
+				# FORM.max = "2345"
+				# FORM.notes = DATA.notes if DATA.anchor == str(FORM.index) else ""
+
 				previousRecord = recorder.getPrevRecord(DATA.records, len(DATA.records))
 
-				FORM = argparse.Namespace()
-				FORM.index = -1
-				FORM.start = previousRecord.fend if previousRecord and not previousRecord.isPending() else ""
-				FORM.end = ""
-				FORM.min = previousRecord.fstart if previousRecord else "0000"
-				FORM.max = "2345"
-				FORM.notes = DATA.notes if DATA.anchor == str(FORM.index) else ""
-
-				include('new_record_header.tpl', numRecords=len(DATA.records))
-				include('record_form.tpl', FORM=FORM)
+				include('new_record_header.tpl')
+				include('record_form.tpl', FORM=BASE_FORM(index=-1, previousRecord=previousRecord))
 				%>
 			</div>
 
@@ -94,23 +111,20 @@ namer = labeler.Labeler()
 				
 				<div class="panel panel-default">
 					<%
+
+					# FORM = argparse.Namespace()
+					# FORM.index = ider.i
+					# FORM.start = previousRecord.fend if previousRecord and not previousRecord.isPending() else ""
+					# FORM.end = nextRecord.fstart if nextRecord else ""
+					# FORM.min = previousRecord.fstart if previousRecord else "0000"
+					# FORM.max = nextRecord.fend if nextRecord and not nextRecord.isPending() else "2345"
+					# FORM.notes = DATA.notes if DATA.anchor == str(FORM.index) else ""
+
 					previousRecord = recorder.getPrevRecord(DATA.records, ider.i)
 					nextRecord = recorder.getNextRecord(DATA.records, ider.i)
 
-					DISPLAY = argparse.Namespace()
-					DISPLAY.record = record
-					DISPLAY.index = ider.i
-
-					FORM = argparse.Namespace()
-					FORM.index = ider.i
-					FORM.start = previousRecord.fend if previousRecord and not previousRecord.isPending() else ""
-					FORM.end = nextRecord.fstart if nextRecord else ""
-					FORM.min = previousRecord.fstart if previousRecord else "0000"
-					FORM.max = nextRecord.fend if nextRecord and not nextRecord.isPending() else "2345"
-					FORM.notes = DATA.notes if DATA.anchor == str(FORM.index) else ""
-
-					include('record_display.tpl', DISPLAY=DISPLAY)
-					include('record_form.tpl', FORM=FORM)
+					include('record_display.tpl', DISPLAY=BASE_DISPLAY(index=ider.i, record=record))
+					include('record_form.tpl', FORM=BASE_FORM(index=ider.i, previousRecord=previousRecord, nextRecord=nextRecord))
 					%>
 				</div>
 

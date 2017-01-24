@@ -14,7 +14,7 @@ import modu.labeler as labeler
 
 
 	<div class="media-body" name="recordDisplay">
-		<h4 class="panel-title"><strong>Insert new record: #{{numRecords+1}}</strong></h4>
+		<h4 class="panel-title"><strong>Insert new record: #{{len(DATA.records)+1}}</strong></h4>
 	</div>
 
 </div>

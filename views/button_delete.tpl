@@ -2,7 +2,7 @@
 		<div class="form-group">
 
 			<!-- RECORD INDEX : *value* is passed back via form -->
-			<input name="index" type="hidden" value="{{record_index}}" />
+			<input name="index" type="hidden" value="{{recordIndex}}" />
 
 			<!-- DELETE BUTTON : submits form on double-click -->
 			<button name="delete" type="button"
