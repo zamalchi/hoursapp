@@ -11,7 +11,7 @@ import modu.labeler as labeler
 	<div class="media-left media-middle" name="recordControls">
 		<!-- TODO: which one? what is the index of the new record? -->
 		<!-- # % include("button_collapse.tpl", record_id=ider.record()) -->
-		% include("button_collapse.tpl", recordId=HTML_LABEL.RECORD+0)
+		% include("button_collapse.tpl", recordId=HTML_LABEL.RECORD+index)
 	</div>
 
 

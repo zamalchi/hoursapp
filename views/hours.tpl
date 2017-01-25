@@ -53,8 +53,13 @@ BASE_DISPLAY = lambda index, record : argparse.Namespace(
 
 HTML_LABELS = labeler.HTML_LABELS
 
-ider = labeler.Labeler(len(DATA.records)-1)
-namer = labeler.Labeler()
+# this starts as the index 1 beyond the last record
+# this value is given to the new-record form
+# the last record on the page should have the 0 value
+indexCounter = len(DATA.records)
+
+# ider = labeler.Labeler(len(DATA.records)-1)
+# namer = labeler.Labeler()
 
 %>
 
@@ -77,9 +82,7 @@ namer = labeler.Labeler()
 
 <div class="container" name="main">
 	
-	<%
-	include('header.tpl')
-	%>
+	% include('header.tpl')
 
 	<div class="row">
 	<div class="col-md-10">
@@ -99,14 +102,22 @@ namer = labeler.Labeler()
 				# FORM.max = "2345"
 				# FORM.notes = DATA.notes if DATA.anchor == str(FORM.index) else ""
 
+				# indexCounter should be equal to len(DATA.records)
+				# 	giving this form an index 1 beyond the most recent record
+				# previousRecord is at index len(DATA.records)-1
+				# nextRecord is None (by default)
+
 				previousRecord = recorder.getPrevRecord(DATA.records, len(DATA.records))
 
-				include('new_record_header.tpl')
-				include('record_form.tpl', FORM=BASE_FORM(index=-1, previousRecord=previousRecord))
+				include('new_record_header.tpl', index=indexCounter)
+				include('record_form.tpl', FORM=BASE_FORM(index=indexCounter, previousRecord=previousRecord))
+
+				indexCounter -= 1
 				%>
 			</div>
 
 			<!-- EXISTING RECORDS -->
+			% 
 			% for record in reversed(DATA.records):
 				
 				<div class="panel panel-default">
@@ -120,15 +131,21 @@ namer = labeler.Labeler()
 					# FORM.max = nextRecord.fend if nextRecord and not nextRecord.isPending() else "2345"
 					# FORM.notes = DATA.notes if DATA.anchor == str(FORM.index) else ""
 
-					previousRecord = recorder.getPrevRecord(DATA.records, ider.i)
-					nextRecord = recorder.getNextRecord(DATA.records, ider.i)
+					# indexCounter should start at len(DATA.records)-1 and go to 0
+					# previousRecord should exist until the last record (index 0, since the list is reversed in this loop)
+					# nextRecord should be None during the first iteration (most recent record), and then exist for the rest
 
-					include('record_display.tpl', DISPLAY=BASE_DISPLAY(index=ider.i, record=record))
-					include('record_form.tpl', FORM=BASE_FORM(index=ider.i, previousRecord=previousRecord, nextRecord=nextRecord))
+					previousRecord = recorder.getPrevRecord(DATA.records, indexCounter)
+					nextRecord = recorder.getNextRecord(DATA.records, indexCounter)
+
+					include('record_display.tpl', DISPLAY=BASE_DISPLAY(index=indexCounter, record=record))
+					include('record_form.tpl', FORM=BASE_FORM(index=indexCounter, previousRecord=previousRecord, nextRecord=nextRecord))
+
+					# decrement indexCounter
+					indexCounter -= 1
 					%>
 				</div>
 
-				% ider.dec()
 			% end
 
 		</div>

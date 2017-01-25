@@ -405,16 +405,16 @@ def hours_post():
 ##################################### MISC ROUTES START ################################################
 ########################################################################################################
 
-@app.post('/setCookies')
+@app.post('/pull')
 def set_cookies():
   """ Sets name and date cookies for pulling records without altering them ; redirects to GET /hours """
   #######################################################
   
   # get name of user provided in specified field
-  name = bottle.request.forms.get("setName") or ""
+  name = bottle.request.forms.get("name") or ""
   
   # get date: either set manually or defaults to current day
-  date = recorder.validateDate(bottle.request.forms.get("setDate"))
+  date = recorder.validateDate(bottle.request.forms.get("date"))
   
   #######################################################
   
