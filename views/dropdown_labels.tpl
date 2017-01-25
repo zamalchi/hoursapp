@@ -32,14 +32,14 @@ Inputting text will match the value against REGEX.LABELS (which only allows an e
 
 		</select>
 		
-		<input type="text" name="{{HTML_LABELS.LABEL}}" id="{{HTML_LABELS.LABEL+str(recordIndex)}}" class="dropdown-input"
+		<input type="text" name="{{HTML_LABELS.DROPDOWN}}" id="{{HTML_LABELS.DROPDOWN+str(recordIndex)}}" class="dropdown-input"
 			pattern="{{REGEX.LABELS}}" placeholder="Label"
 			data-name="{{ls_name}}" data-billable="{{ls_billable}}" data-emergency="{{ls_emergency}}" data-index="{{recordIndex}}"
 			onfocus="this.select()" onchange="dropdownChangeType(this)"
 			style="text-transform: uppercase;"
 			tabindex="5" required />
 		
-		<!-- <input type="hidden" name="{{HTML_LABELS.NAME}}" id="{{HTML_LABELS.NAME+recordIndex}}" /> -->
+		<input type="hidden" name="{{HTML_LABELS.LABEL}}" id="{{HTML_LABELS.LABEL+recordIndex}}" />
 
 	</div>
 </div>

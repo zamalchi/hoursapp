@@ -178,7 +178,7 @@ button.x-button {
   margin: 0;
   margin-right: 155px; }
 
-.dropdownSelect {
+.dropdown-select {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -189,7 +189,7 @@ button.x-button {
   padding: 0;
   padding-left: 10px; }
 
-.dropdownInput {
+.dropdown-input {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -203,17 +203,22 @@ button.x-button {
   padding-left: 10px; }
 
 .records {
-  maring-top: 0px;
+  margin-top: 0px;
   padding-left: 20px !important;
   padding-right: 20px !important; }
-  .records h4 {
+  .records .record .record-content {
+    display: inline; }
+  .records .record .record-controls {
+    min-width: 70px !important; }
+    .records .record .record-controls button {
+      display: inline; }
+  .records .record .record-display .record-display-string {
     display: inline;
+    margin-left: -20px !important;
+    padding-top: 2px !important;
     padding-left: 20px;
-    padding-top: 10px; }
-
-.negative-duration {
-  color: red;
-  font-weight: bold; }
+    padding-bottom: 2px !important;
+    width: 100%; }
 
 div.labels label {
   padding-right: 120px; }
@@ -231,11 +236,9 @@ div.panel-body {
 div[name="record-display-col"] {
   margin-left: -10px !important; }
 
-[name="recordControls"] {
-  min-width: 70px !important; }
-
-.record-content {
-  display: inline; }
+.negative-duration {
+  color: red;
+  font-weight: bold; }
 
 input[name="completeEnd"] {
   min-width: 60px;
@@ -250,12 +253,6 @@ input[name="completeEnd"] {
   font-size: 0.9em;
   border: 1px solid red;
   display: inline; }
-
-[name="record-display-string"] {
-  margin-left: -20px !important;
-  padding-top: 2px !important;
-  padding-bottom: 2px !important;
-  width: 100%; }
 
 input[name="notesDisplay"] {
   font-weight: bold;
@@ -297,7 +294,7 @@ fieldset[name="inputs"] {
       padding: 0;
       margin: 0;
       margin-right: 155px; }
-    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdownSelect {
+    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdown-select {
       position: absolute;
       top: 0px;
       left: 0px;
@@ -307,7 +304,7 @@ fieldset[name="inputs"] {
       margin: 0;
       padding: 0;
       padding-left: 10px; }
-    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdownInput {
+    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdown-input {
       position: absolute;
       top: 0px;
       left: 0px;

@@ -188,7 +188,7 @@ function dropdownChangeSelect(self) {
 	// console.log(index, billable, emergency);
 	// console.log(selected);
 
-	var input = self.parentElement.querySelector("[name='dropdown']");
+	var input = self.parentElement.querySelector(".dropdown-input");
 	input.value = self.options[self.selectedIndex].text;
 
 	var value = self.parentElement.querySelector("[name='label']");

@@ -12,12 +12,12 @@ date : not required, but defaults internally to the current date
 	<div name="inputs">
 		
 		<!-- NAME : TEXT -->
-		<input type="text" name="name" class="form-control input-sm"
+		<input type="text" name="name" id="setName" class="form-control input-sm"
 			value="{{DATA.name}}" placeholder="Enter name..."
 			required />
 		
 		<!-- DATE : DATE -->
-		<input type="date" name="date" class="form-control input-sm" />
+		<input type="date" name="date" id="setDate" class="form-control input-sm" />
 
 	</div>
 	

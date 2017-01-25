@@ -1,5 +1,4 @@
 <%
-import modu.labeler as labeler
 import modu.recorder as recorder
 %>
 
@@ -10,21 +9,21 @@ import modu.recorder as recorder
 <div class="row">
 <div class="col-md-12" name="record-display-col">
 
-	<div class="media">
+	<div class="media record">
 
-		<div class="media-left media-middle" name="record-controls">
+		<div class="media-left media-middle record-controls">
 			% include("button_collapse.tpl", recordId=HTML_LABELS.RECORD+str(DISPLAY.index))
 			
 			% include("button_delete.tpl", recordIndex=DISPLAY.index)
 		</div>
 
 		
-		<div class="media-body" name="record-display">
+		<div class="media-body record-display">
 
 			<!-- anchor tag for adjusting page after editing a record -->
 			<a name="{{DISPLAY.index}}"></a>
 
-			<h4 class="panel-title pull-left" name="record-string">
+			<h4 class="panel-title pull-left record-display-string">
 
 				{{DISPLAY.record.name}} | {{DISPLAY.record.date}}
 

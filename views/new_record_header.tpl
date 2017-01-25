@@ -1,6 +1,3 @@
-<%
-import modu.labeler as labeler
-%>
 
 <div class="panel-heading">
 <div class="container-fluid">
