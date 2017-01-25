@@ -13,8 +13,7 @@ import modu.recorder as recorder
 	<div class="media">
 
 		<div class="media-left media-middle" name="record-controls">
-			<!-- TODO: needed in button? : data-index="{{ider.i}}" -->
-			% include("button_collapse.tpl", recordId=HTML_LABELS.RECORD+DISPLAY.index)
+			% include("button_collapse.tpl", recordId=HTML_LABELS.RECORD+str(DISPLAY.index))
 			
 			% include("button_delete.tpl", recordIndex=DISPLAY.index)
 		</div>
