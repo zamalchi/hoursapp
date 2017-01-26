@@ -54,6 +54,9 @@ BASE_DISPLAY = lambda index, record : argparse.Namespace(
 # Provides unified names for HTML elements
 HTML_LABELS = argparse.Namespace()
 HTML_LABELS.RECORD = "record"
+HTML_LABELS.RECORD_FORM = "record-form"
+HTML_LABELS.RECORD_DISPLAY = "record-display"
+
 HTML_LABELS.NAME = "name"
 HTML_LABELS.START = "start"
 HTML_LABELS.END = "end"
@@ -109,7 +112,7 @@ indexCounter = len(DATA.records)
 		<div class="panel-group" id="accordion">
 			
 			<!-- NEW RECORD -->
-			<div class="panel panel-default">
+			<div class="panel panel-default record" id="{{HTML_LABELS.RECORD+str(indexCounter)}}">
 				<%
 				# indexCounter should be equal to len(DATA.records)
 				# 	giving this form an index 1 beyond the most recent record
@@ -130,7 +133,7 @@ indexCounter = len(DATA.records)
 			<!-- EXISTING RECORDS -->
 			% for record in reversed(DATA.records):
 				
-				<div class="panel panel-default">
+				<div class="panel panel-default record">
 					<%
 					# indexCounter should start at len(DATA.records)-1 and go to 0
 					# previousRecord should exist until the last record (index 0, since the list is reversed in this loop)

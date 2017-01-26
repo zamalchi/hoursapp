@@ -3,8 +3,7 @@ import modu.recorder as recorder
 %>
 
 <!-- START OF PANEL-HEADING HTML -->
-
-<div class="panel-heading"> 				
+<div class="panel-heading" id="{{HTML_LABELS.RECORD_DISPLAY+str(DISPLAY.index)}}">
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-12" name="record-display-col">
@@ -12,7 +11,7 @@ import modu.recorder as recorder
 	<div class="media record">
 
 		<div class="media-left media-middle record-controls">
-			% include("button_collapse.tpl", recordId=HTML_LABELS.RECORD+str(DISPLAY.index))
+			% include("button_collapse.tpl", recordFormId=HTML_LABELS.RECORD_FORM+str(DISPLAY.index))
 			
 			% include("button_delete.tpl", recordIndex=DISPLAY.index)
 		</div>

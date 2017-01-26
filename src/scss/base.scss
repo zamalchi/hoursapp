@@ -64,3 +64,14 @@ body[name="viewer"] {
 }
 
 @import 'help';
+
+.record-form {
+
+	background-color: red !important;
+
+	.notes {
+		display: inline-block;
+		width: 70%;
+		min-width: 380px;
+	}
+}

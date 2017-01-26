@@ -1,14 +1,12 @@
 
-<div class="panel-heading">
+<div class="panel-heading" id="{{HTML_LABELS.RECORD_DISPLAY+str(index)}}">
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-12" name="record-display-col">
 <div class="media">
 
-	<div class="media-left media-middle" name="recordControls">
-		<!-- TODO: which one? what is the index of the new record? -->
-		<!-- # % include("button_collapse.tpl", record_id=ider.record()) -->
-		% include("button_collapse.tpl", recordId=HTML_LABELS.RECORD+str(index))
+	<div class="media-left media-middle" name="record-controls">
+		% include("button_collapse.tpl", recordFormId=HTML_LABELS.RECORD_FORM+str(index))
 	</div>
 
 

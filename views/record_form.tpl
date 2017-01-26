@@ -1,9 +1,9 @@
 <%
-import modu.labeler as labeler
 import modu.recorder as recorder
 %>
 
-<div class="panel-collapse collapse" name="{{HTML_LABELS.RECORD}}" id="{{HTML_LABELS.RECORD+str(FORM.index)}}" >
+<div class="panel-collapse collapse record-form" id="{{HTML_LABELS.RECORD_FORM+str(FORM.index)}}" >
+
 <div class="panel-body">
 <div class="container-fluid">
 <div class="row">
@@ -45,7 +45,7 @@ import modu.recorder as recorder
 			% include("dropdown_labels.tpl", recordIndex=FORM.index)
 
 			<!-- NOTES : TEXT -->
-			<input type="text" name="{{HTML_LABELS.NOTES}}" class="form-control record-form-notes"
+			<input type="text" name="{{HTML_LABELS.NOTES}}" class="form-control record-form-notes notes"
 				value="{{FORM.notes}}" placeholder="Notes" 
 				required tabindex="6" />
 

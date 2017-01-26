@@ -260,87 +260,12 @@ input[name="notesDisplay"] {
   display: inline-block;
   width: 100%; }
 
-form fieldset.inputs {
-  margin-top: 20px;
-  margin-bottom: 50px; }
-
-#inputs-submit {
-  margin-top: 10px; }
-
-div.form-group {
-  display: inline; }
-
-fieldset[name="inputs"] {
-  width: 100%; }
-  fieldset[name="inputs"] input {
-    color: black; }
-  fieldset[name="inputs"] div[name="row1"] input {
-    display: inline-block; }
-  fieldset[name="inputs"] div[name="row1"] input[name="name"] {
-    width: 32%; }
-  fieldset[name="inputs"] div[name="row1"] input[name="start"] {
-    width: 32%; }
-  fieldset[name="inputs"] div[name="row1"] input[name="end"] {
-    width: 32%; }
-  fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] {
-    display: inline-block;
-    width: 20%;
-    min-width: 160px; }
-    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdown {
-      position: relative;
-      width: 150px;
-      height: 34px;
-      border: 0;
-      padding: 0;
-      margin: 0;
-      margin-right: 155px; }
-    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdown-select {
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      width: 150px;
-      height: 34px;
-      line-height: 20px;
-      margin: 0;
-      padding: 0;
-      padding-left: 10px; }
-    fieldset[name="inputs"] div[name="row2"] div[name="dropdown-wrapper"] .dropdown-input {
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      width: 130px;
-      /*#width:180px\9;*/
-      /*#width:180px;*/
-      height: 34px;
-      /*#height:21px\9;*/
-      /*#height:18px;*/
-      /*border:1px solid #556;*/
-      padding-left: 10px; }
-  fieldset[name="inputs"] div[name="row2"] div[name="notes-wrapper"] {
+.record-form {
+  background-color: red !important; }
+  .record-form .notes {
     display: inline-block;
     width: 70%;
     min-width: 380px; }
-    fieldset[name="inputs"] div[name="row2"] div[name="notes-wrapper"] input {
-      display: inline-block;
-      width: 100%; }
-  fieldset[name="inputs"] div[name="row3"] div[name="left"] {
-    display: inline-block;
-    width: 79%; }
-    fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="duration-wrapper"] {
-      display: inline-block;
-      width: 30%; }
-      fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="duration-wrapper"] input {
-        display: inline-block;
-        width: 100%; }
-    fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="billable"],
-    fieldset[name="inputs"] div[name="row3"] div[name="left"] div[name="emergency"] {
-      margin-left: 10px;
-      display: inline-block;
-      width: 30%; }
-  fieldset[name="inputs"] div[name="row3"] div[name="right"] {
-    display: inline-block;
-    width: 19%;
-    float: right; }
 
 body[name="viewer"] {
   font-family: Monospace; }
@@ -359,5 +284,12 @@ div#help {
     margin-top: 0px; }
   div#help div#target-body {
     padding-bottom: 10px; }
+
+.record-form {
+  background-color: red !important; }
+  .record-form .notes {
+    display: inline-block;
+    width: 70%;
+    min-width: 380px; }
 
 /*# sourceMappingURL=main.css.map */

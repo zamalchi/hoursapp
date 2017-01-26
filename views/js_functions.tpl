@@ -24,25 +24,26 @@ $( document ).ready(function() {
 	
 	n = number of records as well as the index of the new record form
 	i = index of the record
-	*/ 
-	// 1) will anchor to the record display <a name="{anchor}">
+	*/
+
+	// 1) anchor to the record display <a name="{anchor}">
 	var anchor = String(document.body.attributes["data-anchor"].value);
 	window.location.hash = anchor;
 
-	// 2) will open one of the collapse <div id="{'record'+collapseIndex}">
+	// 2) open one of the collapse <div id="{'record'+collapseIndex}">
 	var collapseIndex = String(document.body.attributes["data-default-collapse-index"].value);
 	if (anchor !== "-1") { collapseIndex = anchor; }
-	$("#record" + collapseIndex).addClass("in");
+	$("#record-form" + collapseIndex).addClass("in");
 
-	// 3) displays response message from logging server, if it is passed in
+	// 3) display response message from logging server, if it is passed in
 	var msg = String(document.body.attributes["data-server-response"].value);
 	if (msg != "") { alert(msg); }
 
-	// 4) prevents old values from being retained
-	document.getElementById("emailConfirm").value = "false";
-	document.getElementById("sendConfirm").value = "false";
+	// 4) prevent old values from being retained
+	document.getElementById("confirm-email").value = "false";
+	document.getElementById("confirm-send").value = "false";
 
-	// 5) focuses one of the elements in the collapsing record form that was opened
+	// 5) focus one of the elements in the collapsing record form that was opened
 	var name = $("#name" + collapseIndex);
 	var start = $("#start" + collapseIndex);
 	var end = $("#end" + collapseIndex);
@@ -57,7 +58,7 @@ $( document ).ready(function() {
 function confirmDelete() {
 	var choice = confirm("Are you sure you want to delete records?");
 	if (choice) {
-		document.getElementById("deleteConfirm").value = "true";
+		document.getElementById("comfirm-delete-all").value = "true";
 	}
 }
 
@@ -65,7 +66,7 @@ function confirmSend(self) {
 	var choice = confirm("Are you sure you want to send records?")
 
 	if (choice) {
-		document.getElementById("sendConfirm").value = "true";
+		document.getElementById("confirm-email").value = "true";
 	}
 }
 
@@ -78,7 +79,7 @@ function confirmEmail(self) {
 		"Are you sure you want to email records?");
 
 	if (choice) {
-		document.getElementById("emailConfirm").value = "true";
+		document.getElementById("confirm-email").value = "true";
 	}
 }
 
@@ -103,7 +104,7 @@ function adjustNextIndex(insertID, recordIndex) {
 
 
 function openViewer() {
-	var str = document.getElementById("viewRecords").value;
+	var str = document.getElementById("view-records").value;
 	OpenWindow=window.open("", "newwin", "width=940, height=750, toolbar=no,scrollbars="+scroll+",menubar=no");
 	OpenWindow.moveTo(0,0);
 	OpenWindow.document.write(`

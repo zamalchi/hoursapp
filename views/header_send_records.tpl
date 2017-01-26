@@ -8,6 +8,6 @@
 		<input id="send" name="send" type="submit" value="Send" class="control-button btn btn-success btn-sm"
 			onclick="confirmSend(this)" />
 		
-		<input id="sendConfirm" name="confirm" type="hidden" value="false" />
+		<input id="confirm-send" name="confirm" type="hidden" value="false" />
 	</div>
 </form>
