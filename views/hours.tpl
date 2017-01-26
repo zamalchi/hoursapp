@@ -112,7 +112,7 @@ indexCounter = len(DATA.records)
 		<div class="panel-group" id="accordion">
 			
 			<!-- NEW RECORD -->
-			<div class="panel panel-default record" id="{{HTML_LABELS.RECORD+str(indexCounter)}}">
+			<div class="panel panel-default record" id="record{{str(indexCounter)}}">
 				<%
 				# indexCounter should be equal to len(DATA.records)
 				# 	giving this form an index 1 beyond the most recent record

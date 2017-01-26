@@ -1,12 +1,9 @@
 
-<div class="panel-heading" id="{{HTML_LABELS.RECORD_DISPLAY+str(index)}}">
-<div class="container-fluid">
-<div class="row">
-<div class="col-md-12" name="record-display-col">
+<div class="panel-heading" id="record-display{{str(index)}}">
 <div class="media">
 
 	<div class="media-left media-middle" name="record-controls">
-		% include("button_collapse.tpl", recordFormId=HTML_LABELS.RECORD_FORM+str(index))
+		% include("button_collapse.tpl", target="record-form"+str(index))
 	</div>
 
 

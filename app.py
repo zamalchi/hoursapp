@@ -333,11 +333,11 @@ def hours_post():
   #######################################################
   
   # name of user
-  name = bottle.request.forms.get(HTML_LABELS.NAME).strip()
+  name = bottle.request.forms.get("name").strip()
   # date : either picked by user or default today
   date = Cookies.get.date(bottle.request)
   # index for inserting new Record into the list of records
-  index = int(bottle.request.forms.get(HTML_LABELS.INSERT))
+  index = int(bottle.request.forms.get("index"))
   
   #######################################################
   
@@ -507,7 +507,7 @@ def update_notes():
   date = Cookies.get.date(bottle.request)
   
   # TODO: again, check after template changes
-  newNotes = bottle.request.forms.get("notesDisplay")
+  newNotes = bottle.request.forms.get("notes")
   # replace <br> with " " in case of enter button being pressed
   newNotes = newNotes.replace("<br>", " ").strip()
 
@@ -544,7 +544,7 @@ def complete_end_time():
   
   # get the submitted end time (which has already been pattern matched) OR get current rounded time
   # TODO: ensure this is good, in case of template changes
-  end = recorder.parseTime(bottle.request.forms.get('completeEnd')) or recorder.getCurrentRoundedTime()
+  end = recorder.parseTime(bottle.request.forms.get('end')) or recorder.getCurrentRoundedTime()
   
   # get name and date cookies
   name = Cookies.get.name(bottle.request)
