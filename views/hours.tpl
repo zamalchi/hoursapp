@@ -89,7 +89,10 @@ indexCounter = len(DATA.records)
 </head>
 
 
-<body data-index="{{DATA.anchor}}" data-server-response="{{DATA.msg}}">
+<body data-anchor="{{DATA.anchor}}"
+			data-default-collapse-index="{{len(DATA.records)}}"
+			data-server-response="{{DATA.msg}}">
+
 <a name="-1"></a> <!-- default anchor tag -->
 
 <div class="container" name="main">

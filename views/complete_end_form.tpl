@@ -2,7 +2,7 @@
 	<div class="form-group">
 
 		<!-- RECORD INDEX : HIDDEN -->
-		<input type="hidden" name="{{HTML_LABEL.RECORD}}" value="{{recordIndex}}" />
+		<input type="hidden" name="{{HTML_LABELS.RECORD}}" value="{{recordIndex}}" />
 
 		<!-- TODO: finish here -->
 		<!-- END TIME : TEXT : input able to submit form ; value is passed back -->

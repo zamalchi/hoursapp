@@ -2,39 +2,53 @@
 
 <script>
 
-// goes to the anchor tag of the just-edited record or the top of page
+// FIRES ON PAGE LOAD (GET /hours)
 $( document ).ready(function() {
-	var i = String(document.body.attributes["data-index"].value);
-	window.location.hash = i;
+	/* This function performs 5 things:
+			1) anchors the page to a record display anchor <a name="{anchor}"> (var: anchor)
+				anchor === "-1"   : top of the page, default value
+				anchor === i (0-n): one of the records, including the new record form
 
+			2) adds 'in' class to <div id="{'record'+collapseIndex}"> (var: collapseIndex)
+				anchor === "-1"   : open new record form (id="record"+n)
+				anchor === i (0-n): set the collapseIndex to equal anchor and open that form
+
+			3) displays a resonse message from the logging server
+				after sending records and redirect, this value will be passed in
+
+			4) resets email and send confirmation elements to "false"
+				prevents retention of old values as when hitting back in the browser
+
+			5) focus one of (name, start, end) in <div id="{'record'+collapseIndex}">
+				precident is in the order listed and is based on whether a value has been filled
+	
+	n = number of records as well as the index of the new record form
+	i = index of the record
+	*/ 
+	// 1) will anchor to the record display <a name="{anchor}">
+	var anchor = String(document.body.attributes["data-anchor"].value);
+	window.location.hash = anchor;
+
+	// 2) will open one of the collapse <div id="{'record'+collapseIndex}">
+	var collapseIndex = String(document.body.attributes["data-default-collapse-index"].value);
+	if (anchor !== "-1") { collapseIndex = anchor; }
+	$("#record" + collapseIndex).addClass("in");
+
+	// 3) displays response message from logging server, if it is passed in
 	var msg = String(document.body.attributes["data-server-response"].value);
-
 	if (msg != "") { alert(msg); }
 
-	// to prevent old values from being retained (ex submitting and then hitting back in the browser)
+	// 4) prevents old values from being retained
 	document.getElementById("emailConfirm").value = "false";
 	document.getElementById("sendConfirm").value = "false";
 
-	var counter = $("#num-records").val();
-
-	// if -1 (default value) --> open new record form
-	if (i == "-1") { i = counter; }
-
-	// // open the collapse form of the record corresponding to the anchor index	
-	$("#record" + i).addClass("in");
-
-	var name = $("#name" + i);
-	var start = $("#start" + i);
-	var end = $("#end" + i);
-
-	if (name.val() == false) {
-		name.focus();
-	} else if (start.val() == false) {
-		start.focus();
-	} else if (end.val() == false) {
-		end.focus();
-	}
-
+	// 5) focuses one of the elements in the collapsing record form that was opened
+	var name = $("#name" + collapseIndex);
+	var start = $("#start" + collapseIndex);
+	var end = $("#end" + collapseIndex);
+	if 			(name.val() == false)  { name.focus(); }
+	else if (start.val() == false) { start.focus(); }
+	else if (end.val() == false)   { end.focus(); }
 });
 
 // ####################################################################################################
@@ -188,7 +202,7 @@ function dropdownChangeSelect(self) {
 	// console.log(index, billable, emergency);
 	// console.log(selected);
 
-	var input = self.parentElement.querySelector(".dropdown-input");
+	var input = self.parentElement.querySelector("[name='dropdown']");
 	input.value = self.options[self.selectedIndex].text;
 
 	var value = self.parentElement.querySelector("[name='label']");
