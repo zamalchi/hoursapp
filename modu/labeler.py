@@ -1,24 +1,30 @@
 #!/usr/bin/env python
 
+import argparse
+
+HTML_LABELS = argparse.Namespace()
+HTML_LABELS.RECORD = "record"
+HTML_LABELS.NAME = "name"
+HTML_LABELS.START = "start"
+HTML_LABELS.END = "end"
+HTML_LABELS.DURATION = "duration"
+HTML_LABELS.BILLABLE = "billable"
+HTML_LABELS.EMERGENCY = "emergency"
+HTML_LABELS.LABEL = "label"
+HTML_LABELS.NOTES = "notes"
+HTML_LABELS.SUBMIT = "submit"
+HTML_LABELS.INSERT = "insert"
+HTML_LABELS.DROPDOWN = "dropdown"
+HTML_LABELS.COMPLETE = "complete"
+HTML_LABELS.EDIT = "edit"
+HTML_LABELS.NEW_NOTES = "newNotes"
+HTML_LABELS.COMPLETE_END_TIME = "completeEndTime"
+
+
 # class that creates an object for labeling and id'ing HTML objects
 
 class Labeler:
-  RECORD = "record"
-  NAME = "name"
-  START = "start"
-  END = "end"
-  DURATION = "duration"
-  BILLABLE = "billable"
-  EMERGENCY = "emergency"
-  LABEL = "label"
-  NOTES = "notes"
-  SUBMIT = "submit"
-  INSERT = "insert"
-  DROPDOWN = "dropdown"
-  COMPLETE = "complete"
-  EDIT = "edit"
-  NEW_NOTES = "newNotes"
-  COMPLETE_END_TIME = "completeEndTime"
+
 
   def __init__(self, i=None):
     if i != None:
@@ -39,99 +45,99 @@ class Labeler:
   #############################################
   def record(self):
     if self.i != None:
-      return Labeler.RECORD + str(self.i)
+      return HTML_LABELS.RECORD + str(self.i)
     else:
-      return Labeler.RECORD
+      return HTML_LABELS.RECORD
 
   def name(self):
     if self.i != None:
-      return Labeler.NAME + str(self.i)
+      return HTML_LABELS.NAME + str(self.i)
     else:
-      return Labeler.NAME
+      return HTML_LABELS.NAME
 
   def start(self):
     if self.i != None:
-      return Labeler.START + str(self.i)
+      return HTML_LABELS.START + str(self.i)
     else:
-      return Labeler.START
+      return HTML_LABELS.START
 
   def end(self):
     if self.i != None:
-      return Labeler.END + str(self.i)
+      return HTML_LABELS.END + str(self.i)
     else:
-      return Labeler.END
+      return HTML_LABELS.END
 
   def duration(self):
     if self.i != None:
-      return Labeler.DURATION + str(self.i)
+      return HTML_LABELS.DURATION + str(self.i)
     else:
-      return Labeler.DURATION
+      return HTML_LABELS.DURATION
 
   def billable(self):
     if self.i != None:
-      return Labeler.BILLABLE + str(self.i)
+      return HTML_LABELS.BILLABLE + str(self.i)
     else:
-      return Labeler.BILLABLE
+      return HTML_LABELS.BILLABLE
 
   def emergency(self):
     if self.i != None:
-      return Labeler.EMERGENCY + str(self.i)
+      return HTML_LABELS.EMERGENCY + str(self.i)
     else:
-      return Labeler.EMERGENCY
+      return HTML_LABELS.EMERGENCY
 
   def label(self):
     if self.i != None:
-      return Labeler.LABEL + str(self.i)
+      return HTML_LABELS.LABEL + str(self.i)
     else:
-      return Labeler.LABEL
+      return HTML_LABELS.LABEL
 
   def notes(self):
     if self.i != None:
-      return Labeler.NOTES + str(self.i)
+      return HTML_LABELS.NOTES + str(self.i)
     else:
-      return Labeler.NOTES
+      return HTML_LABELS.NOTES
 
   def submit(self):
     if self.i != None:
-      return Labeler.SUBMIT + str(self.i)
+      return HTML_LABELS.SUBMIT + str(self.i)
     else:
-      return Labeler.SUBMIT
+      return HTML_LABELS.SUBMIT
 
   def insert(self):
     if self.i != None:
-      return Labeler.INSERT + str(self.i)
+      return HTML_LABELS.INSERT + str(self.i)
     else:
-      return Labeler.INSERT
+      return HTML_LABELS.INSERT
 
   def dropdown(self):
     if self.i != None:
-      return Labeler.DROPDOWN + str(self.i)
+      return HTML_LABELS.DROPDOWN + str(self.i)
     else:
-      return Labeler.DROPDOWN
+      return HTML_LABELS.DROPDOWN
 
   def complete(self):
     if self.i != None:
-      return Labeler.COMPLETE + str(self.i)
+      return HTML_LABELS.COMPLETE + str(self.i)
     else:
-      return Labeler.COMPLETE
+      return HTML_LABELS.COMPLETE
 
   def edit(self):
     if self.i != None:
-      return Labeler.EDIT + str(self.i)
+      return HTML_LABELS.EDIT + str(self.i)
     else:
-      return Labeler.EDIT
+      return HTML_LABELS.EDIT
 
   def new_notes(self):
     if self.i != None:
-      return Labeler.NEW_NOTES + str(self.i)
+      return HTML_LABELS.NEW_NOTES + str(self.i)
     else:
-      return Labeler.NEW_NOTES
+      return HTML_LABELS.NEW_NOTES
 
   def complete_end_time(self):
     if self.i != None:
-      return Labeler.COMPLETE_END_TIME + str(self.i)
+      return HTML_LABELS.COMPLETE_END_TIME + str(self.i)
     else:
-      return Labeler.COMPLETE_END_TIME
+      return HTML_LABELS.COMPLETE_END_TIME
 
 
   #############################################

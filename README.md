@@ -1,18 +1,25 @@
-<center>
-<h2>
+----
 
-[hours](https://github.com/zamalchi/hoursapp.git) : bottle app for recording hours worked
-
-</h2>
-</center>
-
-<center>
-<h4>
-    
-**[UPDATES](#updates)** - [installation](#installation) - [running](#running) - [usage](#usage) - [remote host logging](#remote-host-logging) - [misc](#misc)
-
-</h4>
-</center>
+<a name="running"></a>
+####Running :
+- the server will run continuously in a terminal
+- use `run.sh` to start the server (runs command: `/usr/bin/env python app.py -p 8080`)
+    - to specify an alternate port: `./run.py PORT=<port>`
+- `Makefile` contains useful commands for running the server and manipulating server files
+    - `make run` is an alternate way to start the server (also accepts `PORT=<port>`)
+    - `make debug` will run the server in debug mode and display additional console messages
+- full list of arguments available for `app.py`:
+    - `-p <port>`
+    - `-d` : debug mode
+    - `-r` : automatic reloading on-change to `app.py`
+- configuration file `config/settings` : establishes SMTP emailing and remote-host logging
+    - should contain newline-separated fields in the format: `name=value`
+    - email (necessary for being able to send records via SMTP):
+        - SMTP sender: `sender=foo`
+        - SMTP reciever: `receivers=foo,bar`
+    - remote logging (optional here, see section "Remote Host Logging") :
+        - server address: `loggingServerAddress=0.0.0.0`
+        - server port: `loggingServerPort=1234`
 
 ----
 
@@ -35,24 +42,6 @@
     - run : `yum install -y python-pip`
 - [Centos 6.3 install](https://github.com/h2oai/h2o-2/wiki/installing-python-2.7-on-centos-6.3.-follow-this-sequence-exactly-for-centos-machine-only)
 - [Centos 6/7 install](http://tecadmin.net/install-python-2-7-on-centos-rhel/)
-
-----
-
-<a name="running"></a>
-####Running :
-- the server will run continuously in a terminal
-- use (and modify) : `./launcher.sh` to run the server with presets 
-- OR use : `./run.py` to manually add command-line arguments
-    - `run.py` uses:
-    - `-p` : port (required) (preset : 8080)
-- optional file : `config/settings` for establishing SMTP emailling and remote-host logging
-    - should contain newline-separated fields in the format: `name=value`
-    - email :
-        - SMTP sender: `sender=foo`
-        - SMTP reciever: `receivers=foo,bar`
-    - remote logging (see section "Remote Host Logging") :
-        - server address: `loggingServerAddress=0.0.0.0`
-        - server port: `loggingServerPort=1234`
 
 ----
 
@@ -103,6 +92,7 @@
 <a name="remote-host-logging"></a>
 #### Remote Host Logging :
 - secondary method of storing hours
+- not necessary in order to use the app
 - requires : `sshuttle` to be connecting to the remote host
 - requires : an instance of the companion [crypto app](https://github.com/zamalchi/crypto-app) on the remote host
 - sources file : `config/crypto` for keys to use in encrypting and decrypting records
@@ -117,6 +107,7 @@
     - file name format : `YY-MM-DD-name`
 - labels populated by `config/labels.txt`
 - scss --> css transpiler script : `src/scss/transpiler.sh`
+    - `make scss` and `make scss-watch` will also transpile scss code
 
 <a href="#top">
     <div style="background-color: lightgrey; position: fixed; right: 0; top: 0; border: 2px solid black; border-radius: 3px;">

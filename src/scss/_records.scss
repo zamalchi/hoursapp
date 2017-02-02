@@ -3,27 +3,64 @@
 
 @import 'dropdown';
 
+// ###################################################
 .records {
-	maring-top: 0px;
+	margin-top: 0px;
 	padding-left: 20px !important;
 	padding-right: 20px !important;
 
-	h4 {
-		display: inline;
-		padding-left: 20px;
-		padding-top: 10px;
+	.record {
+
+		.record-content {
+			display: inline;
+		}
+
+		.record-controls {
+			min-width: 70px !important;
+
+			button {
+				display: inline;
+			}
+		}
+
+		.record-display {
+
+			.record-display-string {
+				display: inline;
+				margin-left: -20px !important;
+				padding-top: 2px !important;
+				padding-left: 20px;
+				padding-bottom: 2px !important;
+				width: 100%;
+
+				// padding-top: 10px;
+			}
+		}
 	}
+}
+// ###################################################
+
+// .records {
+	// margin-top: 0px;
+	// padding-left: 20px !important;
+	// padding-right: 20px !important;
+
+	// h4 {
+	// 	display: inline;
+	// 	padding-left: 20px;
+	// 	padding-top: 10px;
+	// }
 
 	// table tr td {
 	// 	padding: 10px;
 	// 	font-size: 1.15em;
 	// }
-}
+// }
 
-.negative-duration {
-	color: $red;
-	font-weight: bold;
-}
+// .negative-duration {
+// 	color: $red;
+// 	font-weight: bold;
+// }
 
 // div.billable, div.emergency {
 //     display: inline;
@@ -54,13 +91,20 @@ div[name="record-display-col"] {
 	margin-left: -10px !important;
 }
 
-[name="recordControls"] {
-	min-width: 70px !important;
+// [name="record-controls"] {
+// 	min-width: 70px !important;
+// }
+
+
+
+.negative-duration {
+	color: $red;
+	font-weight: bold;
 }
 
-.record-content {
-	display: inline;
-}
+// ###################################################
+
+
 
 input[name="completeEnd"] {
 	min-width: 60px;
@@ -78,17 +122,17 @@ input[name="completeEnd"] {
 	display: inline;
 }
 
-[name="record-display-string"] {
-	margin-left: -20px !important;
-	padding-top: 2px !important;
-	padding-bottom: 2px !important;
-	width: 100%;
-}
+// [name="record-display-string"] {
+// 	margin-left: -20px !important;
+// 	padding-top: 2px !important;
+// 	padding-bottom: 2px !important;
+// 	width: 100%;
+// }
 
 input[name="notesDisplay"] {
 	font-weight: bold;
 	margin-top: 5px;
 	display: inline-block;
-	width: 100%;
+	width: 70%;
 }
 

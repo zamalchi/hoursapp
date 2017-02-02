@@ -1,129 +1,155 @@
 #!/usr/bin/env python
+"""
+Module for manipulating records of hours worked
+  
+Record
+  Object that simulates a single record of work done
+RecordMalFormedException
+  Wrapped exception used and required, internally, by the Record class
 
-### INSTRUCTIONS #######################################################################################
+After importing, set (optional):
+  ROOT_DIR - default: '.'
+  HOURS_DIR - default: './hours'
+"""
 
-# from Record import \
-#   Record
-#   RecordMalformedException (required by Record)
-
-# (optional) after importing, set:
-#   Record.ROOT_DIR - default: '.'
-#   Record.HOURS_DIR - default: './hours'
-
-### PACKAGES ###########################################################################################
+### IMPORTS ############################################################################################
 
 import calendar
 import datetime as dt
 import os
-import time
-
-### IMPORTS ############################################################################################
 
 ### RUNNING AS MAIN ####################################################################################
 
 if __name__ == "__main__":
-  print("Import class: from Record import Record, RecordMalformedException")
+  print("Import class.")
   print("Exiting...")
-  exit()
+  exit(1)
 
-# default values : set after importing class
+### MODULE VARS ########################################################################################
+
 ROOT_DIR = "."
-HOURS_DIR = os.path.join(ROOT_DIR, "hours")
+""" Allows the module to reference the root project directory
+Recommended to manually set after importing """
 
-# used as a placeholder for the end time in an ongoing record
-# it is replaced when the next record is created (with the new start time)
+HOURS_DIR = os.path.join(ROOT_DIR, "hours")
+""" Where the module will save recorded-hours files
+Recommended to manually set after importing """
+
 PENDING_CHAR = "***"
+""" Used as a placeholder for the end time and duration in a record
+It is replaced (within the record) when the next record is created or when the end time is supplied """
 
 PERIOD_END = 25
-
+""" Day of the month on which the pay period ends """
 
 ########################################################################################################
-#######################################  	CLASS DEF START	 #############################################
+#### CLASS DEF START ###################################################################################
 ########################################################################################################
+
 class Record:
-  ### CONSTRUCTOR START ##################################################################################
-  ########################################################################################################
+  """
+  Object that simulates a single record of work done
+  """
   
-  ### DEFAULT CONSTRUCTOR: PARSES PROPERLY FORMATTED STRING INTO RECORD OBJECT ###########################
   def __init__(self, string):
+    """ PUBLIC - Default Constructor
+    Parses a properly-formatted string into a Record object
+    :param string: <str> to parse - must be in correct format
     
+    Format: "name|startDate start|endDate end|duration|label|billable|emergency|notes(|durationLocked)"
+    Example: "test|2017-01-12 12:00|2017-01-12 16:30|4.5|TS|N|N|test0|False"
+    
+    Optional field 'durationLocked': will default to False
+    Invalid string: throws a RecordMalformedException
+    """
     try:
-      
       #######################################################
-      
+  
       elems = string.split('|')
       start_DT = elems[1].split(" ")
       end_DT = elems[2].split(" ")
-      
+  
       #######################################################
-      
+  
       self.name = elems[0]
-      
+      """ <str> : username of the person working """
+  
       self.date = validateDate(start_DT[0])
-      
+      """ <datetime.date> : date of work done """
+  
       #######################################################
-      
-      # formatted start ("HH:MM")
+  
       self.fstart = start_DT[1]
-      
-      # start ("HHMM")
+      """ <str> : "HH:MM"-formatted start time for work done """
+  
       self.start = parseTime(self.fstart)
-      
-      # formatted end ("HH:MM")
+      """ <str> : "HHMM"-formatted start time for work done """
+  
       self.fend = end_DT[1]
-      
-      # end ("HHMM")
+      """ <str> : "HH:MM"-formatted end time for work done """
+  
       self.end = parseTime(self.fend)
-      
+      """ <str> : "HHMM"-formatted end time for work done """
+  
       #######################################################
-      
+  
       self.duration = elems[3]
-      
+      """ <str> : number of hours, in decimal, of work done """
+  
       self.label = elems[4]
-      
+      """ <str> : label of project/entity for which work was done """
+  
       self.billable = elems[5]
+      """ <str/char> : 'Y'|'N' flag for whether work is billable """
+  
       self.emergency = elems[6]
-      
+      """ <str/char> : 'Y'|'N' flag for whether work was emergent """
+  
       self.notes = elems[7]
+      """ <str> : description of what work was done """
+  
+      #######################################################
+  
+      self.durationLocked = False
+      """ <bool> : if True, prevents future changes to the duration of the work done
+      This is set to True by manually entering a duration for the work
+      It is only visible in the Record object or in the hidden version of the log file
+      """
+
+      if (len(elems) == 9) and (elems[8] == "True"):
+        self.durationLocked = True
       
       #######################################################
-      
-      # in the case of trying to construct a record without a durationLocked field (elems[8])
-      if len(elems) < 9:
-        # default to False
-        self.durationLocked = False
-      
-      else:
-        # if manually entered, the duration will NOT be adjustable
-        # this field is only visible in the Record object or in the hidden version of the file
-        if elems[8] == "True":
-          self.durationLocked = True
-        else:
-          self.durationLocked = False
-    
+
     except Exception:
       raise RecordMalformedException("ERROR - INVALID __init__ STRING : " + string)
   
-  ########################################################################################################
-  ### CONSTRUCTOR END ####################################################################################
   
-  #
-  #
-  
-  ### DURATION METHODS START #############################################################################
+  ### DURATION METHODS ###################################################################################
   ########################################################################################################
   
-  ### SETS DURATION TO SUPPLIED VALUE ####################################################################
   def setDuration(self, duration):
+    """
+    Sets the duration to a supplied value
+    :param duration: <float|(str)> new duration value (casts to float)
+    """
+    # TODO: decide if I want to change this to @duration.setter and add @property functions
     self.duration = float(duration)
   
-  ### CALCULATES THE DURATION FROM START AND END TIMES, THEN SETS THE DURATION ###########################
+  
   def calculateAndSetDuration(self):
+    """
+    Calculates the duration from own start and end times, then sets the duration
+    """
+    # TODO: decide if I want to change up getDuration (module func) in relation to setDuration (class func)
     self.setDuration(getDuration(self.start, self.end))
   
-  ### IF NOT LOCKED, *MODIFIES* THE DURATION BY THE SUPPLIED AMOUNT ######################################
+  
   def modifyDuration(self, amount):
-    
+    """
+    Modifies the existing duration by a specified amount, iff not durationLocked
+    :param amount: <float|(str)> number of hours, in decimal, by which to shift the duration (casts to float)
+    """
     if not self.durationLocked:
       # get the duration
       d = float(self.duration)
@@ -134,122 +160,147 @@ class Record:
       # set modified duration
       self.duration = str(d)
   
-  ########################################################################################################
-  ### DURATION METHODS END ###############################################################################
-  
-  #
-  #
-  
-  ### TIME METHODS START #################################################################################
+    
+  ### TIME METHODS #######################################################################################
   ########################################################################################################
   
-  ### SET START TIME WHILE ENSURING CORRECT PARSING/FORMATTING ###########################################
+  def isPending(self):
+    """
+    True iff an end time has not been supplied
+    If pending, self.end and self.duration have been set as PENDING_CHAR
+    :return: <bool> pending status of record
+    """
+    return self.end == PENDING_CHAR
+
+  
   def setStart(self, time):
+    """
+    Sets the start time while ensuring correct parsing/formatting
+    :param time: <str> value to set as start time
+    """
+    time = str(time)
     
-    t = str(time)
+    # parse time for start field (format "HHMM")
+    parsed = parseTime(time)
     
-    # parse time for start field
-    i = parseTime(t)
+    # format parsed time for fstart (formatted start) field (format "HH:MM")
+    formatted = formatTime(parsed)
     
-    # format parsed time for fstart (formatted start) field
-    s = formatTime(i)
-    
-    self.start = i
-    self.fstart = s
+    self.start = parsed
+    self.fstart = formatted
   
-  ### SET END TIME WHILE ENSURING CORRECT PARSING/FORMATTING #############################################
+  
   def setEnd(self, time):
-    t = str(time)
+    """
+    Sets the end time while ensuring correct parsing/formatting
+    :param time: <str> value to set as start time
+    """
+    time = str(time)
+
+    # parse time for start field (format "HHMM")
+    parsed = parseTime(time)
+
+    # format parsed time for fstart (formatted start) field (format "HH:MM")
+    formatted = formatTime(parsed)
     
-    # parse time for end field
-    i = parseTime(t)
-    
-    # format parsed time for fend (formatted end) field
-    s = formatTime(i)
-    
-    self.end = i
-    self.fend = s
+    self.end = parsed
+    self.fend = formatted
   
-  ### MODIFY START TIME AND DURATION BY ADDING SUPPLIED AMOUNT ###########################################
+  
   def modifyStart(self, amount):
-    
+    """
+    Modify the start time and duration by the supplied amount
+    :param amount: <float|(str)> number of hours, in decimal, by which to shift the start and duration (casts to float)
+    """
     # get start time in minutes
     start = convertTimeToMinutes(self.start)
     
     # convert amount into minutes and add to start time
-    new = float(start) + (float(amount) * 60)
+    newStart = float(start) + (float(amount) * 60)
     
-    # set start to new value (converted back into a string)
-    self.setStart(convertMinutesToTime(int(new)))
+    # TODO: double check that the int casting is needed
+    # set start to newStart value (converted back into a string)
+    self.setStart(convertMinutesToTime(int(newStart)))
     
     # modify the duration by subtracting the amount added to the start time
     self.modifyDuration(-float(amount))
   
-  ### MODIFY END TIME AND DURATION BY A SUPPLIED AMOUNT ##################################################
+  
   def modifyEnd(self, amount):
-    
+    """
+    Modify the end time and duration by the supplied amount
+    :param amount: <float|(str)> number of hours, in decimal, by which to shift the end and duration (casts to float)
+    """
     # get the end time in minutes
     end = convertTimeToMinutes(self.end)
     
     # convert amount into minutes and add to end time
-    new = float(end) + (float(amount) * 60)
+    newEnd = float(end) + (float(amount) * 60)
     
-    # set end to new value (converted back into a string)
-    self.setEnd(convertMinutesToTime(int(new)))
+    # TODO: double check that the int casting is needed
+    # set end to newEnd value (converted back into a string)
+    self.setEnd(convertMinutesToTime(int(newEnd)))
     
     # modify the duration by adding the amount added to the end time
     self.modifyDuration(float(amount))
   
-  ### MODIFY START AND END TIMES BY A SUPPLIED AMOUNT (SHIFTS RECORD AS A WHOLE W/O MODIFYING DURATION) ##
+  
   def modifyTimes(self, amount):
+    """
+    Modify both the start and end times by the supplied amount
+    This shifts the entire time frame and does *not* change the duration
+    :param amount: <float|(str)> number of hours, in decimal, by which to shift the start and end times(casts to float)
+    """
     self.modifyStart(amount)
     self.modifyEnd(amount)
   
-  ########################################################################################################
-  ### TIME METHODS END ###################################################################################
   
-  #
-  #
-  
-  ### TO_STRING METHODS START ############################################################################
+  ### TO_STRING METHODS ##################################################################################
   ########################################################################################################
   
-  ### DEFAULT TO_STRING CALLED VIA str() #################################################################
   def __str__(self):
-    # contains durationLocked --> intended for writing to hidden file
-    return "{0}|{1} {2}|{3} {4}|{5}|{6}|{7}|{8}|{9}|{10}".format(
-      self.name,
-      self.date, self.fstart,
-      self.date, self.fend,
-      self.duration,
-      self.label,
-      self.billable, self.emergency,
-      self.notes,
-      self.durationLocked)
+    """ Default to_string - called via str(record)
+    This format contains durationLocked and is intended for writing to a hidden file
+    :return: <str> formatted record data
+    """
+    return "{emailFormat}|{durationLocked}".format(
+      emailFormat=self.emailFormat(), durationLocked=self.durationLocked)
+
   
-  ### SECONDARY TO_STRING TO MATCH CORRECT RECORD STRING FORMAT (FOR PAYROLL) ############################
   def emailFormat(self):
-    # does not contain durationLocked
-    return "{0}|{1} {2}|{3} {4}|{5}|{6}|{7}|{8}|{9}".format(
-      self.name,
-      self.date, self.fstart,
-      self.date, self.fend,
-      self.duration,
-      self.label,
-      self.billable, self.emergency,
-      self.notes)
-    
-    ########################################################################################################
-    ### TO_STRING METHODS END ##############################################################################
+    """ Secondary to_string
+    This format doesn't contain durationLocked and is intended for emailing/submitting to payroll
+    :return: <str> formatted record data
+    """
+    return "{name}|{startDate} {start}|{endDate} {end}|{duration}|{label}|{billable}|{emergency}|{notes}".format(
+      name=self.name,
+      startDate=self.date, start=self.fstart,
+      endDate=self.date, end=self.fend,
+      duration=self.duration,
+      label=self.label,
+      billable=self.billable, emergency=self.emergency,
+      notes=self.notes)
 
 
 ########################################################################################################
-####################################### CLASS DEF END ##################################################
+#### CLASS DEF END #####################################################################################
+########################################################################################################
+
+#
+
+########################################################################################################
+#### HELPER CLASS DEF START ############################################################################
 ########################################################################################################
 
 class RecordMalformedException(Exception):
+  """
+  Wrapped exception used and required, internally, by the Record class
+  """
   pass
 
+########################################################################################################
+#### HELPER CLASS DEF END ##############################################################################
+########################################################################################################
 
 #
 #
@@ -260,20 +311,13 @@ class RecordMalformedException(Exception):
 #
 #
 #
-#
-#
-#
-#
-#
 
+########################################################################################################
 #### MODULE METHODS START ##############################################################################
 ########################################################################################################
-########################################################################################################
 
-#
-#
 
-### GENERATOR METHODS START ############################################################################
+### GENERATOR METHODS ##################################################################################
 ########################################################################################################
 
 def generateFileName(name, date):
@@ -311,13 +355,7 @@ def generateHiddenFileName(name, date):
   return os.path.join(HOURS_DIR, filename)
 
 
-########################################################################################################
-### GENERATOR METHODS END ##############################################################################
-
-#
-#
-
-### IO METHODS START ###################################################################################
+### IO METHODS #########################################################################################
 ########################################################################################################
 
 def readRecords(name, date):
@@ -397,13 +435,7 @@ def deleteRecords(name, date):
   os.system("rm -f {}".format(hiddenFileName))
 
 
-########################################################################################################
-### IO METHODS END #####################################################################################
-
-#
-#
-
-### SUBTOTAL & TOTAL METHODS START #####################################################################
+### SUBTOTAL & TOTAL METHODS ###########################################################################
 ########################################################################################################
 
 def getSubtotalForDay(name, date):
@@ -484,7 +516,8 @@ def getPayPeriodMonth(date):
     month_int = date.month + 1 if date.month < 12 else 1
   
   # correcting for year is not necessary because only the month string is returned
-  date = dt.date(date.year, month_int, date.day)
+  # likewise, the day value is not needed, so hard-coding as 1 prevents day-out-of-range error
+  date = dt.date(date.year, month_int, 1)
   
   # get the str name for the month
   return date.strftime("%b")
@@ -493,34 +526,24 @@ def getPayPeriodMonth(date):
 def countSubtotal(records):
   """ PRIVATE
   Sums the durations of a list of recorder.Record objects
-    will parse a list of record strings into objects
+  Will parse record strings into objects
   :param records: <list[recorder.Record|str]>
   :return: <float> subtotal
   """
   subtotal = 0.0
   
-  for r in records:
+  for each in records:
     
-    # if it is a valid duration
-    if r.duration != PENDING_CHAR:
-      
-      # if the record is a string, make it an object first
-      if type(r) is str:
-        subtotal += float(Record(r).duration)
-      
-      # else just add its duration
-      else:
-        subtotal += float(r.duration)
+    if type(each) is str:
+      subtotal += float(Record(each).duration)
+    
+    elif isRecord(each) and not each.isPending():
+      subtotal += float(each.duration)
   
   return subtotal
 
-########################################################################################################
-### SUBTOTAL & TOTAL METHODS END #######################################################################
 
-#
-#
-
-### PARSING METHODS START ##############################################################################
+### PARSING METHODS ####################################################################################
 ########################################################################################################
 
 def parseRecords(raw_records):
@@ -628,13 +651,8 @@ def parseRecordFromHTML(request):
   
   return Record(record_string)
 
-########################################################################################################
-### PARSING METHODS END ################################################################################
 
-#
-#
-
-### TIME METHODS START #################################################################################
+### TIME METHODS #######################################################################################
 ########################################################################################################
 
 def parseTime(t):
@@ -733,6 +751,7 @@ def getDuration(start, end):
   # if end == PENDING_CHAR
   return 0.0
 
+
 # TODO: decide whether to keep this and figure out how overloading is done best in Python
 # def getDuration(record):
 #   """
@@ -801,13 +820,7 @@ def getCurrentRoundedTime():
   return roundTime(dt.datetime.now().time())
 
 
-########################################################################################################
-### TIME METHODS END ###################################################################################
-
-#
-#
-
-### RECORD METHODS START ###############################################################################
+### RECORD METHODS #####################################################################################
 ########################################################################################################
 
 def getPrevRecord(records, index):
@@ -880,7 +893,7 @@ def adjustAdjacentRecords(records, index):
     previous: [START][PENDING --> END]
     base: [START][PENDING|END]
   """
-  if prev_record:
+  if prev_record and isRecord(prev_record):
     # if the previous record's end time has not been supplied
     if prev_record.duration == PENDING_CHAR:
       # set the previous record's end time to be the new record's start time
@@ -893,7 +906,7 @@ def adjustAdjacentRecords(records, index):
     base: [START][END]
     next: [START --> MODIFIED START][PENDING|END]
   """
-  if next_record:
+  if next_record and isRecord(next_record):
     # if (the next record's end time has not been supplied) and (the base record has an end time)
     if (next_record.duration == PENDING_CHAR) and (base_record.end != PENDING_CHAR):
       # supply the next record's start time using the new record's end time
@@ -901,6 +914,7 @@ def adjustAdjacentRecords(records, index):
       
      
     # TODO: FIX THE REST OF THIS METHOD
+    # TODO: make sure for all : isRecord(r)
     """
     I don't think I changed any logic, but I need to decide how this will work
       specifically, if two records in a row can have pending end times
@@ -981,60 +995,67 @@ def checkIfValid(records, record, index):
   :param index: <int> index where the new record is trying to be placed
   :return: <bool> returns True only if record fits between (existing) adjacent records
   """
-  # TODO: look over this method (i.e. where I left off)
-  ################################################
-  
   # get records to check positioning of the new record
-  prev = next = None
+  prevRecord = nextRecord = None
   
-  # for checking the relationship with the adjacent records
-  prevValid = nextValid = False
-  
-  ################################################
-  ################################################
-  
-  if records:
-    prev = getPrevRecord(records, index)
-    next = getNextRecord(records, index)
+  # for checking the relationship with self and the adjacent records
+  prevValid = nextValid = selfValid = False
   
   ################################################
   
-  # either there is no previous record or the new start is greater than the previous start
-  if (not prev) or (prev and (record.start > prev.start)):
-    prevValid = True
-  
-  # either there is no next record or the new end is less than the next end
-  if (not next) or (next and (record.end < next.end)):
-    nextValid = True
-  
-  ################################################
-  
-  # END != PENDING
-  if record.end != PENDING_CHAR:
-    return record.start < record.end
-  
-  ################################################
-  ################################################
-  
-  # END == PENDING
-  elif next:
-    # cannot have a pending end time within the list (must be at the end)
+  if not record or not isRecord(record):
     return False
   
+  if records:
+    prevRecord = getPrevRecord(records, index)
+    nextRecord = getNextRecord(records, index)
+  
   ################################################
   
-  else:
-    # can't compare pending end time to record.start
-    # so return whether or not both adjacency checks were passed
-    return prevValid and nextValid
+  # either there is no previous record
+  if not prevRecord:
+    prevValid = True
     
-    ################################################
-    ################################################
+  # or the new start is greater than the previous start
+  elif isRecord(prevRecord):
+    prevValid = record.start > prevRecord.start
+  
+  ################################################
 
+  # either there is no nextRecord record
+  if not nextRecord:
+    nextValid = True
+    
+  # or the new end is less than the nextRecord end
+  # (implied) if record is pending, the nextRecord record must not exist
+  elif not record.isPending() and isRecord(nextRecord):
+    nextValid = record.end < nextRecord.end
+  
+  ################################################
+  
+  # if a record is pending, it is valid with itself
+  if record.isPending():
+    selfValid = True
+  
+  # else, the start must come before the end
+  else:
+    selfValid = record.start < record.end
 
-### EITHER RETURNS A VALIDATED DATETIME.DATE OBJECT BASED ON SUPPLIED DATE, OR RETURNS THE CURRENT DATE
+  ################################################
+
+  # true iff all checks are passed
+  return prevValid and nextValid and selfValid
+    
+  # TODO: maybe return a second var that's a list of reasons why the record was invalid
+
 
 def validateDate(d):
+  """
+  Normalizes dates as datetime.date objects
+  :param d: <str|(datetime.date)> to convert to datetime.date (will return unchanged a passed-in datetime.date object)
+  :return: <datetime.date> converted date if supplied else the current date
+  """
+  # TODO: does this belong in this section? Helper methods section?
   # if datetime.date
   if type(d) is dt.date:
     return d
@@ -1045,31 +1066,19 @@ def validateDate(d):
       # could throw ValueError
       # could throw a TypeError
       year, month, day = [int(x) for x in d.split("-")]
-      
-      return dt.date(year, month, day)
     
-    except (ValueError, TypeError):
-      # if invalid date supplied, return current date
-      return dt.date.today()
+      return dt.date(year=year, month=month, day=day)
   
-  else:
-    return dt.date.today()
-    
-    ########################################################################################################
-    ### RECORD METHODS END #################################################################################
-    
-    #
-    #
-    
-    ########################################################################################################
-    ########################################################################################################
-    #### MODULE METHODS END ################################################################################
-    
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
+    except (ValueError, TypeError):
+      pass
+
+  # if invalid date supplied, return current date
+  return dt.date.today()
+
+
+def isRecord(r):
+  return r.__class__.__name__ == "Record"
+
+########################################################################################################
+########################################################################################################
+#### MODULE METHODS END ################################################################################
