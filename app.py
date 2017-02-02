@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Bottle Python webapp for recording hours worked
+Bottle Python webapp for recording hours worked ; Version 1.3
 
 TODO:
   [done] doc this whole file
@@ -424,10 +424,6 @@ def set_cookies():
     # get date: either set manually or defaults to current day
     date = recorder.validateDate(bottle.request.forms.get("date"))
 
-
-  
-  cp.printWarn(timeDelta)
-  
   date += dt.timedelta(days=timeDelta)
   
   #######################################################
