@@ -333,11 +333,11 @@ def hours_post():
   #######################################################
   
   # name of user
-  name = bottle.request.forms.get(HTML_LABELS.NAME).strip()
+  name = bottle.request.forms.get("name").strip()
   # date : either picked by user or default today
   date = Cookies.get.date(bottle.request)
   # index for inserting new Record into the list of records
-  index = int(bottle.request.forms.get(HTML_LABELS.INSERT))
+  index = int(bottle.request.forms.get("index"))
   
   #######################################################
   

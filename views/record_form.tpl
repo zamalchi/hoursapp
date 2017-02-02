@@ -3,7 +3,7 @@ import modu.labeler as labeler
 import modu.recorder as recorder
 %>
 
-<div class="panel-collapse collapse" name="{{HTML_LABELS.RECORD}}" id="{{HTML_LABELS.RECORD+str(FORM.index)}}" >
+<div class="panel-collapse collapse" name="record" id="record{{FORM.index}}" >
 <div class="panel-body">
 <div class="container-fluid">
 <div class="row">
@@ -16,19 +16,19 @@ import modu.recorder as recorder
 		<div class="form-inline" name="row1">
 			
 			<!-- NAME : TEXT -->
-			<input type="text" name="{{HTML_LABELS.NAME}}" class="form-control record-form-name"
+			<input type="text" name="name" id="name{{FORM.index}}" class="form-control record-form-name"
 				value="{{DATA.name}}" pattern="{{REGEX.NAME}}" placeholder="Name"
 				tabindex="1" required />
 			
 			<!-- START TIME : TEXT -->
- 			<input type="text" name="{{HTML_LABELS.START}}" class="form-control record-form-start"
+ 			<input type="text" name="start" id="start{{FORM.index}}" class="form-control record-form-start"
 				value="{{FORM.start}}" pattern="{{REGEX.TIME}}" placeholder="Start Time"
 				data-min="{{FORM.min}}" data-max="{{FORM.max}}"
 				required tabindex="2"
 				onblur="checkTime(this);" />
 
 			<!-- END TIME : TEXT -->
-			<input type="text" name="{{HTML_LABELS.END}}" class="form-control record-form-end"
+			<input type="text" name="end" id="end{{FORM.index}}" class="form-control record-form-end"
 				value="{{FORM.end}}" pattern="{{REGEX.TIME}}" placeholder="End Time"
 				data-min="{{FORM.min}}" data-max="{{FORM.max}}"
 				tabindex="3" 
@@ -45,10 +45,11 @@ import modu.recorder as recorder
 			% include("dropdown_labels.tpl", recordIndex=FORM.index)
 
 			<!-- NOTES : TEXT -->
-			<input type="text" name="{{HTML_LABELS.NOTES}}" class="form-control record-form-notes"
-				value="{{FORM.notes}}" placeholder="Notes" 
-				required tabindex="6" />
-
+			<div name="notes-wrapper">
+				<input type="text" name="{{HTML_LABELS.NOTES}}" class="form-control record-form-notes"
+					value="{{FORM.notes}}" placeholder="Notes" 
+					required tabindex="6" />
+			</div>
 		</div>
 
 		<hr />
@@ -79,7 +80,7 @@ import modu.recorder as recorder
 		</div>
 
 		<!-- INDEX FOR NEXT RECORD : HIDDEN -->
-		<input type="hidden" name="{{HTML_LABELS.INSERT}}" value="{{FORM.index}}" />
+		<input type="hidden" name="index" value="{{FORM.index}}" />
 
 	</fieldset>
 </form>
