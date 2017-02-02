@@ -1,50 +1,61 @@
 
 // MISC CLASSES
 
-.vertical-center {
-    vertical-align: center!important;
-}
+// .vertical-center {
+//     vertical-align: center!important;
+// }
 
-.padded-top {
-    padding-top: 10px;
-}
+// .padded-top {
+//     padding-top: 10px;
+// }
 
-.quarter-width {
-    width: 25%!important;
-}
+// .quarter-width {
+//     width: 25%!important;
+// }
 
-.third-width {
-    width: 33.33%!important;
-}
+// .third-width {
+//     width: 33.33%!important;
+// }
 
-.half-width {
-    width: 50%!important;
-}
+// .half-width {
+//     width: 50%!important;
+// }
 
-.two-thirds-width {
-    width: 66.66%!important;
-}
+// .two-thirds-width {
+//     width: 66.66%!important;
+// }
 
-.three-quarters-width {
-    width: 75%!important;
-}
+// .three-quarters-width {
+//     width: 75%!important;
+// }
 
-.full-width {
-    width: 100%!important;
-}
+// .full-width {
+//     width: 100%!important;
+// }
 
-.no-padding {
-    padding: 0px;
-}
+// .no-padding {
+//     padding: 0px;
+// }
 
-.bugfix {
-    color: $red;
-}
+// .bugfix {
+//     color: $red;
+// }
 
-.form-inline {
-	display: inline;
-}
+// .form-inline {
+// 	display: inline;
+// }
 
-.inline-block {
-    display: inline-block;
+// .inline-block {
+//     display: inline-block;
+// }
+
+.gradient {
+  background: $bg_color; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient($bg_color, $bg_color_darker); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient($bg_color, $bg_color_darker); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient($bg_color, $bg_color_darker); /* For Firefox 3.6 to 15 */
+  background: linear-gradient($bg_color, $bg_color_darker); /* Standard syntax */
+  // -webkit-backface-visibility: hidden;
+  // -webkit-transform: translate3D(0, 0, 0);
+  // -webkit-transform-style: preserve-3d;
 }

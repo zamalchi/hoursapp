@@ -10,166 +10,70 @@
   background: linear-gradient(#476f9e, #090F16);
   /* Standard syntax */ }
 
-.vertical-center {
-  vertical-align: center !important; }
-
-.padded-top {
-  padding-top: 10px; }
-
-.quarter-width {
-  width: 25% !important; }
-
-.third-width {
-  width: 33.33% !important; }
-
-.half-width {
-  width: 50% !important; }
-
-.two-thirds-width {
-  width: 66.66% !important; }
-
-.three-quarters-width {
-  width: 75% !important; }
-
-.full-width {
-  width: 100% !important; }
-
-.no-padding {
-  padding: 0px; }
-
-.bugfix {
-  color: red; }
-
-.form-inline {
-  display: inline; }
-
-.inline-block {
-  display: inline-block; }
-
-body {
-  font-family: Droid Sans, Arial;
-  background-color: #476f9e;
-  padding-top: 5px;
-  min-width: 800px; }
-
-.threeColumn {
-  -webkit-column-count: 3;
-  /* Chrome, Safari, Opera */
-  -moz-column-count: 3;
-  /* Firefox */
-  column-count: 3; }
-
-.footer {
-  margin: 30px; }
-
-fieldset.inputs, div.records, div.labels, div#buttons {
-  border: 2px solid black;
-  padding: 10px;
-  background-color: #cccccc;
-  margin-bottom: 25px !important; }
-
-h1 {
-  text-align: center; }
-
-h3 {
-  margin-top: 5px;
-  margin-bottom: 5px; }
-
-div#header {
+#header {
   margin-top: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
+  padding: 10px;
   vertical-align: center;
   border: 2px solid black;
-  padding: 10px;
-  background-color: #cccccc;
-  margin-bottom: 25px !important; }
-  div#header #subtotalCounter {
-    font-size: 1.4em; }
-  div#header #dateTitle {
-    font-size: 1.4em; }
-  div#header div#titles {
+  background-color: #cccccc; }
+  #header #date-title, #header #subtotal-counter {
+    font-size: 1.4em;
     text-align: center; }
-    div#header div#titles div[name="left"] {
-      display: inline-block;
-      width: 39%;
-      min-width: 220px; }
-    div#header div#titles div[name="right"] {
-      display: inline-block;
-      width: 59%;
-      min-width: 310px; }
-  div#header div#controls {
-    vertical-align: center; }
-    div#header div#controls div[name="left"] form {
-      width: 100%;
-      display: inline-block;
-      padding-bottom: 15px; }
-      div#header div#controls div[name="left"] form div[name="inputs"] {
-        display: inline-block;
-        width: 64%; }
-        div#header div#controls div[name="left"] form div[name="inputs"] input {
-          display: inline-block; }
-        div#header div#controls div[name="left"] form div[name="inputs"] input#setName {
-          width: 44%;
-          min-width: 80px; }
-        div#header div#controls div[name="left"] form div[name="inputs"] input#setDate {
-          width: 54%;
-          min-width: 140px; }
-      div#header div#controls div[name="left"] form div.btn-group[name="submit"] {
-        display: inline-block;
-        width: 33.5%; }
-        div#header div#controls div[name="left"] form div.btn-group[name="submit"] button {
-          width: 100%; }
-    div#header div#controls div[name="right"] .form-control,
-    div#header div#controls div[name="right"] .control-button {
-      width: 100%; }
-    div#header div#controls div[name="right"] .btn-group {
-      display: inline-block;
-      width: 100%;
-      min-width: 415px; }
-    div#header div#controls div[name="right"] .button-wrapper,
-    div#header div#controls div[name="right"] .input-wrapper {
-      display: inline-block;
-      width: 24%;
-      min-width: 88px; }
-    div#header div#controls [name="updates"] {
-      background-color: #cccccc; }
-    div#header div#controls input#email {
-      margin: 0px; }
-    div#header div#controls input#delete {
-      margin: 0px; }
-  div#header form[action="/send"] {
+  #header .left {
+    display: inline-block;
+    width: 39%;
+    min-width: 220px; }
+  #header .right {
+    display: inline-block;
+    width: 59%;
+    min-width: 310px; }
+  #header #controls .left form {
+    display: inline-block;
     width: 100%;
     padding-bottom: 15px; }
-    div#header form[action="/send"] input {
+    #header #controls .left form .inputs {
+      display: inline-block;
+      width: 64%; }
+      #header #controls .left form .inputs .name {
+        width: 44%;
+        min-width: 80px; }
+      #header #controls .left form .inputs .date {
+        width: 54%;
+        min-width: 140px; }
+    #header #controls .left form .submit {
+      display: inline-block;
+      width: 33.5%; }
+      #header #controls .left form .submit button {
+        width: 100%; }
+  #header #controls .right .button-wrapper {
+    display: inline-block;
+    width: 24%;
+    min-width: 88px; }
+  #header #controls .right .control-button {
+    width: 100%; }
+  #header #controls .right .updates {
+    background-color: red; }
+  #header #controls .right .email, #header #controls .right .delete {
+    margin: 0px; }
+  #header #controls form.send {
+    width: 100%;
+    padding-bottom: 15px; }
+    #header #controls form.send input {
       display: inline-block; }
-    div#header form[action="/send"] input#serverAddress {
+    #header #controls form.send .address {
       width: 40%;
       margin-right: 5px;
       font-size: 1em; }
-    div#header form[action="/send"] input#serverPort {
+    #header #controls form.send .port {
       width: 25%;
       margin-left: 5px;
       font-size: 1em; }
-    div#header form[action="/send"] input#send {
+    #header #controls form.send .confirm {
       width: 24%;
       margin-left: 30px; }
 
-div[name="recordControls"] button[name="collapse"],
-div[name="recordControls"] button[name="delete"] {
-  display: inline; }
-
-button.x-button {
-  background-color: #e54747; }
-  button.x-button:visited {
-    background-color: #e54747; }
-  button.x-button:hover {
-    background-color: red; }
-  button.x-button:active {
-    background-color: red; }
-  button.x-button .glyphicon {
-    color: white; }
-
-.dropdown {
+.record-form fieldset [name="row2"] .dropdown {
   position: relative;
   width: 150px;
   height: 34px;
@@ -177,8 +81,7 @@ button.x-button {
   padding: 0;
   margin: 0;
   margin-right: 155px; }
-
-.dropdown-select {
+.record-form fieldset [name="row2"] .dropdown-select {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -188,8 +91,7 @@ button.x-button {
   margin: 0;
   padding: 0;
   padding-left: 10px; }
-
-.dropdown-input {
+.record-form fieldset [name="row2"] .dropdown-input {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -202,94 +104,7 @@ button.x-button {
   /*border:1px solid #556;*/
   padding-left: 10px; }
 
-.records {
-  margin-top: 0px;
-  padding-left: 20px !important;
-  padding-right: 20px !important; }
-  .records .record .record-content {
-    display: inline; }
-  .records .record .record-controls {
-    min-width: 70px !important; }
-    .records .record .record-controls button {
-      display: inline; }
-  .records .record .record-display .record-display-string {
-    display: inline;
-    margin-left: -20px !important;
-    padding-top: 2px !important;
-    padding-left: 20px;
-    padding-bottom: 2px !important;
-    width: 100%; }
-
-div.labels label {
-  padding-right: 120px; }
-
-div.panel-body {
-  padding-bottom: 0px; }
-
-.panel {
-  margin-top: 20px !important;
-  border: 2px solid black; }
-
-.pending-text {
-  color: red; }
-
-div[name="record-display-col"] {
-  margin-left: -10px !important; }
-
-.negative-duration {
-  color: red;
-  font-weight: bold; }
-
-input[name="completeEnd"] {
-  min-width: 60px;
-  max-width: 60px;
-  font-size: 0.9em;
-  border: 1px solid red;
-  display: inline; }
-
-input[name="completeEnd"] {
-  min-width: 60px;
-  max-width: 60px;
-  font-size: 0.9em;
-  border: 1px solid red;
-  display: inline; }
-
-input[name="notesDisplay"] {
-  font-weight: bold;
-  margin-top: 5px;
-  display: inline-block;
-  width: 100%; }
-
-.record-form {
-  background-color: red !important; }
-  .record-form .notes {
-    display: inline-block;
-    width: 70%;
-    min-width: 380px; }
-
-body[name="viewer"] {
-  font-family: Monospace; }
-
-div#help {
-  background-color: #cccccc;
-  padding: 20px; }
-  div#help div {
-    background-color: white;
-    border: 2px solid #000000; }
-  div#help hr {
-    border-top: 1px solid #cccccc;
-    margin-top: 10px;
-    margin-bottom: 10px; }
-  div#help h2 {
-    margin-top: 0px; }
-  div#help div#target-body {
-    padding-bottom: 10px; }
-
-.record-form {
-  background-color: red !important; }
-  .record-form .notes {
-    display: inline-block;
-    width: 70%;
-    min-width: 380px; }
+body {
+  background-color: #476f9e; }
 
 /*# sourceMappingURL=main.css.map */
