@@ -85,7 +85,16 @@ div#header {
 					width: 33.5%;
 
 					button {
-						width: 100%;
+						width: 55%;
+						min-width: 80px;
+						padding-left: 0px;
+						padding-right: 0px;
+					}
+					button.day-shift {
+						width: 20%;
+						min-width: 15px;
+						// .left { margin-right: 10px; }
+						// .right { margin-right: 10px; }
 					}
 				}
 				// ######
@@ -163,4 +172,8 @@ div#header {
 		}
 	}
 	
+}
+
+button.day-shift {
+	width: 10%;
 }

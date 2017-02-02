@@ -516,7 +516,8 @@ def getPayPeriodMonth(date):
     month_int = date.month + 1 if date.month < 12 else 1
   
   # correcting for year is not necessary because only the month string is returned
-  date = dt.date(date.year, month_int, date.day)
+  # likewise, the day value is not needed, so hard-coding as 1 prevents day-out-of-range error
+  date = dt.date(date.year, month_int, 1)
   
   # get the str name for the month
   return date.strftime("%b")

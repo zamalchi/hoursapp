@@ -19,14 +19,24 @@ date : not required, but defaults internally to the current date
 		<!-- DATE : DATE -->
 		<input type="date" name="date" id="setDate" class="form-control input-sm" />
 
+		<input type="hidden" name="time-delta" id="time-delta" value="0">
+
 	</div>
 	
 	<div name="submit" class="btn-group">
+
+		<button type="submit" class="btn btn-primary btn-sm control-button day-shift" onclick="shiftDay(-1);">
+			<span class="glyphicon glyphicon-chevron-left left"></span>
+		</button>
 
 		<button type="submit" class="btn btn-primary btn-sm control-button">
 			Pull records
 		</button>
 		
+		<button type="submit" class="btn btn-primary btn-sm control-button day-shift" onclick="shiftDay(1);">
+			<span class="glyphicon glyphicon-chevron-right right"></span>
+		</button>
+
 	</div>
 
 </form>

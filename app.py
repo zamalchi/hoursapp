@@ -413,8 +413,22 @@ def set_cookies():
   # get name of user provided in specified field
   name = bottle.request.forms.get("name") or ""
   
-  # get date: either set manually or defaults to current day
-  date = recorder.validateDate(bottle.request.forms.get("date"))
+  # the forward and backward arrows set this value so that the date can be modified by it (-1|0|1)
+  timeDelta = int(bottle.request.forms.get("time-delta") or 0)
+  
+  if timeDelta != 0:
+    # if a non-zero time delta exists, use the existing date cookie
+    # otherwise, the empty HTML date field will cause recorder to always provide the current date
+    date = Cookies.get.date(bottle.request)
+  else:
+    # get date: either set manually or defaults to current day
+    date = recorder.validateDate(bottle.request.forms.get("date"))
+
+
+  
+  cp.printWarn(timeDelta)
+  
+  date += dt.timedelta(days=timeDelta)
   
   #######################################################
   

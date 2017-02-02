@@ -309,4 +309,9 @@ function checkTime(self) {
 
 }
 
+function shiftDay(amount) {
+	var delta = document.getElementById("time-delta");
+	delta.value = String(amount);
+}
+
 </script>

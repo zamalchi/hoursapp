@@ -118,7 +118,13 @@ div#header {
         display: inline-block;
         width: 33.5%; }
         div#header div#controls div[name="left"] form div.btn-group[name="submit"] button {
-          width: 100%; }
+          width: 55%;
+          min-width: 80px;
+          padding-left: 0px;
+          padding-right: 0px; }
+        div#header div#controls div[name="left"] form div.btn-group[name="submit"] button.day-shift {
+          width: 20%;
+          min-width: 15px; }
     div#header div#controls div[name="right"] .form-control,
     div#header div#controls div[name="right"] .control-button {
       width: 100%; }
@@ -153,6 +159,9 @@ div#header {
     div#header form[action="/send"] input#send {
       width: 24%;
       margin-left: 30px; }
+
+button.day-shift {
+  width: 10%; }
 
 div[name="recordControls"] button[name="collapse"],
 div[name="recordControls"] button[name="delete"] {
