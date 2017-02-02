@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Bottle Python webapp for recording hours worked ; Version 1.3
+Bottle Python webapp for recording hours worked ; Version 1.4
 
 TODO:
   [done] doc this whole file
