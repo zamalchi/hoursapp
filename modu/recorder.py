@@ -632,7 +632,7 @@ def parseRecordFromHTML(request):
   #######################################################
   
   # get the date cookie or default to current date ; save as str
-  date = str(validateDate(request.get_cookie("date")))
+  date = str(validateDate(request.get_cookie("hours-app-date")))
   
   #######################################################
   

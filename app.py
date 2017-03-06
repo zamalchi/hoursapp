@@ -203,7 +203,7 @@ elif ENV.DEBUG:
 Cookies = argparse.Namespace()
 # prepends each cookie with the currently-used port
 # this prevents another server instance from overwriting the cookies
-Cookies.id = ENV.PORT
+Cookies.id = "hours-app-"
 
 # GET namespace : receives bottle.request
 Cookies.get = argparse.Namespace()
